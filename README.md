@@ -1,7 +1,4 @@
-<div style="float: right">
-![shocked logo](http://shockjs.github.io/shockjs.svg)
-</div>
-
+<img align="right" alt="shocked logo" src="http://shockjs.github.io/shockjs.svg">
 # shockjs
 
 ## requirements
