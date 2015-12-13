@@ -6,8 +6,6 @@
 
 ## requirements
 
-### node
-
 
 ### global npm packages.
 ```bash

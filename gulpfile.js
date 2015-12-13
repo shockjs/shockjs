@@ -109,3 +109,9 @@ gulp.task('default', function(callback) {
     callback();
   });
 });
+
+gulp.task('compile', function(callback) {
+  runSequence('clean:dist', 'move:dist', 'build:dist', 'run:webpack', function() {
+    callback();
+  });
+});
