@@ -5,7 +5,7 @@
   "keywords": ["hapijs", "reactjs", "bookshelf", "redux", "graphql"],
   "main": "server/index.js",
   "scripts": {
-
+    "test": "node --version"
   },
   "author": "Damian Dennis <damiandennis@gmail.com>",
   "license": "ISC",
