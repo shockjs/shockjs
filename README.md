@@ -1,7 +1,13 @@
-<img align="right" alt="shocked logo" src="http://shockjs.github.io/shockjs.svg">
+<img align="right" alt="shockjs logo" src="http://shockjs.github.io/shockjs.svg">
 # shockjs
 
+![Build Status](https://travis-ci.org/shockjs/shockjs.svg)
+
+
 ## requirements
+
+### node
+
 
 ### global npm packages.
 ```bash
