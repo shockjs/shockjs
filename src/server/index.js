@@ -19,13 +19,13 @@ import Vision from 'vision';
 import Inert from 'inert';
 import Jade from 'jade';
 
-// Server store configuration (has history removed as that is client side only)
-import { configureStore } from './store/configureStore';
-
 // Useful libraries.
 import fs from 'fs';
 import Q from 'q';
 import Path from 'path';
+
+// Server store configuration (has history removed as that is client side only)
+import { configureStore } from './store/configureStore';
 
 // Custom that will be used for client and server using react router.
 import routes from "../shared/routes";
