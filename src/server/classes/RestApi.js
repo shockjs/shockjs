@@ -1,7 +1,5 @@
-"use strict";
-
-const Boom = require('boom');
-const isArray = require('lodash/lang/isArray');
+import Boom from 'boom';
+import isArray from 'lodash/lang/isArray';
 
 /**
  * Create a group of new endpoints for a bookshelf model.

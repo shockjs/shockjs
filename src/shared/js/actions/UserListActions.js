@@ -10,7 +10,7 @@ function requestData() {
 function receiveData(json) {
   return {
     type: DATA_FETCHED,
-    posts: json,
+    users: json,
     receivedAt: Date.now()
   }
 }
@@ -22,11 +22,11 @@ function fetchAllUsers() {
 
 export function renderServer() {
   return fetchAllUsers().then(function(json) {
-    return {posts: json};
+    return {users: json};
   });
 }
 
-export function fetchPosts() {
+export function fetchUsers() {
   return dispatch => {
     dispatch(requestData());
     return fetchAllUsers()

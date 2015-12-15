@@ -2,7 +2,13 @@
   "name": "shockjs",
   "version": "0.0.1",
   "description": "A simple framework using hapijs, reactjs, bookshelf, rdbms, graphql, redux which tries to be completely isomorphic in nature.",
-  "keywords": ["hapijs", "reactjs", "bookshelf", "redux", "graphql"],
+  "keywords": [
+    "hapijs",
+    "reactjs",
+    "bookshelf",
+    "redux",
+    "graphql"
+  ],
   "main": "server/index.js",
   "scripts": {
     "test": "node --version"
@@ -18,6 +24,7 @@
     "graphql": "^0.4.14",
     "hapi": "^11.1.1",
     "hapi-graphql": "^0.4.0",
+    "hapi-passport": "0.0.6",
     "hapi-shelf": "^1.2.1",
     "history": "1.13.1",
     "inert": "^3.2.0",
@@ -28,6 +35,8 @@
     "lodash": "^3.10.1",
     "mysql": "^2.9.0",
     "npm": "^3.5.0",
+    "passport": "^0.3.2",
+    "passport-facebook": "^2.0.0",
     "q": "^1.4.1",
     "react": "^0.14.0",
     "react-bootstrap": "^0.27.3",
@@ -36,7 +45,9 @@
     "react-router": "^1.0.2",
     "react-router-bootstrap": "^0.19.3",
     "redux": "^3.0.4",
-    "redux-devtools": "^2.1.5",
+    "redux-devtools": "^3.0.0",
+    "redux-devtools-dock-monitor": "^1.0.1",
+    "redux-devtools-log-monitor": "^1.0.1",
     "redux-simple-router": "0.0.7",
     "redux-thunk": "^1.0.0",
     "vision": "^4.0.1",

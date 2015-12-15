@@ -14,7 +14,6 @@ createStoreWithMiddleware = compose(
   applyMiddleware(thunkMiddleware)
 )(createStore);
 
-
 const rootReducer = combineReducers(Object.assign({}, reducers, {
   routing: routeReducer
 }));

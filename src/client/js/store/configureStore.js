@@ -5,24 +5,23 @@ import {createStore, applyMiddleware, combineReducers, compose} from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { syncReduxAndRouter, routeReducer } from 'redux-simple-router';
 
-import {devTools, persistState} from 'redux-devtools';
+import { persistState } from 'redux-devtools';
+import DevTools from '../../../shared/js/utils/DevTools';
+
 import createBrowserHistory from 'history/lib/createBrowserHistory';
 
 //Load in our reducers.
 import * as reducers from '../../../shared/js/reducers/index';
 
-let createStoreWithMiddleware;
-
-createStoreWithMiddleware = compose(
-  applyMiddleware(thunkMiddleware),
-  devTools(),
-  persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
-)(createStore);
-
 
 const rootReducer = combineReducers(Object.assign({}, reducers, {
   routing: routeReducer
 }));
+
+const finalCreateStore = compose(
+    applyMiddleware(thunkMiddleware),
+    DevTools.instrument()
+)(createStore);
 
 /**
  * Configures the store.
@@ -30,8 +29,17 @@ const rootReducer = combineReducers(Object.assign({}, reducers, {
  * @returns {*}
  */
 export function configureStore(initialState) {
-  var store = createStoreWithMiddleware(rootReducer, initialState);
+  const store = finalCreateStore(rootReducer, initialState);
+
+  // Hot reload reducers (requires Webpack or Browserify HMR to be enabled)
+  if (module.hot) {
+    module.hot.accept('../reducers', () =>
+        store.replaceReducer(require('../reducers')/*.default if you use Babel 6+ */)
+    );
+  }
+
   syncReduxAndRouter(history, store);
+
   return store;
 }
 
