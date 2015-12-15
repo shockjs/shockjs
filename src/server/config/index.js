@@ -39,3 +39,8 @@ export function getDatabase(env=process.env.SHOCK_ENV, consoleEnv=false) {
     let environment = getConfig(env, consoleEnv);
     return environment.database;
 }
+
+export function exposeUrl() {
+    let { ssl=false, host='localhost', port=80 } = getConfig();
+    return (ssl ? 'https' : 'http') + `://${host}` + (port !== 80 ? `:${port}` : '');
+}

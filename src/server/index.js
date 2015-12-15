@@ -3,8 +3,9 @@
  */
 
 // Main configuration file.
-import {getConfig} from "./config/index";
+import {getConfig, exposeUrl} from "./config/index";
 const config = getConfig();
+process.env.SHOCK_URL = exposeUrl();
 
 // Libraries built around react.
 import React from 'react';

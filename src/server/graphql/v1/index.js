@@ -1,4 +1,4 @@
-import fetch from 'isomorphic-fetch'
+import {fetch} from './../../../shared/js/utils/isomorphic';
 import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLList, GraphQLInt } from 'graphql';
 import queryString from 'querystring';
 import map from 'lodash/collection/map';
@@ -11,7 +11,7 @@ export default new GraphQLSchema({
   query: new GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
-      bills: {
+      users: {
         args: {
           filters: {
             type: new GraphQLList(Filter),
@@ -44,7 +44,7 @@ export default new GraphQLSchema({
             "sort": JSON.stringify(sort)
           };
 
-          let url = 'http://localhost:8000/api/v1/users?' + queryString.stringify(params);
+          let url = '/api/v1/users?' + queryString.stringify(params);
 
           return fetch(url).then(req => req.json());
 

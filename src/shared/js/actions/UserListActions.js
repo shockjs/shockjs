@@ -1,4 +1,4 @@
-import fetch from 'isomorphic-fetch'
+import {fetch} from '../utils/isomorphic'
 import {DATA_REQUESTED, DATA_FETCHED, DATA_SUCCEEDED, DATA_FAILED} from '../constants/ActionTypes';
 
 function requestData() {
@@ -16,7 +16,7 @@ function receiveData(json) {
 }
 
 function fetchAllUsers() {
-  return fetch(`http://localhost:8000/api/v1/users`)
+  return fetch(`/api/v1/users`)
     .then(req => req.json());
 }
 
