@@ -1,0 +1,19 @@
+html
+  head
+    title="ShockJS Isomorphic Application."
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+
+    link(rel='icon', href='/static/favicon.ico')
+    meta(name='description', content='A website built with ShockJS...')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(rel='stylesheet', href='/static/app.css')
+
+  body
+    <div id="main">
+    #app!= content
+    </div>
+    script(src='/static/bundle.js', defer)
+    script(id='serverRenderedData', type='application/json').
+      !{jsonData}
+
