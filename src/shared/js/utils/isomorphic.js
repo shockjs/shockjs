@@ -1,3 +1,7 @@
+/**
+ * @file handles isomorphic operations
+ */
+
 import isoFetch from 'isomorphic-fetch'
 
 /**
@@ -33,7 +37,7 @@ export function parseServerData(component, state)
 }
 
 /**
- * wrapper function for fetch to add an absolute url if data is prefetched server side.
+ * wrapper function for fetch to add an absolute url if data is pre-fetched server side.
  *
  * @param url
  * @param options
