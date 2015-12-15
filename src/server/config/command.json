@@ -1,0 +1,8 @@
+{
+  "database": {
+    "migrations": {
+      "tableName": "migrations",
+      "directory": "dist/server/migrations"
+    }
+  }
+}

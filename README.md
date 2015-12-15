@@ -12,5 +12,5 @@
 
 ### global npm packages.
 ```bash
-npm install -g gulp slush
+npm install -g gulp slush knex
 ```

@@ -3,7 +3,8 @@
  */
 
 // Main configuration file.
-import config from "./config.json";
+import {getConfig} from "./config/index";
+const config = getConfig();
 
 // Libraries built around react.
 import React from 'react';
@@ -18,6 +19,7 @@ import HapiShelf from 'hapi-shelf';
 import Vision from 'vision';
 import Inert from 'inert';
 import Jade from 'jade';
+import Boom from 'boom';
 
 // Useful libraries.
 import fs from 'fs';
