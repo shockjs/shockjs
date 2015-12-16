@@ -2771,7 +2771,7 @@
     },
     "gulp-if": {
       "version": "2.0.0",
-      "from": "gulp-if@>=2.0.0 <3.0.0",
+      "from": "gulp-if@*",
       "resolved": "https://registry.npmjs.org/gulp-if/-/gulp-if-2.0.0.tgz"
     },
     "gulp-ignore": {
@@ -3164,15 +3164,42 @@
         }
       }
     },
+    "hapi-auth-cookie": {
+      "version": "3.1.0",
+      "from": "hapi-auth-cookie@*",
+      "resolved": "https://registry.npmjs.org/hapi-auth-cookie/-/hapi-auth-cookie-3.1.0.tgz",
+      "dependencies": {
+        "boom": {
+          "version": "2.10.1",
+          "from": "boom@>=2.0.0 <3.0.0",
+          "resolved": "https://registry.npmjs.org/boom/-/boom-2.10.1.tgz"
+        },
+        "hoek": {
+          "version": "2.16.3",
+          "from": "hoek@>=2.0.0 <3.0.0",
+          "resolved": "https://registry.npmjs.org/hoek/-/hoek-2.16.3.tgz"
+        },
+        "isemail": {
+          "version": "1.2.0",
+          "from": "isemail@>=1.0.0 <2.0.0",
+          "resolved": "https://registry.npmjs.org/isemail/-/isemail-1.2.0.tgz"
+        },
+        "joi": {
+          "version": "6.10.1",
+          "from": "joi@>=6.0.0 <7.0.0",
+          "resolved": "https://registry.npmjs.org/joi/-/joi-6.10.1.tgz"
+        },
+        "topo": {
+          "version": "1.1.0",
+          "from": "topo@>=1.0.0 <2.0.0",
+          "resolved": "https://registry.npmjs.org/topo/-/topo-1.1.0.tgz"
+        }
+      }
+    },
     "hapi-graphql": {
       "version": "0.4.0",
       "from": "hapi-graphql@>=0.4.0 <0.5.0",
       "resolved": "https://registry.npmjs.org/hapi-graphql/-/hapi-graphql-0.4.0.tgz"
-    },
-    "hapi-passport": {
-      "version": "0.0.6",
-      "from": "hapi-passport@*",
-      "resolved": "https://registry.npmjs.org/hapi-passport/-/hapi-passport-0.0.6.tgz"
     },
     "hapi-shelf": {
       "version": "1.2.1",
@@ -6551,6 +6578,11 @@
       "from": "passport-facebook@*",
       "resolved": "https://registry.npmjs.org/passport-facebook/-/passport-facebook-2.0.0.tgz"
     },
+    "passport-local": {
+      "version": "1.0.0",
+      "from": "passport-local@*",
+      "resolved": "https://registry.npmjs.org/passport-local/-/passport-local-1.0.0.tgz"
+    },
     "passport-oauth2": {
       "version": "1.1.2",
       "from": "passport-oauth2@>=1.0.0 <2.0.0",
@@ -8253,6 +8285,11 @@
       "from": "string-length@>=1.0.0 <2.0.0",
       "resolved": "https://registry.npmjs.org/string-length/-/string-length-1.0.1.tgz"
     },
+    "string-width": {
+      "version": "1.0.1",
+      "from": "string-width@>=1.0.1 <2.0.0",
+      "resolved": "https://registry.npmjs.org/string-width/-/string-width-1.0.1.tgz"
+    },
     "stringmap": {
       "version": "0.2.2",
       "from": "stringmap@>=0.2.2 <0.3.0",
@@ -8611,6 +8648,11 @@
           "version": "0.5.3",
           "from": "source-map@>=0.5.1 <0.6.0",
           "resolved": "https://registry.npmjs.org/source-map/-/source-map-0.5.3.tgz"
+        },
+        "yargs": {
+          "version": "3.10.0",
+          "from": "yargs@>=3.10.0 <3.11.0",
+          "resolved": "https://registry.npmjs.org/yargs/-/yargs-3.10.0.tgz"
         }
       }
     },
@@ -8978,6 +9020,11 @@
       "from": "wordwrap@>=0.0.2 <0.1.0",
       "resolved": "https://registry.npmjs.org/wordwrap/-/wordwrap-0.0.3.tgz"
     },
+    "wrap-ansi": {
+      "version": "1.0.0",
+      "from": "wrap-ansi@>=1.0.0 <2.0.0",
+      "resolved": "https://registry.npmjs.org/wrap-ansi/-/wrap-ansi-1.0.0.tgz"
+    },
     "wrappy": {
       "version": "1.0.1",
       "from": "wrappy@>=1.0.0 <2.0.0",
@@ -9027,11 +9074,6 @@
       "version": "3.2.0",
       "from": "y18n@>=3.2.0 <4.0.0",
       "resolved": "https://registry.npmjs.org/y18n/-/y18n-3.2.0.tgz"
-    },
-    "yargs": {
-      "version": "3.10.0",
-      "from": "yargs@>=3.10.0 <3.11.0",
-      "resolved": "https://registry.npmjs.org/yargs/-/yargs-3.10.0.tgz"
     }
   }
 }

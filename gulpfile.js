@@ -14,6 +14,8 @@ const argv = require('yargs').argv;
 const gulpif = require('gulp-if');
 const Knex = require("knex");
 const knexfile = require("./knexfile");
+
+//Get our environment
 const knex = Knex(knexfile[process.env.SHOCK_ENV || 'development']);
 
 /**
@@ -84,7 +86,7 @@ gulp.task('run:nodemon', function () {
     ext: 'html js'
   })
   .on('restart', function () {
-    console.log('restarted node after change...')
+      gutil.log('restarted node after change...')
   })
 });
 
@@ -122,21 +124,21 @@ gulp.task('migrate', function () {
   if (argv.down) {
     return knex.migrate.rollback()
     .then(function (version) {
-        console.log("migrated database down to version: " + version[0]);
+        gutil.log("migrated database down to version: " + version[0]);
           knex.destroy();
       })
       .catch(function (err) {
-          console.error(err);
+          gutil.error(err);
           knex.destroy();
       });
   } else if (argv.create) {
     return knex.migrate.make(argv.create)
         .then(function (name) {
-            console.log("created migration named " + name);
+            gutil.log("created migration named " + name);
             knex.destroy();
         })
         .catch(function (err) {
-            console.error(err);
+            gutil.error(err);
             knex.destroy();
         });
   } else {
@@ -145,11 +147,11 @@ gulp.task('migrate', function () {
           return knex.migrate.currentVersion();
         })
         .then(function (version) {
-          console.log("migrated database up to version: " + version);
+          gutil.log("migrated database up to version: " + version);
           knex.destroy();
         })
         .catch(function (err) {
-          console.error(err);
+          gutil.error(err);
           knex.destroy();
         });
   }

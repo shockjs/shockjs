@@ -21,6 +21,7 @@ import Vision from 'vision';
 import Inert from 'inert';
 import Jade from 'jade';
 import Boom from 'boom';
+import HapiCookieAuth from 'hapi-auth-cookie';
 
 // Useful libraries.
 import fs from 'fs';
@@ -67,6 +68,7 @@ readdir(config.modelPath)
 
   server.register(
     [
+      HapiCookieAuth,
       Vision,
       Inert,
       {
@@ -98,6 +100,9 @@ readdir(config.modelPath)
         throw err;
       }
 
+      // Set up our authentication.
+      server.auth.strategy('passport', 'cookie', config.auth);
+
       // set up jade as our basic templating for shell html files.
       server.views({
         engines: {
@@ -116,21 +121,31 @@ readdir(config.modelPath)
         handler: {
           directory: {
             path: Path.join(__dirname, '../client/static'),
-            listing: true
+            listing: process.env.SHOCK_ENV === 'development'
           }
         }
       });
 
       // Create REST API routes.
-      apiRoutes.forEach(function(route) {
-        server.route(route);
-      });
+      server.route(apiRoutes);
 
       //Create a wildcard route to parse through to ReactJS Router
       server.route({
         method: 'GET',
         path: '/{p*}',
         handler: function (request, reply) {
+
+          // Redirect users to home page that are already logged in if accessing login or register pages.
+          switch (request.url.path) {
+            case '/register':
+            case '/login':
+              // Redirect if already authenticated.
+              if (request.auth.isAuthenticated) {
+                return reply.redirect('/');
+              }
+              break;
+          }
+
           match({routes, location: request.url.path }, (error, redirectLocation, renderProps) => {
             if (error) {
               reply.view('layouts/error', {
@@ -139,13 +154,13 @@ readdir(config.modelPath)
             } else if (renderProps) {
 
               // Hacky work around to get component name and action data. @todo find a cleaner way to do this.
-              var componentName = renderProps.components[1].displayName.replace(/Connect\(|\)/g, '');
-              var componentObj = renderProps.components[1].WrappedComponent;
+              let componentName = renderProps.components[1].displayName.replace(/Connect\(|\)/g, '');
+              let { renderServer } = renderProps.components[1].WrappedComponent;
 
               // This allows us to load data before rendering to allow the client to just take over without a re-render.
-              if (componentObj.renderServer !== undefined) {
-                componentObj.renderServer().then(function(data) {
-                    var componentData = {};
+              if (renderServer !== undefined) {
+                renderServer().then(function(data) {
+                    let componentData = {};
                     componentData[componentName] = data;
                     const store = configureStore(componentData);
                     reply.view('layouts/index', {
