@@ -116,19 +116,29 @@ gulp.task('watch:webpack', function(callback) {
 });
 
 /**
- * Runs migrations
+ * Runs migrations e.g "gulp migrate", "gulp migrate --down" or "gulp migrate --create=user"
  */
 gulp.task('migrate', function () {
   if (argv.down) {
     return knex.migrate.rollback()
-        .then(function (version) {
-          console.log("migrated database down to version: " + version[0]);
+    .then(function (version) {
+        console.log("migrated database down to version: " + version[0]);
           knex.destroy();
-        })
-        .catch(function (err) {
+      })
+      .catch(function (err) {
           console.error(err);
           knex.destroy();
-        });;
+      });
+  } else if (argv.create) {
+    return knex.migrate.make(argv.create)
+        .then(function (name) {
+            console.log("created migration named " + name);
+            knex.destroy();
+        })
+        .catch(function (err) {
+            console.error(err);
+            knex.destroy();
+        });
   } else {
     return knex.migrate.latest()
         .then(function () {
