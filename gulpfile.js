@@ -13,10 +13,6 @@ const webpackConfig = require("./webpack.js");
 const argv = require('yargs').argv;
 const gulpif = require('gulp-if');
 const Knex = require("knex");
-const knexfile = require("./knexfile");
-
-//Get our environment
-const knex = Knex(knexfile[process.env.SHOCK_ENV || 'development']);
 
 /**
  *  Cleans up dist folder.
@@ -121,6 +117,12 @@ gulp.task('watch:webpack', function(callback) {
  * Runs migrations e.g "gulp migrate", "gulp migrate --down" or "gulp migrate --create=user"
  */
 gulp.task('migrate', function () {
+
+  const knexfile = require("./knexfile");
+
+  //Get our environment
+  const knex = Knex(knexfile[process.env.SHOCK_ENV || 'development']);
+
   if (argv.down) {
     return knex.migrate.rollback()
     .then(function (version) {
