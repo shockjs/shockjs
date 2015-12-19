@@ -9,7 +9,6 @@ let defaultState = {
 export default function(state = defaultState, action) {
   switch (action.type) {
     case ActionTypes.DATA_FETCHED:
-        console.log(action);
       return Object.assign({}, state, {
         users: action.users
       });

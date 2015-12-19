@@ -7,6 +7,8 @@ import development from './development.json';
 import staging from './staging.json';
 import production from './production.json';
 import command from './command.json';
+import knex from 'knex';
+import bookshelf from 'bookshelf';
 
 process.env.SHOCK_ENV = process.env.SHOCK_ENV || 'development';
 
@@ -43,16 +45,42 @@ export function getConfig(env=process.env.SHOCK_ENV, commandLine=false) {
 }
 
 /**
- * Shortcut to just getting database details from config.
+ * Shortcut to knex direct connection.
+ *
+ * @param env
+ * @param commandLine
+ */
+export function getKnex(env=process.env.SHOCK_ENV, commandLine=false) {
+    return knex(getConfig(env, commandLine).database);
+}
+
+/**
+ * Shortcut to just getting the bookshelf base model.
  *
  * @param env The environment.
  * @param commandLine Whether this is purposed for the command line.
  * @returns {*} The config
  */
-export function getDatabase(env=process.env.SHOCK_ENV, commandLine=false) {
+export function getServerModel(env=process.env.SHOCK_ENV, commandLine=false) {
+    class Base extends bookshelf(getKnex(env, commandLine)).Model
+    {
+        constructor()
+        {
+            super();
+            this.prefix = 'tbl_';
+        }
 
-    let environment = getConfig(env, commandLine);
-    return environment.database;
+        get tableName()
+        {
+            return this.prefix + this.constructor.name.toLowerCase();
+        }
+
+        static knex()
+        {
+            return getKnex(env=process.env.SHOCK_ENV, commandLine=false);
+        }
+    }
+    return Base;
 }
 
 /**

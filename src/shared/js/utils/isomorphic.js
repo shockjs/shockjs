@@ -26,7 +26,7 @@ export function parseServerData(component, state)
     // Gets the data from the script component then adds to state.
     let serverRenderedDataElement = document.getElementById('serverRenderedData');
     if (serverRenderedDataElement) {
-      var serverRenderedData = JSON.parse(serverRenderedDataElement.textContent);
+      let serverRenderedData = JSON.parse(serverRenderedDataElement.textContent);
       if (serverRenderedData[component] !== undefined) {
         serverRenderedData[component].renderedServer = true;
         return serverRenderedData[component];
@@ -44,7 +44,7 @@ export function parseServerData(component, state)
  */
 export function fetch(url, options) {
   if (isServer()) {
-    url = process.env.SHOCK_URL + url;
+    url = process.env.SHOCK_URI + url;
   }
   return isoFetch(url, options);
 }

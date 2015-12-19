@@ -1,17 +1,13 @@
 import { getBase } from './Base';
 
-export function getUser(Base=getBase()) {
+export function getUser(Base) {
 
-    class User extends Base
+    class User extends getBase(Base)
     {
-        constructor()
-        {
-            super();
-        }
-
         get rules()
         {
             return {
+                username: ['required'],
                 firstName: ['required'],
                 lastName: ['required'],
                 password: ['required']

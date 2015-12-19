@@ -3201,11 +3201,6 @@
       "from": "hapi-graphql@>=0.4.0 <0.5.0",
       "resolved": "https://registry.npmjs.org/hapi-graphql/-/hapi-graphql-0.4.0.tgz"
     },
-    "hapi-shelf": {
-      "version": "1.2.1",
-      "from": "hapi-shelf@>=1.2.1 <2.0.0",
-      "resolved": "https://registry.npmjs.org/hapi-shelf/-/hapi-shelf-1.2.1.tgz"
-    },
     "har-validator": {
       "version": "2.0.3",
       "from": "har-validator@>=2.0.2 <2.1.0",
@@ -7434,11 +7429,6 @@
       "from": "querystringify@>=0.0.0 <0.1.0",
       "resolved": "https://registry.npmjs.org/querystringify/-/querystringify-0.0.3.tgz"
     },
-    "ramda": {
-      "version": "0.18.0",
-      "from": "ramda@>=0.18.0 <0.19.0",
-      "resolved": "https://registry.npmjs.org/ramda/-/ramda-0.18.0.tgz"
-    },
     "randomatic": {
       "version": "1.1.5",
       "from": "randomatic@>=1.1.3 <2.0.0",
@@ -8269,11 +8259,6 @@
       "version": "1.0.2",
       "from": "strict-uri-encode@>=1.0.0 <2.0.0",
       "resolved": "https://registry.npmjs.org/strict-uri-encode/-/strict-uri-encode-1.0.2.tgz"
-    },
-    "string": {
-      "version": "3.3.1",
-      "from": "string@>=3.0.0 <4.0.0",
-      "resolved": "https://registry.npmjs.org/string/-/string-3.3.1.tgz"
     },
     "string_decoder": {
       "version": "0.10.31",

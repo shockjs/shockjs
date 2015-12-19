@@ -2,10 +2,10 @@ var config = require('./dist/server/config/index');
 
 module.exports = {
 
-  development: config.getDatabase('development', true),
+  development: config.getConfig('development', true).database,
 
-  staging: config.getDatabase('staging', true),
+  staging: config.getConfig('staging', true).database,
 
-  production: config.getDatabase('production', true)
+  production: config.getConfig('production', true).database
 
 };

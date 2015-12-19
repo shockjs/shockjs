@@ -1,32 +1,27 @@
+import { getServerModel } from "../config/index";
 import { getUser } from '../../shared/js/models/User';
 import merge from 'lodash/object/merge';
 
 /**
  * User Model
  */
-module.exports = function (bookshelf) {
 
-  let BaseUser = getUser(bookshelf.Model);
+let BaseUser = getUser(getServerModel());
 
-  class User extends BaseUser
+class User extends BaseUser
+{
+  get rules()
   {
-    constructor()
-    {
-      super();
-      this._tableName = 'tbl_user';
-    }
-
-    get tableName()
-    {
-      return this._tableName;
-    }
-
-    get rules()
-    {
-      return merge(super.rules, {});
-    }
-
+    return merge(super.rules, {});
   }
 
-  return bookshelf.model('User', User);
-};
+  static filterAttribute(attribute)
+  {
+    return attribute.indexOf(["password"]) === -1;
+  }
+
+}
+
+export default User;
+
+

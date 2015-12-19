@@ -1,6 +1,7 @@
 "use strict";
 import Checkit from 'checkit';
 import Boom from 'boom';
+import Auth from '../../models/Auth';
 
 let apiPath = '/api/v1';
 
@@ -13,17 +14,15 @@ export default [
                 if (request.method === 'get') {
                     reply(Boom.methodNotAllowed("Login request method be POST."));
                 } else {
-                    var Auth = request.server.plugins['hapi-shelf'].model('Auth');
-                    var auth = new Auth();
+                    let auth = new Auth();
                     auth.attributes = request.payload;
-
-                    auth.validate().then(function(validatedFields) {
-                        reply({success: true});
+                    auth.login()
+                    .then(function(result) {
+                        reply(result);
                     })
-                    .caught(Checkit.Error, function(err) {
-                        reply(Boom.badData(err));
+                    .catch(function(err) {
+                        reply(err);
                     });
-
                 }
             }
         }

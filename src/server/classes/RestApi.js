@@ -1,39 +1,50 @@
 import Boom from 'boom';
 import isArray from 'lodash/lang/isArray';
+import pluck from 'lodash/collection/pluck';
+import pick from 'lodash/object/pick';
+import transform from 'lodash/object/transform';
+import ary from 'lodash/function/ary';
+import extend from 'lodash/object/extend';
 
 /**
  * Create a group of new endpoints for a bookshelf model.
  *
  * @class
  */
-class RestApi {
+class RestApi
+{
 
   /**
    * @param endPoint The endpoint.
-   * @param modelName
+   * @param model
    * @param version
      */
-  constructor(endPoint, modelName, version) {
+  constructor(endPoint, model, version)
+  {
 
-    this.modelName = modelName;
+    this.model = model;
     this.endPoint = endPoint;
     this.version = version || 'v1';
     this.perPageLimit = 50;
     this.perPage = 20;
 
+    /**
+     * Finds all instances.
+     */
     this.findAll = {
-      handler: function (request, reply) {
+      handler: (request, reply) => {
+        this.model.count().then(total => {
 
-        var Model = request.server.plugins['hapi-shelf'].model(this.modelName);
-        Model.count().then(total => {
+          // Initialize our mutators.
           let page = parseInt(request.query.page) || 1;
           let limit = parseInt(request.query['per-page']) <= this.perPageLimit ? request.query['per-page'] : this.perPage;
           let fields;
           let filters;
           let sort;
 
-          var query = Model.query();
+          var query = this.model.query();
 
+          // Attempt to get fields selected by client.
           try {
             fields = JSON.parse(request.query['fields'] || '["*"]');
             query.select(fields);
@@ -43,6 +54,7 @@ class RestApi {
             return;
           }
 
+          // Attempt to get sorts selected by client.
           try {
             if (request.query['sort'] !== undefined) {
               sort = JSON.parse(request.query['sort']);
@@ -58,10 +70,11 @@ class RestApi {
             return;
           }
 
+          // Attempt to get filters selected by client.
           try {
             filters = JSON.parse(request.query['filters'] || '[]');
             if (isArray(filters)) {
-              filters.forEach(function ({name, operator="=", value, clause='and', negate=false}) {
+              filters.forEach(({name, operator="=", value, clause='and', negate=false}) => {
                 if (name && value) {
                   switch (clause) {
                     case "and":
@@ -93,82 +106,153 @@ class RestApi {
             return;
           }
 
+          // Add pagination
           query.limit(limit).offset(limit * page - limit);
 
           //console.log(query.toSQL());
 
-          reply(query)
-            .header('X-Pagination-Per-Page', limit)
-            .header('X-Pagination-Total-Count', total)
-            .header('X-Pagination-Current-Page', page);
+          query.then((data) => {
 
+            // Removes any sensitive data as specified in the model.
+            if (this.model.filterAttribute !== undefined) {
+              data = data.map((row) => {
+                return pick(row, Object.keys(row).filter(this.model.filterAttribute));
+              });
+            }
+
+            reply(data)
+                .header('X-Pagination-Per-Page', limit)
+                .header('X-Pagination-Total-Count', total)
+                .header('X-Pagination-Current-Page', page);
+          });
         });
-      }.bind(this)
+      }
     };
 
+    /**
+     * Gets the current row count for the models table.
+       */
     this.fetchCount = {
-      handler: function (request, reply) {
-        var Model = request.server.plugins['hapi-shelf'].model(this.modelName);
-        Model.count().then(total => {
+      handler: (request, reply) => {
+        this.model.count().then(total => {
           reply(total);
         });
+      }
+    };
+
+    /**
+     * Fetches column names for the table. (mysql only currently)
+     */
+    this.fetchColumns = {
+      handler: function (request, reply) {
+        let model = new this.model();
+        let tableName = model.tableName;
+        if (this.model.knex !== undefined) {
+          this.model.knex().raw(`SHOW COLUMNS FROM ${tableName}`)
+              .then(total => {
+                reply(pluck(total[0], 'Field'));
+              });
+        } else {
+          reply(Boom.notImplemented("This method is unavailable for this model."));
+        }
+
       }.bind(this)
     };
 
+    /**
+     * Fetches column names for the table. (mysql only current)
+     */
+    this.fetchDefaults = {
+      handler: function (request, reply) {
+        let model = new this.model();
+        let tableName = model.tableName;
+        if (this.model.knex !== undefined) {
+          this.model.knex().raw(`SHOW COLUMNS FROM ${tableName}`)
+              .then(total => {
+                reply(transform(
+                    total[0].map((row) => {
+                          let data = {};
+                          data[row['Field']] = row['Default'];
+                          return data;
+                        }
+                    ), ary(extend, 2), {}
+                ));
+              });
+        } else {
+          reply(Boom.notImplemented("This method is unavailable for this model."));
+        }
+
+      }.bind(this)
+    };
+
+    /**
+     * finds a single instance of the model.
+     */
     this.findOne = {
-      handler: function (request, reply) {
-        var Model = request.server.plugins['hapi-shelf'].model(this.modelName);
-        var found = Model.forge({id: request.params.id}).fetch();
-        found.then(function(data) {
-            reply(data ? data :  Boom.badRequest(modelName + ' #' + request.params.id + ' does not exist.'));
-          }, this)
-          .catch(function(err) {
-            reply(Boom.badImplementation(err));
-          });
-      }.bind(this)
+      handler: (request, reply) => {
+        var model = this.model.forge({});
+        model.query({where: { id: request.params.id }})
+        .fetch()
+        .then((modelInstance) => {
+          let filterAttribute = this.model.filterAttribute ? this.model.filterAttribute : () => { return true; };
+          if (modelInstance) {
+            reply(pick(modelInstance.attributes, Object.keys(modelInstance.attributes).filter(filterAttribute)));
+          } else {
+            reply(Boom.badRequest(model.constructor.name + ' #' + request.params.id + ' does not exist.'));
+          }
+        })
+        .catch((err) => {
+          reply(Boom.badImplementation(err));
+        });
+      }
     };
 
+    /**
+     * creates a single instance of the model.
+     */
     this.createOne = {
-      handler: function (request, reply) {
-        var Model = request.server.plugins['hapi-shelf'].model(this.modelName);
-        Model.forge(request.payload)
+      handler: (request, reply) => {
+        this.model.forge(request.payload)
           .save()
-          .then(function(model) {
+          .then((model) => {
             reply(model);
           })
-          .catch(function(err) {
+          .catch((err) => {
             reply(Boom.badImplementation(err));
           });
-      }.bind(this)
+      }
     };
 
+    /**
+     * updates a single instance of the model.
+     */
     this.updateOne = {
-      handler: function (request, reply) {
-        var Model = request.server.plugins['hapi-shelf'].model(this.modelName);
-
-        Model.forge({id: request.params.id})
+      handler: (request, reply) => {
+        this.model.forge({id: request.params.id})
           .fetch({require: true})
-          .then(function (record) {
+          .then((record) => {
             record.save(request.payload)
-              .then(function (record) {
+              .then((record) => {
                 reply(record);
               })
-              .catch(function (err) {
+              .catch((err) => {
                 reply(Boom.badRequest(err));
               });
           })
-          .catch(function (err) {
+          .catch((err) => {
             reply(Boom.badRequest(err));
           });
 
-      }.bind(this)
+      }
     };
 
+    /**
+     * deletes a single instance of the model.
+     */
     this.deleteOne = {
-      handler: function (request, reply) {
-        var Model = request.server.plugins['hapi-shelf'].model(this.modelName);
-        reply(Model.destroy(request.params.id));
-      }.bind(this)
+      handler: (request, reply) => {
+        reply(this.model.destroy(request.params.id));
+      }
     };
 
   }
@@ -198,6 +282,16 @@ class RestApi {
         config: this.fetchCount
       },
       {
+        path: path + '/columns',
+        method: 'GET',
+        config: this.fetchColumns
+      },
+      {
+        path: path + '/defaults',
+        method: 'GET',
+        config: this.fetchDefaults
+      },
+      {
         path: path,
         method: 'POST',
         config: this.createOne
@@ -216,4 +310,4 @@ class RestApi {
   }
 }
 
-module.exports = RestApi;
+export default RestApi;

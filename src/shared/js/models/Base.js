@@ -9,16 +9,28 @@ export function getBase(ExtendedModel = DummyBase) {
         constructor()
         {
             super();
+            this._attributes = {};
+            this._rules = {};
         }
 
         get rules()
         {
-            return {};
+            return this._rules;
+        }
+
+        set rules(rules)
+        {
+            this._rules = rules;
         }
 
         get attributes()
         {
-            return [];
+            return this._attributes;
+        }
+
+        set attributes(attributes)
+        {
+            this._attributes = attributes;
         }
 
         validate(rules = false)

@@ -1,26 +1,55 @@
 import { getAuth } from '../../shared/js/models/Auth';
+import User from './User';
+import { getServerModel } from "../config/index";
+import Checkit from "checkit";
 import merge from 'lodash/object/merge';
+import Boom from 'boom';
 
 /**
  * Login Model
  */
-module.exports = function (bookshelf) {
+let BaseAuth = getAuth(getServerModel());
 
-  let BaseAuth = getAuth();
-
-  class Auth extends BaseAuth
+class Auth extends BaseAuth
+{
+  /**
+   * login the user in.
+   * @returns {Promise}
+     */
+  login()
   {
-    constructor()
-    {
-      super();
-    }
-
-    get rules()
-    {
-      return merge(super.rules, {});
-    }
-
+    return new Promise((resolve, reject) => {
+      this.validate()
+      .then(() => {
+        let user = new User();
+        user.query({
+          where: {
+            username: this.attributes.username,
+            password: this.attributes.password
+          }
+        })
+        .fetch({required: true})
+        .then((data) => {
+          if (data === null) {
+            reject(Boom.badData('Invalid credentials.'));
+          } else {
+            resolve(data);
+          }
+        })
+        .catch((error) => {
+          reject(Boom.badData(error));
+        });
+      })
+      .caught(Checkit.Error, (err) => {
+        reject(Boom.badData(err));
+      });
+    });
   }
 
-  return bookshelf.model('Auth', Auth);
-};
+  get rules()
+  {
+    return merge(super.rules, {});
+  }
+}
+
+export default Auth;

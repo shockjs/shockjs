@@ -1,12 +1,13 @@
 "use strict";
 
-const RestApi = require('../../classes/RestApi');
+import RestApi from '../../classes/RestApi';
+import User from '../../models/User';
 
 class UserApi extends RestApi
 {
   constructor()
   {
-    super('users', 'User');
+    super('users', User);
   }
 
   get endPoints()

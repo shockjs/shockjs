@@ -1,28 +1,12 @@
 import { getBase } from './Base';
 
-export function getAuth(Base=getBase()) {
+export function getAuth(Base) {
 
-    class Auth extends Base
+    class Auth extends getBase(Base)
     {
         constructor()
         {
             super();
-            this.username = '';
-            this.password  = '';
-        }
-
-        get attributes()
-        {
-            return {
-                username: this.username,
-                password: this.password
-            };
-        }
-
-        set attributes({ username='', password='' })
-        {
-            this.username = username;
-            this.password = password;
         }
 
         get rules()

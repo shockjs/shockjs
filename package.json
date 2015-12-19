@@ -25,7 +25,6 @@
     "hapi": "^11.1.1",
     "hapi-auth-cookie": "^3.1.0",
     "hapi-graphql": "^0.4.0",
-    "hapi-shelf": "^1.2.1",
     "history": "1.13.1",
     "inert": "^3.2.0",
     "install": "^0.3.0",

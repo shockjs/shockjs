@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchUsers, renderServer } from '../../actions/UserListActions'
 
-class Welcome extends Component {
-  static renderServer() {
+class Welcome extends Component
+{
+  static renderServer()
+  {
     return renderServer();
   }
 
@@ -15,7 +17,8 @@ class Welcome extends Component {
     }
   }
 
-  render() {
+  render()
+  {
     return (
         <h1>Howdy Stranger</h1>
     );
