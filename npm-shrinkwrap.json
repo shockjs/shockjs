@@ -991,6 +991,11 @@
       "from": "batch@0.5.2",
       "resolved": "https://registry.npmjs.org/batch/-/batch-0.5.2.tgz"
     },
+    "bcrypt": {
+      "version": "0.8.5",
+      "from": "bcrypt@*",
+      "resolved": "https://registry.npmjs.org/bcrypt/-/bcrypt-0.8.5.tgz"
+    },
     "beeper": {
       "version": "1.1.0",
       "from": "beeper@>=1.0.0 <2.0.0",
@@ -1010,6 +1015,11 @@
       "version": "1.0.0",
       "from": "binaryextensions@>=1.0.0 <1.1.0",
       "resolved": "https://registry.npmjs.org/binaryextensions/-/binaryextensions-1.0.0.tgz"
+    },
+    "bindings": {
+      "version": "1.2.1",
+      "from": "bindings@1.2.1",
+      "resolved": "https://registry.npmjs.org/bindings/-/bindings-1.2.1.tgz"
     },
     "bl": {
       "version": "1.0.0",
@@ -4664,6 +4674,11 @@
           "resolved": "https://registry.npmjs.org/bignumber.js/-/bignumber.js-2.1.2.tgz"
         }
       }
+    },
+    "nan": {
+      "version": "2.0.5",
+      "from": "nan@2.0.5",
+      "resolved": "https://registry.npmjs.org/nan/-/nan-2.0.5.tgz"
     },
     "natural-compare": {
       "version": "1.2.2",

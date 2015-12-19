@@ -64,9 +64,9 @@ export function getKnex(env=process.env.SHOCK_ENV, commandLine=false) {
 export function getServerModel(env=process.env.SHOCK_ENV, commandLine=false) {
     class Base extends bookshelf(getKnex(env, commandLine)).Model
     {
-        constructor()
+        constructor(attributes)
         {
-            super();
+            super(attributes);
             this.prefix = 'tbl_';
         }
 

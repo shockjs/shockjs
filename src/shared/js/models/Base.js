@@ -6,10 +6,9 @@ class DummyBase {}
 export function getBase(ExtendedModel = DummyBase) {
     class Base extends ExtendedModel
     {
-        constructor()
+        constructor(attributes)
         {
-            super();
-            this._attributes = {};
+            super(attributes);
             this._rules = {};
         }
 
@@ -21,16 +20,6 @@ export function getBase(ExtendedModel = DummyBase) {
         set rules(rules)
         {
             this._rules = rules;
-        }
-
-        get attributes()
-        {
-            return this._attributes;
-        }
-
-        set attributes(attributes)
-        {
-            this._attributes = attributes;
         }
 
         validate(rules = false)

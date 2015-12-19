@@ -4,9 +4,10 @@ exports.up = function(knex, Promise) {
         table.increments();
         table.string('firstName').notNull();
         table.string('lastName').notNull();
-        table.string('username').notNull();
+        table.string('username').notNull().unique();
         table.string('password').notNull();
-        table.string('email').notNull();
+        table.string('salt').notNull();
+        table.string('email').notNull().unique();
         table.boolean('active').notNull().default(0);
     });
 };

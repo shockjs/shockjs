@@ -3,7 +3,9 @@ import User from './User';
 import { getServerModel } from "../config/index";
 import Checkit from "checkit";
 import merge from 'lodash/object/merge';
+import pick from 'lodash/object/pick';
 import Boom from 'boom';
+import bcrypt from 'bcrypt';
 
 /**
  * Login Model
@@ -12,6 +14,13 @@ let BaseAuth = getAuth(getServerModel());
 
 class Auth extends BaseAuth
 {
+
+  constructor(attributes)
+  {
+    super(attributes);
+    this.attributes = attributes;
+  }
+
   /**
    * login the user in.
    * @returns {Promise}
@@ -25,7 +34,7 @@ class Auth extends BaseAuth
         user.query({
           where: {
             username: this.attributes.username,
-            password: this.attributes.password
+            active: 1
           }
         })
         .fetch({required: true})
@@ -33,7 +42,21 @@ class Auth extends BaseAuth
           if (data === null) {
             reject(Boom.badData('Invalid credentials.'));
           } else {
-            resolve(data);
+
+            bcrypt.compare(this.attributes.password, data.attributes.password, (err, res) => {
+
+              if (err) {
+                reject(Boom.badData(err));
+                return;
+              }
+
+              if (res === true) {
+                resolve(pick(data.attributes, Object.keys(data.attributes).filter(User.filterAttribute)));
+              }
+              else {
+                reject(Boom.badData('Invalid credentials.'));
+              }
+            });
           }
         })
         .catch((error) => {

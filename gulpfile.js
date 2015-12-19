@@ -13,6 +13,8 @@ const webpackConfig = require("./webpack.js");
 const argv = require('yargs').argv;
 const gulpif = require('gulp-if');
 const Knex = require("knex");
+const bcrypt = require("bcrypt");
+const inquirer = require("inquirer");
 
 /**
  *  Cleans up dist folder.
@@ -111,6 +113,54 @@ gulp.task('watch:webpack', function(callback) {
       gulp.start('run:webpack')
     ).pipe(done);
   }));
+});
+
+gulp.task('user', function (end) {
+
+    const User = require('./dist/server/models/User').default;
+
+    if (argv.create) {
+        inquirer.prompt([
+            {
+                type: 'input', name: 'username', message: 'Enter username:'
+            },
+            {
+                type: 'input', name: 'email', message: 'Enter email:'
+            },
+            {
+                type: 'input', name: 'password', message: 'Enter password:'
+            },
+            {
+                type: 'confirm', name: 'moveon', message: 'Continue?'
+            }
+        ],
+        function (answers) {
+
+            if (!answers.moveon) {
+                return end();
+            }
+
+            bcrypt.genSalt(10, function (err, salt) {
+                bcrypt.hash(answers.password, salt, function (err, hash) {
+                    const user = new User({
+                        firstName: 'Super',
+                        lastName: 'User',
+                        username: answers.username,
+                        email: answers.email,
+                        password: hash,
+                        salt: salt,
+                        active: 1
+                    });
+                    user.save()
+                        .then((model) => {
+                            console.log(model);
+                            end();
+                        });
+                });
+
+            });
+        });
+    }
 });
 
 /**

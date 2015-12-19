@@ -10,14 +10,17 @@ export default [
         path: apiPath + '/auth/login',
         method: ['GET', 'POST'],
         config: {
-            handler: function (request, reply) {
+            handler: (request, reply) => {
                 if (request.method === 'get') {
                     reply(Boom.methodNotAllowed("Login request method be POST."));
                 } else {
-                    let auth = new Auth();
-                    auth.attributes = request.payload;
+                    let auth = new Auth({
+                        username: request.payload.username,
+                        password: request.payload.password
+                    });
                     auth.login()
                     .then(function(result) {
+                        request.auth.session.set(result);
                         reply(result);
                     })
                     .catch(function(err) {
@@ -31,7 +34,7 @@ export default [
         path: apiPath + '/auth/logout',
         method: 'POST',
         config: {
-            handler: function (request, reply) {
+            handler: (request, reply) => {
                 request.auth.session.clear();
                 reply({success: true});
             }
@@ -41,8 +44,7 @@ export default [
         path: apiPath + '/auth/register',
         method: 'GET',
         config: {
-            handler: function (request, reply) {
-
+            handler: (request, reply) => {
                 reply({success: true});
             }
         }
