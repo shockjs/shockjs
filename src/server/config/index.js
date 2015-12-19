@@ -62,7 +62,8 @@ export function getKnex(env=process.env.SHOCK_ENV, commandLine=false) {
  * @returns {*} The config
  */
 export function getServerModel(env=process.env.SHOCK_ENV, commandLine=false) {
-    class Base extends bookshelf(getKnex(env, commandLine)).Model
+    let connection = getKnex(env, commandLine);
+    class Base extends bookshelf(connection).Model
     {
         constructor(attributes)
         {
@@ -77,7 +78,7 @@ export function getServerModel(env=process.env.SHOCK_ENV, commandLine=false) {
 
         static knex()
         {
-            return getKnex(env=process.env.SHOCK_ENV, commandLine=false);
+            return connection;
         }
     }
     return Base;

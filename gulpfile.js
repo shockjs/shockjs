@@ -128,7 +128,7 @@ gulp.task('user', function (end) {
                 type: 'input', name: 'email', message: 'Enter email:'
             },
             {
-                type: 'input', name: 'password', message: 'Enter password:'
+                type: 'password', name: 'password', message: 'Enter password:'
             },
             {
                 type: 'confirm', name: 'moveon', message: 'Continue?'
@@ -137,28 +137,29 @@ gulp.task('user', function (end) {
         function (answers) {
 
             if (!answers.moveon) {
-                return end();
-            }
-
-            bcrypt.genSalt(10, function (err, salt) {
-                bcrypt.hash(answers.password, salt, function (err, hash) {
-                    const user = new User({
-                        firstName: 'Super',
-                        lastName: 'User',
-                        username: answers.username,
-                        email: answers.email,
-                        password: hash,
-                        salt: salt,
-                        active: 1
-                    });
-                    user.save()
+                end();
+                process.exit(1); //Need to destroy otherwise hang.
+            } else {
+                bcrypt.genSalt(10, function (err, salt) {
+                    bcrypt.hash(answers.password, salt, function (err, hash) {
+                        new User({
+                            firstName: 'Super',
+                            lastName: 'User',
+                            username: answers.username,
+                            email: answers.email,
+                            password: hash,
+                            salt: salt,
+                            active: 1
+                        })
+                        .save()
                         .then((model) => {
-                            console.log(model);
+                            User.knex().destroy();
                             end();
+                            process.exit(1); //Need to destroy otherwise hang.
                         });
+                    });
                 });
-
-            });
+            }
         });
     }
 });
