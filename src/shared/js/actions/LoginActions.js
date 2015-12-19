@@ -1,5 +1,6 @@
 import { fetch } from '../utils/isomorphic'
 import { DATA_REQUESTED, DATA_FETCHED, DATA_SUCCEEDED, DATA_FAILED } from '../constants/ActionTypes';
+import { browserHistory } from '../store/configureStore';
 
 function requestData() {
     return {
@@ -30,7 +31,10 @@ function loginUser(form) {
     .then((req) => {
         switch (req.status) {
             case 200:
-                return req.json();
+                var history = browserHistory();
+                if (history) {
+                    history.replaceState(null, '/');
+                }
                 break;
             default:
                 throw new Error(req);
