@@ -5,14 +5,13 @@ import {createStore, applyMiddleware, combineReducers, compose} from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { syncReduxAndRouter, routeReducer } from 'redux-simple-router';
 import { reducer as formReducer } from 'redux-form';
+import { isServer } from '../utils/isomorphic';
 
 import { persistState } from 'redux-devtools';
-import DevTools from '../../../shared/js/utils/DevTools';
-
-import createBrowserHistory from 'history/lib/createBrowserHistory';
+import DevTools from '../utils/DevTools';
 
 //Load in our reducers.
-import * as reducers from '../../../shared/js/reducers/index';
+import * as reducers from '../reducers/index';
 
 
 const rootReducer = combineReducers(Object.assign({}, reducers, {
@@ -25,6 +24,15 @@ const finalCreateStore = compose(
     DevTools.instrument()
 )(createStore);
 
+
+let history = false;
+
+//Only load history on client.
+if (!isServer()) {
+  let createBrowserHistory = require('history/lib/createBrowserHistory');
+  history = createBrowserHistory();
+}
+
 /**
  * Configures the store.
  * @param initialState
@@ -36,18 +44,20 @@ export function configureStore(initialState) {
   // Hot reload reducers (requires Webpack or Browserify HMR to be enabled)
   if (module.hot) {
     module.hot.accept('../reducers', () =>
-        store.replaceReducer(require('../reducers')/*.default if you use Babel 6+ */)
+        store.replaceReducer(require('../reducers/index')/*.default if you use Babel 6+ */)
     );
   }
 
-  syncReduxAndRouter(history, store);
+  // Make sure history exists in case loaded serverside.
+  if (history) {
+    syncReduxAndRouter(history, store);
+  }
 
   return store;
 }
 
-const history = createBrowserHistory();
-
 export function browserHistory() {
   return history;
 }
+
 

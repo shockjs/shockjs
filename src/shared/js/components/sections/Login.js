@@ -7,6 +7,15 @@ import { reduxForm } from 'redux-form';
 class Login extends Component
 {
 
+  componentWillMount()
+  {
+    if (this.props.authenticated) {
+      //require is here to prevent server side attempting to access dom.
+      const store = require('../../store/configureStore');
+      store.browserHistory().replaceState(null, '/');
+    }
+  }
+
   render()
   {
     const { fields: { username, password }, handleSubmit } = this.props;

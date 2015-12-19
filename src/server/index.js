@@ -24,7 +24,7 @@ import GraphQL from 'hapi-graphql';
 import Path from 'path';
 
 // Server store configuration (has history removed as that is client side only)
-import { configureStore } from './store/configureStore';
+import { configureStore } from '../shared/js/store/configureStore';
 
 // Custom that will be used for client and server using react router.
 import routes from "../shared/routes";

@@ -19,7 +19,6 @@ function receiveData(data) {
  * @returns {*}
  */
 function loginUser(form) {
-    const store = require('../../../client/js/store/configureStore');
     return fetch(`/api/v1/auth/login`, {
         method: 'post',
         headers: {
@@ -31,7 +30,6 @@ function loginUser(form) {
     .then((req) => {
         switch (req.status) {
             case 200:
-                store.browserHistory().replaceState(null, '/');
                 return req.json();
                 break;
             default:

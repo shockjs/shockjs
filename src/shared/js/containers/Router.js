@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { Provider } from 'react-redux';
-import { configureStore, browserHistory } from '../../../client/js/store/configureStore';
+import { configureStore, browserHistory } from '../store/configureStore';
 const store = configureStore();
 const history = browserHistory();
 import { Router, Route, Link, IndexRoute } from 'react-router';
