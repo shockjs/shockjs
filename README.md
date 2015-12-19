@@ -8,7 +8,7 @@
 ## requirements
 
 * Nodejs #5.0.0 or higher.
-* MySQL, PostgreSQL, SQLite3 or MariaDB.
+* MySQL or MariaDB.
 
 ### global npm packages.
 ```bash
