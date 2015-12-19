@@ -8,7 +8,7 @@ const store = configureStore();
 const history = browserHistory();
 import { Router, Route, Link, IndexRoute } from 'react-router';
 import DevTools from '../utils/DevTools';
-import routes from '../../routes'
+import routes from '../routes'
 
 export default React.createClass({
   render() {

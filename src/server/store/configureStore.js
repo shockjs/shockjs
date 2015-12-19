@@ -7,7 +7,7 @@ import { syncReduxAndRouter, routeReducer } from 'redux-simple-router';
 import { reducer as formReducer } from 'redux-form';
 
 //Load in our reducers.
-import * as reducers from '../../shared/js/reducers/index';
+import * as reducers from '../../shared/reducers/index';
 
 let createStoreWithMiddleware;
 

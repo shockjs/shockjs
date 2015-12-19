@@ -1,4 +1,4 @@
-import { getAuth } from '../../shared/js/models/Auth';
+import { getAuth } from '../../shared/models/Auth';
 import User from './User';
 import { getServerModel } from "../config/index";
 import Checkit from "checkit";

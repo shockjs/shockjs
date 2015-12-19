@@ -1,5 +1,5 @@
 import { getServerModel } from "../config/index";
-import { getUser } from '../../shared/js/models/User';
+import { getUser } from '../../shared/models/User';
 import merge from 'lodash/object/merge';
 
 /**

@@ -1,10 +1,10 @@
 /**
  * @file configures all routes.
  */
-import App from './js/containers/App';
-import Welcome from  './js/components/sections/Welcome';
-import Contact from './js/components/sections/Contact';
-import Login from './js/components/sections/Login';
+import App from './containers/App';
+import Welcome from  './components/sections/Welcome';
+import Contact from './components/sections/Contact';
+import Login from './components/sections/Login';
 
 export default {
   path: '/',

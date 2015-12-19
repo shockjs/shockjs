@@ -10,7 +10,7 @@ const devFlagPlugin = new webpack.DefinePlugin({
 
 module.exports = {
   entry: [
-    './dist/shared/js/index.js'
+    './dist/shared/index.js'
   ],
   output: {
     path: __dirname + '/dist/client/static/',
