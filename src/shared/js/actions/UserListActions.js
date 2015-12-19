@@ -1,5 +1,5 @@
-import {fetch} from '../utils/isomorphic'
-import {DATA_REQUESTED, DATA_FETCHED, DATA_SUCCEEDED, DATA_FAILED} from '../constants/ActionTypes';
+import { fetch } from '../utils/isomorphic'
+import { DATA_REQUESTED, DATA_FETCHED, DATA_SUCCEEDED, DATA_FAILED } from '../constants/ActionTypes';
 
 function requestData() {
   return {

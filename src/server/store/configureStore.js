@@ -4,6 +4,7 @@
 import {createStore, applyMiddleware, combineReducers, compose} from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { syncReduxAndRouter, routeReducer } from 'redux-simple-router';
+import { reducer as formReducer } from 'redux-form';
 
 //Load in our reducers.
 import * as reducers from '../../shared/js/reducers/index';
@@ -15,7 +16,8 @@ createStoreWithMiddleware = compose(
 )(createStore);
 
 const rootReducer = combineReducers(Object.assign({}, reducers, {
-  routing: routeReducer
+  routing: routeReducer,
+  form: formReducer
 }));
 
 /**
