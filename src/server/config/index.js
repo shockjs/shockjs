@@ -9,6 +9,7 @@ import production from './production.json';
 import command from './command.json';
 import knex from 'knex';
 import bookshelf from 'bookshelf';
+import getBase from '../models/Base';
 
 process.env.SHOCK_ENV = process.env.SHOCK_ENV || 'development';
 
@@ -63,25 +64,7 @@ export function getKnex(env=process.env.SHOCK_ENV, commandLine=false) {
  */
 export function getServerModel(env=process.env.SHOCK_ENV, commandLine=false) {
     let connection = getKnex(env, commandLine);
-    class Base extends bookshelf(connection).Model
-    {
-        constructor(attributes)
-        {
-            super(attributes);
-            this.prefix = 'tbl_';
-        }
-
-        get tableName()
-        {
-            return this.prefix + this.constructor.name.toLowerCase();
-        }
-
-        static knex()
-        {
-            return connection;
-        }
-    }
-    return Base;
+    return getBase(bookshelf(connection).Model);
 }
 
 /**

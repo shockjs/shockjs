@@ -1,7 +1,7 @@
 /**
  * @file configures all routes.
  */
-import App from './containers/App';
+import App from './components/App';
 import Welcome from  './components/sections/Welcome';
 import Contact from './components/sections/Contact';
 import Login from './components/sections/Login';
