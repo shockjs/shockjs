@@ -14,7 +14,9 @@ class Login extends Component
       <h1>Login</h1>
       <form onSubmit={handleSubmit(submitForm.bind(this))}>
         <Input type="text" label="Username" placeholder="Enter username" {...username} />
+        { username.touched && username.error && <Alert bsStyle="danger">{ username.error }</Alert> }
         <Input type="password" label="Password" placeholder="Enter password" {...password} />
+        { password.touched && password.error && <Alert bsStyle="danger">{ password.error }</Alert> }
         <ButtonInput bsStyle="success" className="pull-right" type="submit" value="Login" />
       </form>
     </Col>

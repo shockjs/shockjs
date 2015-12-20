@@ -1,6 +1,9 @@
 import { fetch } from '../utils/isomorphic'
 import { DATA_REQUESTED, DATA_FETCHED, DATA_SUCCEEDED, DATA_FAILED } from '../constants/ActionTypes';
 import { browserHistory } from '../store/configureStore';
+import Base from '../../client/models/Base';
+import { getAuth } from '../models/Auth';
+import forOwn from 'lodash/object/forOwn';
 
 function requestData() {
     return {
@@ -31,10 +34,8 @@ function loginUser(form) {
     .then((req) => {
         switch (req.status) {
             case 200:
-                var history = browserHistory();
-                if (history) {
-                    history.replaceState(null, '/');
-                }
+                let history = browserHistory();
+                history && history.replaceState(null, '/');
                 break;
             default:
                 throw new Error(req);
@@ -45,15 +46,29 @@ function loginUser(form) {
 
 export function submitForm(values, dispatch) {
     return new Promise((resolve, reject) => {
-        dispatch(requestData());
-        return loginUser(values)
-        .then(json => {
-            console.log(json);
-            dispatch(receiveData(json));
-            resolve();
+        const Auth = getAuth(Base);
+        const authInstance = new Auth(values);
+        authInstance.validate()
+        .then(() => {
+            dispatch(requestData());
+            return loginUser(values)
+            .then(json => {
+                console.log(json);
+                dispatch(receiveData(json));
+                resolve();
+            })
+            .catch(function(err) {
+                reject(err);
+            });
         })
-        .catch(function(err) {
-            reject(err);
+        .catch((err) => {
+            let errors = {"_error": []};
+            forOwn(err.errors, (value, key) => {
+                errors[key] = value.message;
+                errors['_error'].push(value.message);
+            });
+            reject(errors);
         });
+
     });
 }

@@ -4,9 +4,9 @@ export function getAuth(Base) {
 
     class Auth extends getBase(Base)
     {
-        constructor()
+        constructor(attributes)
         {
-            super();
+            super(attributes);
         }
 
         get rules()
