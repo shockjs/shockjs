@@ -27,6 +27,15 @@ export default [
                         reply(err);
                     });
                 }
+            },
+            auth: {
+                mode: 'try',
+                strategy: 'session'
+            },
+            plugins: {
+                'hapi-auth-cookie': {
+                    redirectTo: false
+                }
             }
         }
     },

@@ -33,6 +33,9 @@ import routes from "../shared/routes";
 import apiRoutes from './api/v1/index';
 import Schema from './graphql/v1/index';
 
+// Override console in local scope with our own to make debug output readable.
+import console from './utils/tracer';
+
 // Fetch our configuration.
 const config = getConfig();
 
@@ -75,14 +78,14 @@ server.register(
       }
     }
   ],
-  function (err) {
+  (err) => {
 
     if (err) {
       throw err;
     }
 
     // Set up our authentication.
-    server.auth.strategy('passport', 'cookie', config.auth);
+    server.auth.strategy('session', 'cookie', config.auth);
 
     // set up jade as our basic template engine.
     server.views({
@@ -114,7 +117,7 @@ server.register(
     server.route({
       method: 'GET',
       path: '/{p*}',
-      handler: function (request, reply) {
+      handler: (request, reply) => {
 
         // Redirect users to home page that are already logged in if accessing login or register pages.
         switch (request.url.path) {
@@ -139,24 +142,23 @@ server.register(
             let { components } = renderProps;
 
             // components[0] is the App component.
-            let appComponent = components[0];
+            //let appComponent = components[0];
 
             // components[1] is the top level component we routed to.
-            let { displayName, WrappedComponent: { renderServer } } = components[1];
+            let { WrappedComponent: { componentID, renderServer } } = components[1];
 
             // This allows us to load data before rendering to allow the client to just take over without a re-render.
-            if (renderServer !== undefined) {
-              renderServer().then(function(data) {
+            if (componentID !== undefined && renderServer !== undefined) {
+              renderServer().then((data) => {
                   let componentData = {};
-                  //Make sure Component name is not wrapped in Connect as added by react-redux in connect.
-                  componentData[displayName.replace(/Connect\(|\)/g, '')] = data;
+                  componentData[componentID] = data;
                   const store = configureStore(componentData);
                   reply.view('layouts/index', {
                     content: renderToString(<Provider store={store}><RoutingContext {...renderProps} /></Provider>),
                     jsonData: JSON.stringify(componentData) //Loads required data into the dom for client.
                   });
                 })
-                .catch(function(error) {
+                .catch((error) => {
                   reply.view('layouts/error', {
                     content: '500 Internal Server Error.'
                   }).code(500);
@@ -178,8 +180,8 @@ server.register(
     });
 
     //Start out server.
-    server.start(function () {
-      console.log('Server running at:', server.info.uri);
+    server.start(() => {
+      console.log('Server running at %s', process.env.SHOCK_URI);
     });
 
   }

@@ -15,12 +15,11 @@ export default React.createClass({
             <LinkContainer to="/login"><NavItem>Login</NavItem></LinkContainer>
           </Nav>
         </Navbar>
-
         {/*
          next we replace `<Child>` with `this.props.children`
          the router will figure out the children for us
          */}
-        {this.props.children}
+        { this.props.children }
       </div>
     )
   }

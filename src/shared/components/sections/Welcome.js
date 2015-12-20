@@ -4,6 +4,9 @@ import { fetchUsers, renderServer } from '../../actions/UserListActions'
 
 class Welcome extends Component
 {
+
+  static componentID = 'Welcome';
+
   static renderServer()
   {
     return renderServer();
