@@ -87,6 +87,11 @@ server.register(
     // Set up our authentication.
     server.auth.strategy('session', 'cookie', config.auth);
 
+    server.auth.default({
+      mode: 'try',
+      strategy: 'session'
+    });
+
     // set up jade as our basic template engine.
     server.views({
       engines: {
@@ -102,10 +107,12 @@ server.register(
     server.route({
       method: 'GET',
       path: '/static/{p*}',
-      handler: {
-        directory: {
-          path: Path.join(__dirname, '../client/static'),
-          listing: process.env.SHOCK_ENV === 'development'
+      config: {
+        handler: {
+          directory: {
+            path: Path.join(__dirname, '../client/static'),
+            listing: process.env.SHOCK_ENV === 'development'
+          }
         }
       }
     });
@@ -117,65 +124,69 @@ server.register(
     server.route({
       method: 'GET',
       path: '/{p*}',
-      handler: (request, reply) => {
+      config: {
+        handler: (request, reply) =>  {
 
-        // Redirect users to home page that are already logged in if accessing login or register pages.
-        switch (request.url.path) {
-          case '/register':
-          case '/login':
-            // Redirect if already authenticated.
-            if (request.auth.isAuthenticated) {
-              return reply.redirect('/');
-            }
-            break;
-        }
+          console.log(request.auth);
 
-        match({routes, location: request.url.path }, (error, redirectLocation, renderProps) => {
-
-          if (error) {
-            reply.view('layouts/error', {
-              content: '500 Internal Server Error.'
-            }).code(500);
-          } else if (renderProps) {
-
-            // All rendered components starting from the top level App component.
-            let { components } = renderProps;
-
-            // components[0] is the App component.
-            //let appComponent = components[0];
-
-            // components[1] is the top level component we routed to.
-            let { WrappedComponent: { componentID, renderServer } } = components[1];
-
-            // This allows us to load data before rendering to allow the client to just take over without a re-render.
-            if (componentID !== undefined && renderServer !== undefined) {
-              renderServer().then((data) => {
-                  let componentData = {};
-                  componentData[componentID] = data;
-                  const store = configureStore(componentData);
-                  reply.view('layouts/index', {
-                    content: renderToString(<Provider store={store}><RoutingContext {...renderProps} /></Provider>),
-                    jsonData: JSON.stringify(componentData) //Loads required data into the dom for client.
-                  });
-                })
-                .catch((error) => {
-                  reply.view('layouts/error', {
-                    content: '500 Internal Server Error.'
-                  }).code(500);
-                });
-            } else {
-              const store = configureStore();
-              reply.view('layouts/index', {
-                content: renderToString(<Provider store={store}><RoutingContext {...renderProps} /></Provider>),
-                jsonData: JSON.stringify({})
-              });
-            }
-          } else {
-            reply.view('layouts/error', {
-              content: '404 Page not found.'
-            }).code(404);
+          // Redirect users to home page that are already logged in if accessing login or register pages.
+          switch (request.url.path) {
+            case '/register':
+            case '/login':
+              // Redirect if already authenticated.
+              if (request.auth.isAuthenticated) {
+                return reply.redirect('/');
+              }
+              break;
           }
-        });
+
+          match({routes, location: request.url.path}, (error, redirectLocation, renderProps) => {
+
+            if (error) {
+              reply.view('layouts/error', {
+                content: '500 Internal Server Error.'
+              }).code(500);
+            } else if (renderProps) {
+
+              // All rendered components starting from the top level App component.
+              let { components } = renderProps;
+
+              // components[0] is the App component.
+              //let appComponent = components[0];
+
+              // components[1] is the top level component we routed to.
+              let { WrappedComponent: { componentID, renderServer } } = components[1];
+
+              // This allows us to load data before rendering to allow the client to just take over without a re-render.
+              if (componentID !== undefined && renderServer !== undefined) {
+                renderServer().then((data) => {
+                      let componentData = {};
+                      componentData[componentID] = data;
+                      const store = configureStore(componentData);
+                      reply.view('layouts/index', {
+                        content: renderToString(<Provider store={store}><RoutingContext {...renderProps} /></Provider>),
+                        jsonData: JSON.stringify(componentData) //Loads required data into the dom for client.
+                      });
+                    })
+                    .catch((error) => {
+                      reply.view('layouts/error', {
+                        content: '500 Internal Server Error.'
+                      }).code(500);
+                    });
+              } else {
+                const store = configureStore();
+                reply.view('layouts/index', {
+                  content: renderToString(<Provider store={store}><RoutingContext {...renderProps} /></Provider>),
+                  jsonData: JSON.stringify({})
+                });
+              }
+            } else {
+              reply.view('layouts/error', {
+                content: '404 Page not found.'
+              }).code(404);
+            }
+          });
+        }
       }
     });
 

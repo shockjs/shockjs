@@ -1,5 +1,4 @@
 "use strict";
-import Checkit from 'checkit';
 import Boom from 'boom';
 import Auth from '../../models/Auth';
 
@@ -19,24 +18,16 @@ export default [
                         password: request.payload.password
                     });
                     auth.login()
-                    .then(function(result) {
+                    .then((result) => {
                         request.auth.session.set(result);
                         reply(result);
                     })
-                    .catch(function(err) {
+                    .catch((err) => {
                         reply(err);
                     });
                 }
             },
-            auth: {
-                mode: 'try',
-                strategy: 'session'
-            },
-            plugins: {
-                'hapi-auth-cookie': {
-                    redirectTo: false
-                }
-            }
+            auth: false
         }
     },
     {

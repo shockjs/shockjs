@@ -181,7 +181,7 @@ gulp.task('migrate', function () {
           knex.destroy();
       })
       .catch(function (err) {
-          gutil.error(err);
+          gutil.log(err);
           knex.destroy();
       });
   } else if (argv.create) {
@@ -191,7 +191,7 @@ gulp.task('migrate', function () {
             knex.destroy();
         })
         .catch(function (err) {
-            gutil.error(err);
+            gutil.log(err);
             knex.destroy();
         });
   } else {
@@ -204,7 +204,7 @@ gulp.task('migrate', function () {
           knex.destroy();
         })
         .catch(function (err) {
-          gutil.error(err);
+          gutil.log(err);
           knex.destroy();
         });
   }

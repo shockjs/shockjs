@@ -1,8 +1,8 @@
 {
   "modelPath": "./models",
   "auth": {
-    "cookie": "session",
-    "password": "hsTs%3ds@#dssa((38338",
+    "cookie": "sid",
+    "password": "hsTs3dsdssa38338",
     "isSecure": false,
     "ttl": 86400000
   }

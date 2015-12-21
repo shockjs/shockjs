@@ -29,13 +29,15 @@ function loginUser(form) {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(form)
+        body: JSON.stringify(form),
+        credentials: 'same-origin'
     })
     .then((req) => {
         switch (req.status) {
             case 200:
                 let history = browserHistory();
                 history && history.replaceState(null, '/');
+                return req.json();
                 break;
             default:
                 throw new Error(req);
@@ -53,9 +55,8 @@ export function submitForm(values, dispatch) {
             dispatch(requestData());
             return loginUser(values)
             .then(json => {
-                console.log(json);
                 dispatch(receiveData(json));
-                resolve();
+                resolve(json);
             })
             .catch(function(err) {
                 reject(err);
