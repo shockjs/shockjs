@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 class Contact extends Component
 {
@@ -14,6 +14,6 @@ class Contact extends Component
 export default connect((state) => {
   return {
     app: state.App,
-    login: state.Login
+    contact: state.Contact
   }
 })(Contact)
