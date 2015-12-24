@@ -18,15 +18,17 @@ class RestApi
    * @param endPoint The endpoint.
    * @param model
    * @param version
+   * @param perPageLimit
+   * @param perPage
      */
-  constructor(endPoint, model, version)
+  constructor(endPoint, model, version='v1', perPageLimit=50, perPage=20)
   {
 
     this.model = model;
     this.endPoint = endPoint;
-    this.version = version || 'v1';
-    this.perPageLimit = 50;
-    this.perPage = 20;
+    this.version = version;
+    this.perPageLimit = perPageLimit;
+    this.perPage = perPage;
 
     /**
      * Finds all instances.

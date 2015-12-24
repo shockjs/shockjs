@@ -4,6 +4,7 @@ import { browserHistory } from '../store/configureStore';
 import Base from '../../client/models/Base';
 import { getAuth } from '../models/Auth';
 import forOwn from 'lodash/object/forOwn';
+import { updateAuth } from './AppActions';
 
 function requestData() {
     return {
@@ -56,6 +57,7 @@ export function submitForm(values, dispatch) {
             return loginUser(values)
             .then(json => {
                 dispatch(receiveData(json));
+                dispatch(updateAuth(true));
                 resolve(json);
             })
             .catch(function(err) {

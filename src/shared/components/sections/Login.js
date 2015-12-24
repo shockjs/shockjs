@@ -28,4 +28,9 @@ Login = reduxForm({
   fields: ['username', 'password']
 })(Login);
 
-export default connect(state => state.Login)(Login)
+export default connect((state) => {
+  return {
+    app: state.App,
+    login: state.Login
+  };
+})(Login)

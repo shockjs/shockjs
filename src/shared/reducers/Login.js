@@ -1,11 +1,15 @@
 import * as ActionTypes from '../constants/ActionTypes';
+import { parseServerData } from '../utils/isomorphic';
 
 let defaultState = {
-  authenticated: false
+
 };
 
 export default function(state = defaultState, action) {
   switch (action.type) {
+    case "@@INIT":
+      return parseServerData('Login', state);
+      break;
     case ActionTypes.DATA_REQUESTED:
       return Object.assign({}, state, {
         submitted: true
@@ -13,7 +17,7 @@ export default function(state = defaultState, action) {
       break;
     case ActionTypes.DATA_FETCHED:
       return Object.assign({}, state, {
-        authenticated: true
+        completed: true
       });
       break;
     default:

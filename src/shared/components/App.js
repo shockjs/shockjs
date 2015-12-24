@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { LinkContainer, IndexLinkContainer } from 'react-router-bootstrap';
 import { Nav, Navbar, NavBrand, NavItem } from 'react-bootstrap';
 import { Link } from 'react-router';
+import { connect } from 'react-redux';
 
-export default React.createClass({
+class App extends Component
+{
+
+  static componentID = 'App';
+
   render() {
     return (
       <div>
@@ -23,4 +28,6 @@ export default React.createClass({
       </div>
     )
   }
-});
+}
+
+export default connect(state => state.App)(App);

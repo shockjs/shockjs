@@ -3,4 +3,5 @@ export const DATA_SUCCEEDED = 'DATA_SUCCEEDED';
 export const DATA_FAILED = 'DATA_FAILED';
 export const DATA_REQUESTED = 'DATA_REQUESTED';
 export const DATA_SERVER = 'DATA_SERVER';
+export const UPDATE_AUTH = 'UPDATE_AUTH';
 

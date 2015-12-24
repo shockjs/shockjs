@@ -11,4 +11,9 @@ class Contact extends Component
   }
 }
 
-export default connect(state => state.Contact)(Contact)
+export default connect((state) => {
+  return {
+    app: state.App,
+    login: state.Login
+  }
+})(Contact)

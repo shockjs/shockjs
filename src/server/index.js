@@ -22,8 +22,9 @@ import GraphQL from 'hapi-graphql';
 
 // Useful libraries.
 import Path from 'path';
+import merge from 'lodash/object/merge';
 
-// Server store configuration (has history removed as that is client side only)
+// Shared store configuration.
 import { configureStore } from '../shared/store/configureStore';
 
 // Custom that will be used for client and server using react router.
@@ -127,19 +128,6 @@ server.register(
       config: {
         handler: (request, reply) =>  {
 
-          console.log(request.auth);
-
-          // Redirect users to home page that are already logged in if accessing login or register pages.
-          switch (request.url.path) {
-            case '/register':
-            case '/login':
-              // Redirect if already authenticated.
-              if (request.auth.isAuthenticated) {
-                return reply.redirect('/');
-              }
-              break;
-          }
-
           match({routes, location: request.url.path}, (error, redirectLocation, renderProps) => {
 
             if (error) {
@@ -151,8 +139,14 @@ server.register(
               // All rendered components starting from the top level App component.
               let { components } = renderProps;
 
+              let componentData = {};
+
               // components[0] is the App component.
-              //let appComponent = components[0];
+              let appComponent = components[0];
+              let appComponentID = appComponent.componentID;
+              componentData[appComponentID] = {
+                isAuthenticated: request.auth.isAuthenticated
+              };
 
               // components[1] is the top level component we routed to.
               let { WrappedComponent: { componentID, renderServer } } = components[1];
@@ -160,8 +154,9 @@ server.register(
               // This allows us to load data before rendering to allow the client to just take over without a re-render.
               if (componentID !== undefined && renderServer !== undefined) {
                 renderServer().then((data) => {
-                      let componentData = {};
+
                       componentData[componentID] = data;
+
                       const store = configureStore(componentData);
                       reply.view('layouts/index', {
                         content: renderToString(<Provider store={store}><RoutingContext {...renderProps} /></Provider>),
