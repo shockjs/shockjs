@@ -147,7 +147,11 @@ server.register(
               let appComponentID = appComponent.componentID;
 
               //Check current users authentication.
-              fetch('/api/v1/auth/session')
+              fetch('/api/v1/auth/session', {
+                headers: {
+                  'Cookie': request.headers.cookie
+                }
+              })
                 .then(req => req.json())
                 .then((sessionData) => {
                   console.log('sessionData:', sessionData);

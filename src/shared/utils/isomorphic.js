@@ -45,7 +45,7 @@ export function parseServerData(component, state)
  */
 export function fetch(url, options={}) {
 
-  options = merge({credentials: 'same-origin'}, options);
+  options = merge({ credentials: 'same-origin' }, options);
 
   if (isServer()) {
     url = process.env.SHOCK_URI + url;
