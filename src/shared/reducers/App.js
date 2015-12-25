@@ -6,17 +6,16 @@ let defaultState = {
 };
 
 export default function(state = defaultState, action) {
-    switch (action.type) {
-        case "@@INIT":
-            return parseServerData('App', state);
-            break;
-        case ActionTypes.UPDATE_AUTH:
-            return {
-                isAuthenticated: true
-            };
-            break;
-        default:
-            return state;
-    }
+  switch (action.type) {
+    case "@@INIT":
+      return parseServerData('App', state);
+      break;
+    case ActionTypes.UPDATE_AUTH:
+      delete action.type;
+      return Object.assign({}, state, action);
+      break;
+    default:
+      return state;
+  }
 }
 

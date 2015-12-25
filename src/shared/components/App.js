@@ -3,13 +3,23 @@ import { LinkContainer, IndexLinkContainer } from 'react-router-bootstrap';
 import { Nav, Navbar, NavBrand, NavItem } from 'react-bootstrap';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
+import { fetchAuth, logoutUser } from '../actions/AppActions';
 
 class App extends Component
 {
-
   static componentID = 'App';
 
-  render() {
+  /**
+   * Render the component.
+   */
+  render()
+  {
+
+    var authAction = <LinkContainer to="/login"><NavItem>Login</NavItem></LinkContainer>;
+    if (this.props.isAuthenticated) {
+      authAction = <NavItem onClick={ logoutUser }>Logout</NavItem>;
+    }
+
     return (
       <div>
         <Navbar>
@@ -17,7 +27,7 @@ class App extends Component
           <Nav>
             <IndexLinkContainer to="/"><NavItem>Welcome</NavItem></IndexLinkContainer>
             <LinkContainer to="/contact-us"><NavItem>Contact Us</NavItem></LinkContainer>
-            <LinkContainer to="/login"><NavItem>Login</NavItem></LinkContainer>
+            { authAction }
           </Nav>
         </Navbar>
         {/*

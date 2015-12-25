@@ -7,7 +7,8 @@ import { fetchUsers, renderServer } from '../../actions/UserListActions'
 
 class Welcome extends Component
 {
-  static componentID = 'Welcome'; // Easy way to identify our component.
+  // Easy way to identify our component since they are usually wrapped in a connect in displayName.
+  static componentID = 'Welcome';
 
   /**
    * Prerender our user list.

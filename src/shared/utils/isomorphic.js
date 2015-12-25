@@ -2,7 +2,8 @@
  * @file handles isomorphic operations
  */
 
-import isoFetch from 'isomorphic-fetch'
+import isoFetch from 'isomorphic-fetch';
+import merge from 'lodash/object/merge';
 
 /**
  * Checks if the data is meant for the server or client. Webpack has a special APP_ENV set for this purpose.
@@ -42,7 +43,10 @@ export function parseServerData(component, state)
  * @param url
  * @param options
  */
-export function fetch(url, options) {
+export function fetch(url, options={}) {
+
+  options = merge({credentials: 'same-origin'}, options);
+
   if (isServer()) {
     url = process.env.SHOCK_URI + url;
   }

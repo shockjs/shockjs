@@ -15,13 +15,13 @@ function receiveData(json) {
   }
 }
 
-function fetchAllUsers() {
+function fetchUsersApi() {
   return fetch(`/api/v1/users`)
     .then(req => req.json());
 }
 
 export function renderServer() {
-  return fetchAllUsers().then(function(json) {
+  return fetchUsersApi().then(function(json) {
     return {users: json};
   });
 }
@@ -29,7 +29,7 @@ export function renderServer() {
 export function fetchUsers() {
   return dispatch => {
     dispatch(requestData());
-    return fetchAllUsers()
+    return fetchUsersApi()
       .then(json => dispatch(receiveData(json)))
   }
 }

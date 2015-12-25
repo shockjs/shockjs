@@ -23,6 +23,7 @@ import GraphQL from 'hapi-graphql';
 // Useful libraries.
 import Path from 'path';
 import merge from 'lodash/object/merge';
+import { fetch } from '../shared/utils/isomorphic';
 
 // Shared store configuration.
 import { configureStore } from '../shared/store/configureStore';
@@ -144,37 +145,40 @@ server.register(
               // components[0] is the App component.
               let appComponent = components[0];
               let appComponentID = appComponent.componentID;
-              componentData[appComponentID] = {
-                isAuthenticated: request.auth.isAuthenticated
-              };
 
-              // components[1] is the top level component we routed to.
-              let { WrappedComponent: { componentID, renderServer } } = components[1];
+              //Check current users authentication.
+              fetch('/api/v1/auth/session')
+                .then(req => req.json())
+                .then((sessionData) => {
+                  console.log('sessionData:', sessionData);
+                  componentData[appComponentID] = sessionData;
+                  // components[1] is the top level component we routed to.
+                  let { WrappedComponent: { componentID, renderServer } } = components[1];
 
-              // This allows us to load data before rendering to allow the client to just take over without a re-render.
-              if (componentID !== undefined && renderServer !== undefined) {
-                renderServer().then((data) => {
-
-                      componentData[componentID] = data;
-
-                      const store = configureStore(componentData);
-                      reply.view('layouts/index', {
-                        content: renderToString(<Provider store={store}><RoutingContext {...renderProps} /></Provider>),
-                        jsonData: JSON.stringify(componentData) //Loads required data into the dom for client.
+                  // This allows us to load data before rendering to allow the client to just take over without a re-render.
+                  if (componentID !== undefined && renderServer !== undefined) {
+                    renderServer().then((data) => {
+                        componentData[componentID] = data;
+                        const store = configureStore(componentData);
+                        reply.view('layouts/index', {
+                          content: renderToString(<Provider store={store}><RoutingContext {...renderProps} /></Provider>),
+                          jsonData: JSON.stringify(componentData) //Loads required data into the dom for client.
+                        });
+                      })
+                      .catch((error) => {
+                        reply.view('layouts/error', {
+                          content: '500 Internal Server Error.'
+                        }).code(500);
                       });
-                    })
-                    .catch((error) => {
-                      reply.view('layouts/error', {
-                        content: '500 Internal Server Error.'
-                      }).code(500);
+                  } else {
+                    const store = configureStore(componentData);
+                    reply.view('layouts/index', {
+                      content: renderToString(<Provider store={store}><RoutingContext {...renderProps} /></Provider>),
+                      jsonData: JSON.stringify(componentData)
                     });
-              } else {
-                const store = configureStore();
-                reply.view('layouts/index', {
-                  content: renderToString(<Provider store={store}><RoutingContext {...renderProps} /></Provider>),
-                  jsonData: JSON.stringify({})
-                });
-              }
+                  }
+
+              });
             } else {
               reply.view('layouts/error', {
                 content: '404 Page not found.'
