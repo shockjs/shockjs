@@ -4,7 +4,7 @@ import { Alert, Input, ButtonInput, Col } from 'react-bootstrap';
 import { submitForm } from '../../actions/LoginActions';
 import { reduxForm } from 'redux-form';
 import { fetchAuth } from '../../actions/AppActions';
-import { browserHistory } from '../../store/configureStore';
+import { isServer, redirect } from '../../utils/isomorphic';
 
 class Login extends Component
 {
@@ -14,8 +14,7 @@ class Login extends Component
     const { dispatch } = this.props;
     dispatch(fetchAuth());
     if (this.props.app.isAuthenticated) {
-      let history = browserHistory();
-      history.replaceState(null, '/'); // only route if clientside.
+      redirect('/');
     }
   }
 

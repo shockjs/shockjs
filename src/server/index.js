@@ -23,7 +23,7 @@ import GraphQL from 'hapi-graphql';
 // Useful libraries.
 import Path from 'path';
 import merge from 'lodash/object/merge';
-import { fetch } from '../shared/utils/isomorphic';
+import { fetch, setReply } from '../shared/utils/isomorphic';
 
 // Shared store configuration.
 import { configureStore } from '../shared/store/configureStore';
@@ -129,6 +129,9 @@ server.register(
       config: {
         handler: (request, reply) =>  {
 
+          //Sets the reply so we can handle our redirects within our application.
+          setReply(reply);
+
           match({routes, location: request.url.path}, (error, redirectLocation, renderProps) => {
 
             if (error) {
@@ -154,7 +157,6 @@ server.register(
               })
                 .then(req => req.json())
                 .then((sessionData) => {
-                  console.log('sessionData:', sessionData);
                   componentData[appComponentID] = sessionData;
                   // components[1] is the top level component we routed to.
                   let { WrappedComponent: { componentID, renderServer } } = components[1];

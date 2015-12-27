@@ -1,3 +1,5 @@
+"use strict";
+
 import Boom from 'boom';
 import Auth from '../../models/Auth';
 
@@ -19,13 +21,10 @@ export default [
           auth.login()
             .then((result) => {
               request.auth.session.set(result);
-
-              reply({
-                isAuthenticated: request.auth.isAuthenticated
-              });
+              reply({ success: true });
             })
             .catch((err) => {
-              reply(err);
+              reply(Boom.badRequest(err));
             });
         }
       }
@@ -37,20 +36,19 @@ export default [
     config: {
       handler: (request, reply) => {
         reply({
-          isAuthenticated: request.auth.isAuthenticated
+          isAuthenticated: request.auth.isAuthenticated,
+          credentials: request.auth.credentials
         });
       }
     }
   },
   {
     path: apiPath + '/auth/logout',
-    method: 'POST',
+    method: ['POST', 'GET'],
     config: {
       handler: (request, reply) => {
         request.auth.session.clear();
-        reply({
-          isAuthenticated: request.auth.isAuthenticated
-        });
+        reply({ success: true });
       }
     }
   },

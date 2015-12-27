@@ -1,10 +1,12 @@
-import { fetch } from '../utils/isomorphic';
+"use strict";
+
+import { fetch, redirect } from '../utils/isomorphic';
 import { DATA_REQUESTED, DATA_FETCHED, DATA_SUCCEEDED, DATA_FAILED } from '../constants/ActionTypes';
 import { browserHistory } from '../store/configureStore';
 import Base from '../../client/models/Base';
 import { getAuth } from '../models/Auth';
 import forOwn from 'lodash/object/forOwn';
-import { updateAuth } from './AppActions';
+import { updateAuth, fetchAuth } from './AppActions';
 
 function requestData() {
   return {
@@ -14,7 +16,8 @@ function requestData() {
 
 function receiveData(data) {
   return {
-    type: DATA_FETCHED
+    type: DATA_FETCHED,
+    ...data
   }
 }
 
@@ -60,10 +63,9 @@ export function submitForm(values, dispatch) {
         return loginUser(values)
           .then(json => {
             dispatch(receiveData(json));
-            dispatch(updateAuth(json));
-            let history = browserHistory();
-            history && history.replaceState(null, '/'); // only route if clientside.
+            dispatch(fetchAuth());
             resolve(json);
+            redirect('/');
           })
           .catch(function(err) {
             reject(err);

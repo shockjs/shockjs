@@ -44,7 +44,7 @@ function logoutUserApi() {
 
 export function logoutUser() {
   return dispatch => {
-    return logoutUserApi()
-      .then(json => dispatch(updateAuth(json)))
+    logoutUserApi()
+      .then(json => dispatch(fetchAuth()));
   }
 }

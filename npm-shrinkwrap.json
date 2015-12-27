@@ -7494,9 +7494,9 @@
       "resolved": "https://registry.npmjs.org/react/-/react-0.14.3.tgz"
     },
     "react-bootstrap": {
-      "version": "0.27.3",
-      "from": "react-bootstrap@>=0.27.3 <0.28.0",
-      "resolved": "https://registry.npmjs.org/react-bootstrap/-/react-bootstrap-0.27.3.tgz"
+      "version": "0.28.1",
+      "from": "react-bootstrap@>=0.28.1 <0.29.0",
+      "resolved": "https://registry.npmjs.org/react-bootstrap/-/react-bootstrap-0.28.1.tgz"
     },
     "react-dock": {
       "version": "0.2.3",

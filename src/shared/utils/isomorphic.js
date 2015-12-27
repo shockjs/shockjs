@@ -2,8 +2,13 @@
  * @file handles isomorphic operations
  */
 
+"use strict";
+
 import isoFetch from 'isomorphic-fetch';
 import merge from 'lodash/object/merge';
+import { browserHistory } from '../store/configureStore';
+
+let staticReply;
 
 /**
  * Checks if the data is meant for the server or client. Webpack has a special APP_ENV set for this purpose.
@@ -53,3 +58,20 @@ export function fetch(url, options={}) {
   return isoFetch(url, options);
 }
 
+export function setReply(reply) {
+  staticReply = reply;
+}
+
+/**
+ * Tries the handle redirect for both server and client.
+ *
+ * @param path
+ */
+export function redirect(path) {
+  if (!isServer()) {
+    let history = browserHistory();
+    history.replaceState(null, path); // Only route if client side.
+  } else {
+    staticReply && staticReply.redirect(path); // Attempt to redirect using reply from server.
+  }
+}
