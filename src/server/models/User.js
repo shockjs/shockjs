@@ -17,7 +17,7 @@ class User extends BaseUser
 
   static filterAttribute(attribute)
   {
-    return ["password", "salt"].indexOf(attribute) === -1;
+    return [ "password", "salt" ].indexOf(attribute) === -1;
   }
 
 }

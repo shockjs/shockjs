@@ -1,3 +1,5 @@
+"use strict";
+
 const gulp = require('gulp');
 const del = require('del');
 const babel = require('gulp-babel');
@@ -15,6 +17,7 @@ const gulpif = require('gulp-if');
 const Knex = require("knex");
 const bcrypt = require("bcrypt");
 const inquirer = require("inquirer");
+const AuthManager = require('./dist/server/classes/AuthManager').default;
 
 /**
  *  Cleans up dist folder.
@@ -51,8 +54,8 @@ gulp.task('build:dist', function () {
  */
 gulp.task('watch:babel', function () {
   return watch('src/**/*.js', batch(function (events, done) {
-      gutil.log('running babel...');
-      events
+    gutil.log('running babel...');
+    events
       .pipe(babel({
         presets: ["es2015", "react", "stage-0"],
         plugins: ["syntax-jsx"]
@@ -83,9 +86,9 @@ gulp.task('run:nodemon', function () {
     script: 'index.js',
     ext: 'html js'
   })
-  .on('restart', function () {
+    .on('restart', function () {
       gutil.log('restarted node after change...')
-  })
+    })
 });
 
 /**
@@ -117,51 +120,61 @@ gulp.task('watch:webpack', function(callback) {
 
 gulp.task('user', function (end) {
 
-    const User = require('./dist/server/models/User').default;
+  const User = require('./dist/server/models/User').default;
 
-    if (argv.create) {
-        inquirer.prompt([
-            {
-                type: 'input', name: 'username', message: 'Enter username:'
-            },
-            {
-                type: 'input', name: 'email', message: 'Enter email:'
-            },
-            {
-                type: 'password', name: 'password', message: 'Enter password:'
-            },
-            {
-                type: 'confirm', name: 'moveon', message: 'Continue?'
-            }
-        ],
-        function (answers) {
+  if (argv.create) {
+    inquirer.prompt([
+        {
+          type: 'input', name: 'firstName', message: 'Enter firstName:'
+        },
+        {
+          type: 'input', name: 'lastName', message: 'Enter lastName:'
+        },
+        {
+          type: 'input', name: 'username', message: 'Enter username:'
+        },
+        {
+          type: 'input', name: 'email', message: 'Enter email:'
+        },
+        {
+          type: 'password', name: 'password', message: 'Enter password:'
+        },
+        {
+          type: 'confirm', name: 'moveon', message: 'Continue?'
+        }
+      ],
+      function (answers) {
 
-            if (!answers.moveon) {
-                end();
-                process.exit(1); //Need to destroy otherwise hang.
-            } else {
-                bcrypt.genSalt(10, function (err, salt) {
-                    bcrypt.hash(answers.password, salt, function (err, hash) {
-                        new User({
-                            firstName: 'Super',
-                            lastName: 'User',
-                            username: answers.username,
-                            email: answers.email,
-                            password: hash,
-                            salt: salt,
-                            active: 1
-                        })
-                        .save()
-                        .then((model) => {
-                            User.knex().destroy();
-                            end();
-                            process.exit(1); //Need to destroy otherwise hang.
-                        });
-                    });
+        if (!answers.moveon) {
+          end();
+          process.exit(1); //Need to destroy otherwise hang.
+        } else {
+          const auth = new AuthManager(User.knex());
+          bcrypt.genSalt(10, function (err, salt) {
+            bcrypt.hash(answers.password, salt, function (err, hash) {
+              new User({
+                firstName: answers.firstName || 'Super',
+                lastName: answers.lastName || 'User',
+                username: answers.username,
+                email: answers.email,
+                password: hash,
+                salt: salt,
+                active: 1
+              })
+                .save()
+                .then((model) => {
+                  return auth.assignRole('admin', model.attributes.id);
+                })
+                .then(() => {
+                  User.knex().destroy();
+                  end();
+                  process.exit(1); //Need to destroy otherwise hang.
                 });
-            }
-        });
-    }
+            });
+          });
+        }
+      });
+  }
 });
 
 /**
@@ -176,37 +189,37 @@ gulp.task('migrate', function () {
 
   if (argv.down) {
     return knex.migrate.rollback()
-    .then(function (version) {
+      .then(function (version) {
         gutil.log("migrated database down to version: " + version[0]);
-          knex.destroy();
+        knex.destroy();
       })
       .catch(function (err) {
-          gutil.log(err);
-          knex.destroy();
+        gutil.log(err);
+        knex.destroy();
       });
   } else if (argv.create) {
     return knex.migrate.make(argv.create)
-        .then(function (name) {
-            gutil.log("created migration named " + name);
-            knex.destroy();
-        })
-        .catch(function (err) {
-            gutil.log(err);
-            knex.destroy();
-        });
+      .then(function (name) {
+        gutil.log("created migration named " + name);
+        knex.destroy();
+      })
+      .catch(function (err) {
+        gutil.log(err);
+        knex.destroy();
+      });
   } else {
     return knex.migrate.latest()
-        .then(function () {
-          return knex.migrate.currentVersion();
-        })
-        .then(function (version) {
-          gutil.log("migrated database up to version: " + version);
-          knex.destroy();
-        })
-        .catch(function (err) {
-          gutil.log(err);
-          knex.destroy();
-        });
+      .then(function () {
+        return knex.migrate.currentVersion();
+      })
+      .then(function (version) {
+        gutil.log("migrated database up to version: " + version);
+        knex.destroy();
+      })
+      .catch(function (err) {
+        gutil.log(err);
+        knex.destroy();
+      });
   }
 });
 

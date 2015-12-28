@@ -3,7 +3,6 @@
  */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchUsers, renderServer } from '../../actions/UserListActions'
 
 class Welcome extends Component
 {
@@ -11,31 +10,18 @@ class Welcome extends Component
   static componentID = 'Welcome';
 
   /**
-   * Prerender our user list.
-   */
-  static renderServer()
-  {
-    return renderServer();
-  }
-
-  /**
-   * If this routes was initiated on the client, fetch our user list.
-   */
-  componentDidMount()
-  {
-    const { dispatch, renderedServer } = this.props;
-    if (renderedServer === false) {
-      dispatch(fetchUsers());
-    }
-  }
-
-  /**
    * Render our component.
    */
   render()
   {
+    let fullName = 'Guest';
+    if (this.props.app.isAuthenticated) {
+      let { firstName, lastName } = this.props.app.credentials;
+      fullName = firstName + ' ' + lastName;
+    }
+
     return (
-        <h1>Howdy Stranger</h1>
+        <h1>Welcome { fullName }</h1>
     );
   }
 }

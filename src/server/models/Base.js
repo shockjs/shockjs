@@ -1,21 +1,23 @@
+import { getKnex } from '../config/index';
+
 export default function(BookshelfModel) {
-    class Base extends BookshelfModel
+  class Base extends BookshelfModel
+  {
+    constructor(attributes)
     {
-        constructor(attributes)
-        {
-            super(attributes);
-            this.prefix = 'tbl_';
-        }
-
-        get tableName()
-        {
-            return this.prefix + this.constructor.name.toLowerCase();
-        }
-
-        static knex()
-        {
-            return connection;
-        }
+      super(attributes);
+      this.prefix = 'tbl_';
     }
-    return Base;
+
+    get tableName()
+    {
+      return this.prefix + this.constructor.name.toLowerCase();
+    }
+
+    static knex()
+    {
+      return getKnex();
+    }
+  }
+  return Base;
 }

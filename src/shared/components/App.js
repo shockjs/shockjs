@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { LinkContainer, IndexLinkContainer } from 'react-router-bootstrap';
-import { Nav, Navbar, NavItem } from 'react-bootstrap';
+import { Nav, Navbar, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { fetchAuth, logoutUser } from '../actions/AppActions';
@@ -15,6 +15,7 @@ class App extends Component
   render()
   {
     const { dispatch, isAuthenticated } = this.props;
+    let menus = [];
 
     let logoutHandler = function(node, data) {
       dispatch(logoutUser());
@@ -22,8 +23,16 @@ class App extends Component
 
     var authAction = <LinkContainer to="/login"><NavItem>Login</NavItem></LinkContainer>;
     if (isAuthenticated) {
-      const { credentials: { firstName, lastName } } = this.props;
-      authAction = <NavItem onClick={ logoutHandler }>({firstName} {lastName}) Logout</NavItem>;
+
+      menus.push(
+        <NavDropdown title="Admin" id="basic-nav-dropdown">
+          <LinkContainer key="dashboard" to="/admin"><MenuItem>Dashboard</MenuItem></LinkContainer>
+          <LinkContainer key="users" to="/admin/users"><MenuItem>Users</MenuItem></LinkContainer>
+        </NavDropdown>
+      );
+
+      const { credentials: { username } } = this.props;
+      authAction = <NavItem onClick={ logoutHandler }>({ username }) Logout</NavItem>;
     }
 
     return (
@@ -31,14 +40,15 @@ class App extends Component
         <Navbar inverse>
           <Navbar.Header>
             <Navbar.Brand>
-              <Link to="/">ShockJS</Link>
+              <Link to="/"><img className="pull-left" src="/static/icon.png" /> ShockJS</Link>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>
           <Navbar.Collapse>
-            <Nav>
+            <Nav inverse>
               <IndexLinkContainer to="/"><NavItem>Welcome</NavItem></IndexLinkContainer>
               <LinkContainer to="/contact-us"><NavItem>Contact Us</NavItem></LinkContainer>
+              { menus }
             </Nav>
             <Nav pullRight>
               { authAction }
@@ -49,7 +59,9 @@ class App extends Component
          next we replace `<Child>` with `this.props.children`
          the router will figure out the children for us
          */}
-        { this.props.children }
+        <div className="container">
+          { this.props.children }
+        </div>
       </div>
     )
   }

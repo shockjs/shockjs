@@ -26,7 +26,7 @@ class Login extends Component
       return element.touched && element.error && <Alert bsStyle="danger">{ element.error }</Alert>
     };
 
-    return <Col xs={6} md={4}>
+    return <Col xs={12} md={4}>
       <h1>Login</h1>
       <form onSubmit={ handleSubmit(submitForm.bind(this)) }>
         <Input type="text" label="Username" placeholder="Enter username" {...username} />
