@@ -17,6 +17,7 @@ const Knex = require("knex");
 const bcrypt = require("bcrypt");
 const inquirer = require("inquirer");
 const pm2 = require('pm2');
+const chalk = require('chalk');
 
 /**
  * Creates a super user.
@@ -178,10 +179,10 @@ gulp.task('run:pm2', (cb) => {
 
   pm2.launchBus((err, bus) => {
     bus.on('log:out', function (data) {
-      gutil.log("[pm2]", data.data);
+      gutil.log("[pm2]", chalk.bold(data.data));
     });
     bus.on('log:err', function (data) {
-      gutil.error("[pm2]", data.data);
+      gutil.log("[pm2]", chalk.red(data.data));
     });
   });
 

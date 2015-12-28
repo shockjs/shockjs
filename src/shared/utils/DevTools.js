@@ -9,7 +9,7 @@ import DockMonitor from 'redux-devtools-dock-monitor';
 
 // createDevTools takes a monitor and produces a DevTools component
 const DevTools = createDevTools(
-    <DockMonitor toggleVisibilityKey='ctrl-o' changePositionKey='ctrl-q'>
+    <DockMonitor defaultIsVisible={false} toggleVisibilityKey='ctrl-o' changePositionKey='ctrl-q'>
         <LogMonitor theme='tomorrow' />
     </DockMonitor>
 );
