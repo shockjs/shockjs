@@ -175,12 +175,20 @@ gulp.task('build:webpack', function () {
  * Restarts node on script change in server.
  */
 gulp.task('run:pm2', (cb) => {
+
+  pm2.launchBus((err, bus) => {
+    bus.on('log:err', function (data) {
+      gutil.log("[pm2]", arguments);
+    });
+  });
+
   pm2.connect(() => {
-    pm2.start('dist/server/index.js', (err) => {
+    pm2.restart('dist/server/index.js', (err) => {
 
       if (err) {
         gutil.log("[compilation]", err);
         cb();
+        return false;
       }
 
       gutil.log("[compilation]", `server started..`);
