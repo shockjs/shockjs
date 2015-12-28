@@ -9,7 +9,6 @@ const wait = require('gulp-wait');
 const batch = require('gulp-batch');
 const plumber = require('gulp-plumber');
 const gutil = require('gulp-util');
-const nodemon = require('gulp-nodemon');
 const webpack = require('webpack');
 const webpackConfig = require("./webpack.js");
 const argv = require('yargs').argv;
@@ -18,107 +17,12 @@ const Knex = require("knex");
 const bcrypt = require("bcrypt");
 const inquirer = require("inquirer");
 const AuthManager = require('./dist/server/classes/AuthManager').default;
+const pm2 = require('pm2');
 
 /**
- *  Cleans up dist folder.
+ * Creates a super user.
  */
-gulp.task('clean:dist', function () {
-  return del([
-    'dist/**/*',
-    '!dist/.gitignore'
-  ]);
-});
-
-/**
- *  Moves all non-js files to dist folder.
- */
-gulp.task('move:dist', function() {
-  return gulp.src('src/**/!(*.js)')
-    .pipe(gulp.dest('./dist'));
-});
-
-/**
- * Moves all js files, converts to es5 and moves to dist folder.
- */
-gulp.task('build:dist', function () {
-  return gulp.src('src/**/*.js')
-    .pipe(babel({
-      presets: ["es2015", "react", "stage-0"],
-      plugins: ["syntax-jsx"]
-    }))
-    .pipe(gulp.dest('dist'));
-});
-
-/**
- * watches for javascript changes in src and converts changes to es5 into dist.
- */
-gulp.task('watch:babel', function () {
-  return watch('src/**/*.js', batch(function (events, done) {
-    gutil.log('running babel...');
-    events
-      .pipe(babel({
-        presets: ["es2015", "react", "stage-0"],
-        plugins: ["syntax-jsx"]
-      }))
-      .pipe(gulp.dest('dist'))
-      .pipe(done);
-  }));
-});
-
-/**
- * Watches all non-js files and copies into dist.
- */
-gulp.task('watch:other', function() {
-  return watch('src/**/*(*.json|*.jsx|!(*.js))', batch(function (events, done) {
-    gutil.log('copying files...');
-    events
-      .pipe(gulp.dest('dist'))
-      .pipe(done);
-  }));
-});
-
-/**
- * Restarts node on script change in server.
- */
-gulp.task('run:nodemon', function () {
-  return nodemon({
-    cwd: './dist/server',
-    script: 'index.js',
-    ext: 'html js'
-  })
-    .on('restart', function () {
-      gutil.log('restarted node after change...')
-    })
-});
-
-/**
- * Builds bundle.js for use on the client.
- */
-gulp.task('run:webpack', function (callback) {
-  gutil.log('building webpack...');
-  return webpack(webpackConfig, function (err, stats) {
-    if (err) {
-      throw new gutil.PluginError("webpack", err);
-    }
-    gutil.log("[webpack]", stats.toString({
-      // output options
-    }));
-    callback();
-  });
-});
-
-/**
- * Rebuilds bundle.js when files change for client.
- */
-gulp.task('watch:webpack', function(callback) {
-  return watch('dist/(client|shared)/*.js', batch(function (events, done) {
-    events.pipe(
-      gulp.start('run:webpack')
-    ).pipe(done);
-  }));
-});
-
-gulp.task('user', function (end) {
+gulp.task('user', (end) => {
 
   const User = require('./dist/server/models/User').default;
 
@@ -143,15 +47,15 @@ gulp.task('user', function (end) {
           type: 'confirm', name: 'moveon', message: 'Continue?'
         }
       ],
-      function (answers) {
+      (answers) => {
 
         if (!answers.moveon) {
           end();
           process.exit(1); //Need to destroy otherwise hang.
         } else {
           const auth = new AuthManager(User.knex());
-          bcrypt.genSalt(10, function (err, salt) {
-            bcrypt.hash(answers.password, salt, function (err, hash) {
+          bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(answers.password, salt, (err, hash) => {
               new User({
                 firstName: answers.firstName || 'Super',
                 lastName: answers.lastName || 'User',
@@ -189,22 +93,22 @@ gulp.task('migrate', function () {
 
   if (argv.down) {
     return knex.migrate.rollback()
-      .then(function (version) {
-        gutil.log("migrated database down to version: " + version[0]);
+      .then((version) => {
+        gutil.log('[migration]', "dropped to version: " + version[0]);
         knex.destroy();
       })
-      .catch(function (err) {
-        gutil.log(err);
+      .catch((err) => {
+        gutil.log('[migration]', err);
         knex.destroy();
       });
   } else if (argv.create) {
     return knex.migrate.make(argv.create)
-      .then(function (name) {
-        gutil.log("created migration named " + name);
+      .then((name) => {
+        gutil.log('[migration]', "created migration named " + name);
         knex.destroy();
       })
-      .catch(function (err) {
-        gutil.log(err);
+      .catch((err) => {
+        gutil.log('[migration]', err);
         knex.destroy();
       });
   } else {
@@ -212,31 +116,141 @@ gulp.task('migrate', function () {
       .then(function () {
         return knex.migrate.currentVersion();
       })
-      .then(function (version) {
-        gutil.log("migrated database up to version: " + version);
+      .then((version) => {
+        gutil.log('[migration]', "upped to version: " + version);
         knex.destroy();
       })
-      .catch(function (err) {
-        gutil.log(err);
+      .catch((err) => {
+        gutil.log('[migration]', err);
         knex.destroy();
       });
   }
 });
 
 /**
- * Compiles everything and watches for changes for faster development.
+ *  Cleans up dist folder.
  */
-gulp.task('default', function(callback) {
-  runSequence('clean:dist', 'move:dist', 'build:dist', 'run:webpack', ['watch:babel', 'watch:other', 'run:nodemon'], function() {
-    callback();
+gulp.task('clean:dist', function () {
+  return del([
+    'dist/**/*',
+    '!dist/.gitignore'
+  ]);
+});
+
+/**
+ *  Moves all non-js files to dist folder.
+ */
+gulp.task('move:dist', function() {
+  return gulp.src('src/**/!(*.js)')
+    .pipe(gulp.dest('./dist'));
+});
+
+/**
+ * Moves all js files, converts to es5 and moves to dist folder.
+ */
+gulp.task('build:dist', function () {
+  return gulp.src('src/**/*.js')
+    .pipe(babel({
+      presets: ["es2015", "react", "stage-0"],
+      plugins: ["syntax-jsx"]
+    }))
+    .pipe(gulp.dest('dist'));
+});
+
+
+/**
+ * Builds bundle.js for use on the client.
+ */
+gulp.task('build:webpack', function () {
+  gutil.log('[webpack]', 'building webpack...');
+  return webpack(webpackConfig, (err, stats) => {
+    if (err) {
+      throw new gutil.PluginError("webpack", err);
+    }
+    gutil.log("[webpack]", `hash: ${stats.hash}`);
   });
+});
+
+/**
+ * Restarts node on script change in server.
+ */
+gulp.task('run:pm2', (cb) => {
+  pm2.connect(() => {
+    pm2.start('dist/server/index.js', () => {
+      gutil.log("[compilation]", `server started..`);
+      return cb();
+    });
+  })
+});
+
+/**
+ * Checks if we should run the file through babel or not.
+ */
+const runBabel = file => file.relative.match(/\.js(x)?$/) !== null;
+
+/**
+ * Check if we need to run webpack.
+ */
+const runWebpack = file => file.relative.match(/(client|shared)\/.+\.js(x)?$/) !== null;
+
+/**
+ * Watches all files in src, copies and compiles in dest.
+ */
+gulp.task('watch:changes', function() {
+
+  return watch('src/**/*', batch({ timeout: 1000 }, (events, cb) => {
+
+    // @todo Private variable should be replaced with something public.
+    let runWebpackAfter = events._list.filter((file) => {
+      return runWebpack(file);
+    }).length > 0;
+
+    gutil.log('[webpack]', `compile: ${runWebpackAfter}`);
+
+    gutil.log('[compilation]', 'change detected..');
+    events
+      .pipe(gulpif(runBabel, babel({
+        presets: ["es2015", "react", "stage-0"],
+        plugins: ["syntax-jsx"]
+      })))
+      .pipe(gulp.dest('dist'))
+      .on('end', () => {
+        if (runWebpackAfter) {
+          webpack(webpackConfig, (err, stats) => {
+            if (err) throw new gutil.PluginError("webpack", err);
+            gutil.log("[webpack]", `hash: ${stats.hash}`);
+            gutil.log('[compilation]', 'restarting application..');
+            pm2.restart('dist/server/index.js', () => {
+              gutil.log('[compilation]', 'completed.');
+            });
+            cb();
+          });
+        } else {
+          gutil.log('[compilation]', 'restarting application..');
+          pm2.restart('dist/server/index.js', () => {
+            gutil.log('[compilation]', 'completed.');
+          });
+          cb();
+        }
+      });
+
+  }));
 });
 
 /**
  * Compiles everything.
  */
-gulp.task('compile', function(callback) {
-  runSequence('clean:dist', 'move:dist', 'build:dist', 'run:webpack', function() {
+gulp.task('compile', (callback) => {
+  runSequence('clean:dist', 'move:dist', 'build:dist', 'build:webpack', function() {
+    callback();
+  });
+});
+
+/**
+ * Compiles everything and watches for changes for faster development.
+ */
+gulp.task('default', (callback) => {
+  runSequence('compile', 'run:pm2', ['watch:changes'], function() {
     callback();
   });
 });
