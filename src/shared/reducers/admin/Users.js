@@ -13,7 +13,7 @@ export default function(state = defaultState, action) {
       break;
     case ActionTypes.DATA_FETCHED:
       return Object.assign({}, state, {
-        users: action.users
+        users: action.users || []
       });
       break;
     default:

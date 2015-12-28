@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-class Dashboard extends Component {
+class Dashboard extends Component
+{
   static componentID = 'Dashboard';
 
   /**
    * Render the component.
    */
-  render() {
+  render()
+  {
     return <div>
       <h1>Dashboard</h1>
     </div>

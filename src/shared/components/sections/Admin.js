@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-class Admin extends Component {
+class Admin extends Component
+{
+
   static componentID = 'Admin';
 
   /**
    * Render the component.
    */
-  render() {
+  render()
+  {
     return <div>{ this.props.children }</div>
   }
 }

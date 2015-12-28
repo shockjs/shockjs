@@ -169,6 +169,7 @@ gulp.task('build:webpack', function () {
       throw new gutil.PluginError("webpack", err);
     }
     gutil.log("[webpack]", `hash: ${stats.hash}`);
+    //gutil.log("[webpack]", stats.toString({})); // Disabled due to verbose output.
   });
 });
 
@@ -238,6 +239,7 @@ gulp.task('watch:changes', function() {
           webpack(webpackConfig, (err, stats) => {
             if (err) throw new gutil.PluginError("webpack", err);
             gutil.log("[webpack]", `hash: ${stats.hash}`);
+            //gutil.log("[webpack]", stats.toString({})); // Disabled due to verbose output.
             gutil.log('[compilation]', 'restarting application..');
             pm2.restart('dist/server/index.js', () => {
               gutil.log('[compilation]', 'completed.');

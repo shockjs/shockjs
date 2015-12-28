@@ -30,7 +30,7 @@ class App extends Component
     if (isAuthenticated) {
 
       menus.push(
-        <NavDropdown title="Admin" id="basic-nav-dropdown">
+        <NavDropdown key="admin" title="Admin" id="basic-nav-dropdown">
           <LinkContainer key="dashboard" to="/admin"><MenuItem>Dashboard</MenuItem></LinkContainer>
           <LinkContainer key="users" to="/admin/users"><MenuItem>Users</MenuItem></LinkContainer>
         </NavDropdown>

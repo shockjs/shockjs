@@ -29,7 +29,8 @@ class Users extends Component
   /**
    * Render the component.
    */
-  render() {
+  render()
+  {
     return <div>
       <h1>Users</h1>
       <Table striped bordered condensed hover>
@@ -55,7 +56,7 @@ class Users extends Component
               <input
                 type="checkbox"
                 className="col-xs-offset-2 col-xs-10"
-                checked={ x.active }
+                defaultChecked={ x.active }
                 onClick={() => {this.toggleActive(x.id, x.active)}} />
             </td>
           </tr>

@@ -1,6 +1,6 @@
 "use strict";
 
-import { fetch } from '../utils/isomorphic'
+import { fetch, redirect } from '../utils/isomorphic'
 import { UPDATE_AUTH } from '../constants/ActionTypes';
 import { browserHistory } from '../store/configureStore';
 
@@ -45,6 +45,8 @@ function logoutUserApi() {
 export function logoutUser() {
   return dispatch => {
     logoutUserApi()
-      .then(json => dispatch(fetchAuth()));
+      .then(json => {
+        dispatch(fetchAuth()).then(() => redirect('/login'));
+      });
   }
 }
