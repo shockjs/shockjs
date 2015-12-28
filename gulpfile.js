@@ -177,8 +177,11 @@ gulp.task('build:webpack', function () {
 gulp.task('run:pm2', (cb) => {
 
   pm2.launchBus((err, bus) => {
+    bus.on('log:out', function (data) {
+      gutil.log("[pm2]", data.data);
+    });
     bus.on('log:err', function (data) {
-      gutil.log("[pm2]", arguments);
+      gutil.error("[pm2]", data.data);
     });
   });
 
@@ -229,6 +232,7 @@ gulp.task('watch:changes', function() {
       })))
       .pipe(gulp.dest('dist'))
       .on('end', () => {
+        // Do we need to re-run webpack
         if (runWebpackAfter) {
           webpack(webpackConfig, (err, stats) => {
             if (err) throw new gutil.PluginError("webpack", err);

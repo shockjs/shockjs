@@ -2,6 +2,8 @@
  * @module Server start.
  */
 
+"use strict";
+
 // Main configuration file.
 import { getConfig, exposeUrl } from "./config/index";
 
@@ -23,7 +25,7 @@ import GraphQL from 'hapi-graphql';
 // Useful libraries.
 import Path from 'path';
 import merge from 'lodash/object/merge';
-import { fetch, setReply } from '../shared/utils/isomorphic';
+import { fetch, setReply, setRequest } from '../shared/utils/isomorphic';
 
 // Shared store configuration.
 import { configureStore } from '../shared/store/configureStore';
@@ -129,7 +131,8 @@ server.register(
       config: {
         handler: (request, reply) =>  {
 
-          //Sets the reply so we can handle our redirects within our application.
+          //Sets the reply and request to assist our components with rendering server side.
+          setRequest(request);
           setReply(reply);
 
           match({routes, location: request.url.path}, (error, redirectLocation, renderProps) => {
@@ -145,46 +148,35 @@ server.register(
 
               let componentData = {};
 
-              // components[0] is the App component.
-              let appComponent = components[0];
-              let appComponentID = appComponent.componentID;
-
-              //Check current users authentication.
-              fetch('/api/v1/auth/session', {
-                headers: {
-                  'Cookie': request.headers.cookie
-                }
-              })
-                .then(req => req.json())
-                .then((sessionData) => {
-                  componentData[appComponentID] = sessionData;
-                  // components[1] is the top level component we routed to.
-                  let { WrappedComponent: { componentID, renderServer } } = components[1];
-
-                  // This allows us to load data before rendering to allow the client to just take over without a re-render.
-                  if (componentID !== undefined && renderServer !== undefined) {
-                    renderServer().then((data) => {
-                        componentData[componentID] = data;
-                        const store = configureStore(componentData);
-                        reply.view('layouts/index', {
-                          content: renderToString(<Provider store={store}><RoutingContext {...renderProps} /></Provider>),
-                          jsonData: JSON.stringify(componentData) //Loads required data into the dom for client.
-                        });
-                      })
-                      .catch((error) => {
-                        reply.view('layouts/error', {
-                          content: '500 Internal Server Error.'
-                        }).code(500);
-                      });
-                  } else {
-                    const store = configureStore(componentData);
-                    reply.view('layouts/index', {
-                      content: renderToString(<Provider store={store}><RoutingContext {...renderProps} /></Provider>),
-                      jsonData: JSON.stringify(componentData)
+              let componentRequests = components.map((component) => {
+                let { WrappedComponent: { componentID, renderServer } } = component;
+                // This allows us to load data before rendering to allow the client to just take over without dom manipulation.
+                if (componentID !== undefined && renderServer !== undefined) {
+                  return renderServer()
+                    .then((data) => {
+                      componentData[componentID] = data;
+                    })
+                    .catch((err) => {
+                      console.error(err);
                     });
-                  }
-
+                }
+                return true; // Will get converted to promise.
               });
+
+              Promise.all(componentRequests)
+                .then(() => {
+                  const store = configureStore(componentData);
+                  reply.view('layouts/index', {
+                    content: renderToString(<Provider store={store}><RoutingContext {...renderProps} /></Provider>),
+                    jsonData: JSON.stringify(componentData) //Loads required data into the dom for client.
+                  });
+                })
+                .catch((error) => {
+                  reply.view('layouts/error', {
+                    content: '500 Internal Server Error.'
+                  }).code(500);
+                });
+
             } else {
               reply.view('layouts/error', {
                 content: '404 Page not found.'

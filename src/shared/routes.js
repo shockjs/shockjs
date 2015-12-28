@@ -36,11 +36,8 @@ export default {
       childRoutes: [
         {
           path: 'users',
-          component: Users,
-          onEnter: (currentState, replaceState) => {
-            console.log(currentState);
-          }
-        },
+          component: Users
+        }
       ]
     },
     {

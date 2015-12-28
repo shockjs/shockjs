@@ -9,6 +9,7 @@ import merge from 'lodash/object/merge';
 import { browserHistory } from '../store/configureStore';
 
 let staticReply;
+let staticRequest;
 
 /**
  * Checks if the data is meant for the server or client. Webpack has a special APP_ENV set for this purpose.
@@ -53,13 +54,27 @@ export function fetch(url, options={}) {
   options = merge({ credentials: 'same-origin' }, options);
 
   if (isServer()) {
-    url = process.env.SHOCK_URI + url;
+    url = process.env.SHOCK_URI + url; // Use full url for request.
+    options = merge(options, { headers: { Cookie: staticRequest.headers.cookie } }); // Make sure we are using the cookie from the request.
   }
+
   return isoFetch(url, options);
 }
 
+/**
+ * Sets the reply from server for server side operations.
+ * @param reply
+ */
 export function setReply(reply) {
   staticReply = reply;
+}
+
+/**
+ * Sets the request from server for server side operations.
+ * @param request
+ */
+export function setRequest(request) {
+  staticRequest = request;
 }
 
 /**

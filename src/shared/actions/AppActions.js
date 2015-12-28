@@ -21,7 +21,7 @@ export function updateAuth(auth) {
  * Fetches the current session.
  * @returns {*}
  */
-function fetchAuthApi() {
+export function fetchAuthApi() {
   return fetch(`/api/v1/auth/session`)
     .then(req => req.json());
 }
