@@ -16,7 +16,6 @@ const gulpif = require('gulp-if');
 const Knex = require("knex");
 const bcrypt = require("bcrypt");
 const inquirer = require("inquirer");
-const AuthManager = require('./dist/server/classes/AuthManager').default;
 const pm2 = require('pm2');
 
 /**
@@ -53,6 +52,7 @@ gulp.task('user', (end) => {
           end();
           process.exit(1); //Need to destroy otherwise hang.
         } else {
+          const AuthManager = require('./dist/server/classes/AuthManager').default;
           const auth = new AuthManager(User.knex());
           bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(answers.password, salt, (err, hash) => {
@@ -176,7 +176,13 @@ gulp.task('build:webpack', function () {
  */
 gulp.task('run:pm2', (cb) => {
   pm2.connect(() => {
-    pm2.start('dist/server/index.js', () => {
+    pm2.start('dist/server/index.js', (err) => {
+
+      if (err) {
+        gutil.log("[compilation]", err);
+        cb();
+      }
+
       gutil.log("[compilation]", `server started..`);
       return cb();
     });
