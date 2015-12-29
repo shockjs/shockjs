@@ -15,8 +15,8 @@ import { Provider } from 'react-redux';
 
 // Hapi dependencies and plugins.
 import Hapi from 'hapi';
-import Vision from 'vision';
-import Inert from 'inert';
+import Vision from 'vision'; // Templating.
+import Inert from 'inert'; // Static Content
 import Jade from 'jade';
 import Boom from 'boom';
 import HapiCookieAuth from 'hapi-auth-cookie';
@@ -148,8 +148,8 @@ server.register(
 
               let componentData = {};
 
-              let componentRequests = components.map((component) => {
-                let { WrappedComponent: { componentID, renderServer } } = component;
+              let componentRequests = components.map(({ WrappedComponent: { componentID, renderServer } }) => {
+
                 // This allows us to load data before rendering to allow the client to just take over without dom manipulation.
                 if (componentID !== undefined && renderServer !== undefined) {
                   return renderServer()

@@ -33,7 +33,10 @@ export function fetchAuthApi() {
 export function fetchAuth() {
   return dispatch => {
     return fetchAuthApi()
-      .then(json => dispatch(updateAuth(json)))
+      .then(auth => dispatch({
+        type: UPDATE_AUTH,
+        ...auth
+      }))
   }
 }
 
@@ -43,10 +46,17 @@ function logoutUserApi() {
 }
 
 export function logoutUser() {
-  return dispatch => {
-    logoutUserApi()
-      .then(json => {
-        dispatch(fetchAuth()).then(() => redirect('/login'));
-      });
+  return (dispatch) => {
+    return new Promise((resolve, reject) => {
+      logoutUserApi()
+        .then(json => fetchAuthApi())
+        .then((auth) => {
+          resolve(dispatch({
+            type: UPDATE_AUTH,
+            ...auth
+          }));
+          redirect('/login');
+        });
+    });
   }
 }

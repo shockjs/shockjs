@@ -34,7 +34,7 @@ function updateUserApi(key, value) {
 
 export function renderServer() {
   return fetchUsersApi().then(function(json) {
-    return {users: json};
+    return { users: json };
   });
 }
 

@@ -19,13 +19,11 @@ module.exports = {
   },
   plugins: [
     new webpack.NoErrorsPlugin(),
-    devFlagPlugin,
-    new ExtractTextPlugin('app.css')
+    devFlagPlugin
   ],
   module: {
     loaders: [
       { test: /\.js$/, loaders: ['react-hot', 'babel'], exclude: /node_modules/ },
-      { test: /\.css$/, loader: ExtractTextPlugin.extract('css-loader') },
       { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&minetype=application/font-woff" },
       { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader" },
       { test: /\.json$/, loader: 'json-loader' }
@@ -34,6 +32,7 @@ module.exports = {
   resolve: {
     extensions: ['', '.js', '.json']
   },
+  devtool: 'source-map',
   node: {
     console: true,
     fs: 'empty',

@@ -62,10 +62,14 @@ export function submitForm(values, dispatch) {
         dispatch(requestData());
         return loginUser(values)
           .then(json => {
-            dispatch(receiveData(json));
-            dispatch(fetchAuth());
-            resolve(json);
+            return dispatch(receiveData(json));
+          })
+          .then(() => {
+            return dispatch(fetchAuth());
+          })
+          .then(() => {
             redirect('/');
+            resolve(json);
           })
           .catch(function(err) {
             reject(err);

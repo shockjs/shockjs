@@ -18,6 +18,23 @@ const bcrypt = require("bcrypt");
 const inquirer = require("inquirer");
 const pm2 = require('pm2');
 const chalk = require('chalk');
+const sass = require('gulp-sass');
+const sourcemaps = require('gulp-sourcemaps');
+
+/**
+ * Checks if we should run the file through babel or not.
+ */
+const runBabel = file => file.relative.match(/\.js(x)?$/) !== null;
+
+/**
+ * Check if we need to run webpack.
+ */
+const runWebpack = file => file.relative.match(/(client|shared)\/.+\.js(x)?$/) !== null;
+
+/**
+ * Check if we need to run sass.
+ */
+const runSass = file => file.relative.match(/client\/scss\/.+\.scss$/) !== null;
 
 /**
  * Creates a super user.
@@ -163,14 +180,24 @@ gulp.task('build:dist', function () {
  * Builds bundle.js for use on the client.
  */
 gulp.task('build:webpack', function () {
-  gutil.log('[webpack]', 'building webpack...');
   return webpack(webpackConfig, (err, stats) => {
     if (err) {
       throw new gutil.PluginError("webpack", err);
     }
     gutil.log("[webpack]", `hash: ${stats.hash}`);
-    //gutil.log("[webpack]", stats.toString({})); // Disabled due to verbose output.
+
+    stats.compilation.errors.forEach((error) => {
+      gutil.log("[webpack]", chalk.red(error.message));
+    });
   });
+});
+
+gulp.task('build:sass', function () {
+  gulp.src('dist/client/scss/*.scss')
+    .pipe(sourcemaps.init())
+    .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest('dist/client/static'));
 });
 
 /**
@@ -203,16 +230,6 @@ gulp.task('run:pm2', (cb) => {
 });
 
 /**
- * Checks if we should run the file through babel or not.
- */
-const runBabel = file => file.relative.match(/\.js(x)?$/) !== null;
-
-/**
- * Check if we need to run webpack.
- */
-const runWebpack = file => file.relative.match(/(client|shared)\/.+\.js(x)?$/) !== null;
-
-/**
  * Watches all files in src, copies and compiles in dest.
  */
 gulp.task('watch:changes', function() {
@@ -224,6 +241,11 @@ gulp.task('watch:changes', function() {
       return runWebpack(file);
     }).length > 0;
 
+    let runSassAfter = events._list.filter((file) => {
+      return runSass(file);
+    }).length > 0;
+
+    gutil.log('[sass]', `compile: ${runSassAfter}`);
     gutil.log('[webpack]', `compile: ${runWebpackAfter}`);
 
     gutil.log('[compilation]', 'change detected..');
@@ -234,25 +256,19 @@ gulp.task('watch:changes', function() {
       })))
       .pipe(gulp.dest('dist'))
       .on('end', () => {
-        // Do we need to re-run webpack
-        if (runWebpackAfter) {
-          webpack(webpackConfig, (err, stats) => {
-            if (err) throw new gutil.PluginError("webpack", err);
-            gutil.log("[webpack]", `hash: ${stats.hash}`);
-            //gutil.log("[webpack]", stats.toString({})); // Disabled due to verbose output.
-            gutil.log('[compilation]', 'restarting application..');
-            pm2.restart('dist/server/index.js', () => {
-              gutil.log('[compilation]', 'completed.');
-            });
-            cb();
-          });
-        } else {
+
+        let promises = [];
+        promises.push(runWebpackAfter ? gulp.start('build:webpack') : false);
+        promises.push(runSassAfter ? gulp.start('build:sass') : false);
+
+        Promise.all(promises).then(() => {
           gutil.log('[compilation]', 'restarting application..');
           pm2.restart('dist/server/index.js', () => {
             gutil.log('[compilation]', 'completed.');
           });
           cb();
-        }
+        });
+
       });
 
   }));
@@ -262,7 +278,7 @@ gulp.task('watch:changes', function() {
  * Compiles everything.
  */
 gulp.task('compile', (callback) => {
-  runSequence('clean:dist', 'move:dist', 'build:dist', 'build:webpack', function() {
+  runSequence('clean:dist', 'move:dist', 'build:dist', 'build:webpack', 'build:sass', function() {
     callback();
   });
 });
