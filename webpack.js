@@ -19,6 +19,9 @@ module.exports = {
   },
   plugins: [
     new webpack.NoErrorsPlugin(),
+    /*new webpack.optimize.UglifyJsPlugin({
+      "compress": true
+    }),*/
     devFlagPlugin
   ],
   module: {
@@ -32,7 +35,7 @@ module.exports = {
   resolve: {
     extensions: ['', '.js', '.json']
   },
-  devtool: 'source-map',
+  //devtool: 'source-map',
   node: {
     console: true,
     fs: 'empty',

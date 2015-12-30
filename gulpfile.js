@@ -102,7 +102,7 @@ gulp.task('user', (end) => {
 /**
  * Runs migrations e.g "gulp migrate", "gulp migrate --down" or "gulp migrate --create=user"
  */
-gulp.task('migrate', function () {
+gulp.task('migrate', () => {
 
   const knexfile = require("./knexfile");
 
@@ -131,7 +131,7 @@ gulp.task('migrate', function () {
       });
   } else {
     return knex.migrate.latest()
-      .then(function () {
+      .then(() => {
         return knex.migrate.currentVersion();
       })
       .then((version) => {
@@ -148,7 +148,7 @@ gulp.task('migrate', function () {
 /**
  *  Cleans up dist folder.
  */
-gulp.task('clean:dist', function () {
+gulp.task('clean:dist', () => {
   return del([
     'dist/**/*',
     '!dist/.gitignore'
@@ -158,7 +158,7 @@ gulp.task('clean:dist', function () {
 /**
  *  Moves all non-js files to dist folder.
  */
-gulp.task('move:dist', function() {
+gulp.task('move:dist', () => {
   return gulp.src('src/**/!(*.js)')
     .pipe(gulp.dest('./dist'));
 });
@@ -166,7 +166,7 @@ gulp.task('move:dist', function() {
 /**
  * Moves all js files, converts to es5 and moves to dist folder.
  */
-gulp.task('build:dist', function () {
+gulp.task('build:dist', () => {
   return gulp.src('src/**/*.js')
     .pipe(babel({
       presets: ["es2015", "react", "stage-0"],
@@ -175,24 +175,26 @@ gulp.task('build:dist', function () {
     .pipe(gulp.dest('dist'));
 });
 
-
 /**
  * Builds bundle.js for use on the client.
  */
-gulp.task('build:webpack', function () {
-  return webpack(webpackConfig, (err, stats) => {
-    if (err) {
-      throw new gutil.PluginError("webpack", err);
-    }
-    gutil.log("[webpack]", `hash: ${stats.hash}`);
+gulp.task('build:webpack', () => {
+  return new Promise((resolve, reject) => {
+    webpack(webpackConfig, (err, stats) => {
+      if (err) {
+        reject(gutil.PluginError("webpack", err));
+      }
+      gutil.log("[webpack]", `hash: ${stats.hash}`);
 
-    stats.compilation.errors.forEach((error) => {
-      gutil.log("[webpack]", chalk.red(error.message));
+      stats.compilation.errors.forEach((error) => {
+        gutil.log("[webpack]", chalk.red(error.message));
+      });
+      resolve(true);
     });
   });
 });
 
-gulp.task('build:sass', function () {
+gulp.task('build:sass', () => {
   gulp.src('dist/client/scss/*.scss')
     .pipe(sourcemaps.init())
     .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
@@ -206,10 +208,10 @@ gulp.task('build:sass', function () {
 gulp.task('run:pm2', (cb) => {
 
   pm2.launchBus((err, bus) => {
-    bus.on('log:out', function (data) {
+    bus.on('log:out', (data) => {
       gutil.log("[pm2]", chalk.bold(data.data));
     });
-    bus.on('log:err', function (data) {
+    bus.on('log:err', (data) => {
       gutil.log("[pm2]", chalk.red(data.data));
     });
   });
@@ -232,18 +234,28 @@ gulp.task('run:pm2', (cb) => {
 /**
  * Watches all files in src, copies and compiles in dest.
  */
-gulp.task('watch:changes', function() {
+gulp.task('watch:changes', () => {
 
   return watch('src/**/*', batch({ timeout: 1000 }, (events, cb) => {
+
+    let tasks = [];
 
     // @todo Private variable should be replaced with something public.
     let runWebpackAfter = events._list.filter((file) => {
       return runWebpack(file);
     }).length > 0;
 
+    if (runWebpackAfter) {
+      tasks.push('build:webpack');
+    }
+
     let runSassAfter = events._list.filter((file) => {
       return runSass(file);
     }).length > 0;
+
+    if (runSassAfter) {
+      tasks.push('build:sass')
+    }
 
     gutil.log('[sass]', `compile: ${runSassAfter}`);
     gutil.log('[webpack]', `compile: ${runWebpackAfter}`);
@@ -256,29 +268,26 @@ gulp.task('watch:changes', function() {
       })))
       .pipe(gulp.dest('dist'))
       .on('end', () => {
-
-        let promises = [];
-        promises.push(runWebpackAfter ? gulp.start('build:webpack') : false);
-        promises.push(runSassAfter ? gulp.start('build:sass') : false);
-
-        Promise.all(promises).then(() => {
-          gutil.log('[compilation]', 'restarting application..');
-          pm2.restart('dist/server/index.js', () => {
-            gutil.log('[compilation]', 'completed.');
-          });
+        tasks.push('restart:pm2');
+        runSequence(...tasks, () => {
           cb();
         });
-
       });
-
   }));
+});
+
+gulp.task('restart:pm2', () => {
+  gutil.log('[compilation]', 'restarting application..');
+  pm2.restart('dist/server/index.js', () => {
+    gutil.log('[compilation]', 'completed.');
+  });
 });
 
 /**
  * Compiles everything.
  */
 gulp.task('compile', (callback) => {
-  runSequence('clean:dist', 'move:dist', 'build:dist', 'build:webpack', 'build:sass', function() {
+  runSequence('clean:dist', 'move:dist', 'build:dist', 'build:webpack', 'build:sass', () => {
     callback();
   });
 });
@@ -287,7 +296,7 @@ gulp.task('compile', (callback) => {
  * Compiles everything and watches for changes for faster development.
  */
 gulp.task('default', (callback) => {
-  runSequence('compile', 'run:pm2', ['watch:changes'], function() {
+  runSequence('compile', 'run:pm2', ['watch:changes'], () => {
     callback();
   });
 });

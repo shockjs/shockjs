@@ -24,7 +24,7 @@ function fetchUsersApi() {
 
 function updateUserApi(key, value) {
   return fetch(`/api/v1/users/${key}`, {
-    method: 'patch',
+    method: 'put',
     body: JSON.stringify({
       active: value
     })

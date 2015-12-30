@@ -230,10 +230,18 @@ class RestApi
      */
     this.updateOne = {
       handler: (request, reply) => {
+        let payload = request.payload;
+
+        try {
+          payload = JSON.parse(payload) || payload;
+        } catch(e) {
+          // Do nothing...
+        }
+
         this.model.forge({id: request.params.id})
           .fetch({require: true})
           .then((record) => {
-            record.save(request.payload)
+            record.save(payload)
               .then((record) => {
                 reply(record);
               })

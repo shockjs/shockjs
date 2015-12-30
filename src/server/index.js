@@ -138,6 +138,7 @@ server.register(
           match({routes, location: request.url.path}, (error, redirectLocation, renderProps) => {
 
             if (error) {
+              console.error(error);
               reply.view('layouts/error', {
                 content: '500 Internal Server Error.'
               }).code(500);
@@ -172,6 +173,7 @@ server.register(
                   });
                 })
                 .catch((error) => {
+                  console.error(error);
                   reply.view('layouts/error', {
                     content: '500 Internal Server Error.'
                   }).code(500);

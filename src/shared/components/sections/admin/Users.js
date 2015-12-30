@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Table, Input } from 'react-bootstrap';
 import { fetchUsers, updateUser, renderServer } from '../../../actions/UsersActions';
+import Griddle from 'griddle-react';
+import GridActive from '../../gridview/GridActive';
+import Pagination from '../../gridview/Pagination';
 
 class Users extends Component
 {
@@ -31,39 +34,67 @@ class Users extends Component
    */
   render()
   {
+    var meta = [
+      {
+        "columnName": "id",
+        "order": 1,
+        "locked": false,
+        "visible": true,
+        "displayName": "#"
+      },
+      {
+        "columnName": "firstName",
+        "order": 2,
+        "locked": false,
+        "visible": true,
+        "displayName": "First Name"
+      },
+      {
+        "columnName": "lastName",
+        "order": 3,
+        "locked": false,
+        "visible": true,
+        "displayName": "Last Name"
+      },
+      {
+        "columnName": "username",
+        "order": 4,
+        "locked": false,
+        "visible": true,
+        "displayName": "Username"
+      },
+      {
+        "columnName": "email",
+        "order": 5,
+        "locked": false,
+        "visible": true,
+        "displayName": "Email"
+      },
+      {
+        "columnName": "active",
+        "order": 6,
+        "locked": false,
+        "visible": true,
+        "displayName": "Active",
+        "customComponent": GridActive,
+        "toggleActive": (id, checked) => this.toggleActive(id, checked)
+      }
+    ];
+
+
     return <div>
       <h1>Users</h1>
-      <Table striped bordered condensed hover>
-        <thead>
-        <tr>
-          <th>#</th>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Username</th>
-          <th>Email</th>
-          <th>Active</th>
-        </tr>
-        </thead>
-        <tbody>
-        {this.props.users.map((x, i) =>
-          <tr key={ x.id }>
-            <td>{ x.id }</td>
-            <td>{ x.firstName }</td>
-            <td>{ x.lastName }</td>
-            <td>{ x.username }</td>
-            <td>{ x.email }</td>
-            <td>
-              <input
-                type="checkbox"
-                className="col-xs-offset-2 col-xs-10"
-                defaultChecked={ x.active }
-                onClick={() => {this.toggleActive(x.id, x.active)}} />
-            </td>
-          </tr>
-        )}
-        </tbody>
-      </Table>
+
+      <Griddle tableClassName="table table-striped table-bordered table-condensed"
+        useGriddleStyles={ false }
+        results={ this.props.users }
+        columnMetadata={ meta }
+        useCustomPagerComponent="true"
+        customPagerComponent={Pagination}
+      />
+
     </div>
+
   }
 }
 
