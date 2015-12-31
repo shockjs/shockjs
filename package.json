@@ -24,7 +24,6 @@
     "colors": "^1.1.2",
     "es6-promise": "^3.0.2",
     "graphql": "^0.4.14",
-    "griddle-react": "^0.3.0",
     "hapi": "^11.1.1",
     "hapi-auth-cookie": "^3.1.0",
     "hapi-graphql": "^0.4.0",

@@ -17,9 +17,22 @@ function receiveData(json) {
   }
 }
 
-function fetchUsersApi() {
-  return fetch(`/api/v1/users`)
-    .then(req => req.json());
+function fetchUsersApi(page=1) {
+  return fetch(`/api/v1/users?page=${page}`)
+    .then((req) => {
+      return new Promise((resolve, reject) => {
+        req.json().then((data) => {
+          resolve({
+            meta: {
+              totalCount: req.headers.get("X-Pagination-Total-Count"),
+              perPage: req.headers.get("X-Pagination-Per-Page"),
+              currentPage: req.headers.get("X-Pagination-Current-Page")
+            },
+            payload: data
+          });
+        });
+      });
+    });
 }
 
 function updateUserApi(key, value) {
@@ -38,10 +51,10 @@ export function renderServer() {
   });
 }
 
-export function fetchUsers() {
+export function fetchUsers(page) {
   return dispatch => {
     dispatch(requestData());
-    return fetchUsersApi()
+    return fetchUsersApi(page)
       .then(json => dispatch(receiveData(json)))
   }
 }

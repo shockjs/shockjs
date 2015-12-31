@@ -202,6 +202,11 @@ gulp.task('build:sass', () => {
     .pipe(gulp.dest('dist/client/static'));
 });
 
+gulp.task('copy:fonts', () => {
+  gulp.src('node_modules/bootstrap-sass/assets/fonts/bootstrap/*')
+    .pipe(gulp.dest('dist/client/static/fonts'));
+});
+
 /**
  * Restarts node on script change in server.
  */
@@ -287,7 +292,7 @@ gulp.task('restart:pm2', () => {
  * Compiles everything.
  */
 gulp.task('compile', (callback) => {
-  runSequence('clean:dist', 'move:dist', 'build:dist', 'build:webpack', 'build:sass', () => {
+  runSequence('clean:dist', 'move:dist', ['build:dist', 'copy:fonts'], ['build:webpack', 'build:sass'], () => {
     callback();
   });
 });

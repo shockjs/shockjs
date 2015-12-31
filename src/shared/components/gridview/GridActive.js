@@ -3,19 +3,27 @@ import React, { Component } from 'react';
 class GridActive extends Component
 {
 
-  static componentID = 'GridActive';
-
   /**
    * Render the component.
    */
   render()
   {
-    return <input
-      type="checkbox"
-      className="col-xs-offset-2 col-xs-10"
-      defaultChecked={ this.props.data }
-      onClick={ () => { this.props.metadata.toggleActive(this.props.rowData.id, this.props.data)} } />
+    return (
+      <input type="checkbox"
+        defaultChecked={ this.props.data }
+        onClick={ () => this.props.toggleActive(this.props.row[this.props.primaryKey], this.props.data) } />
+    )
   }
 }
+
+GridActive.propTypes = {
+  primaryKey: React.PropTypes.string,
+  toggleActive: React.PropTypes.func,
+  data: React.PropTypes.oneOfType([
+    React.PropTypes.string,
+    React.PropTypes.number
+  ]),
+  row: React.PropTypes.object
+};
 
 export default GridActive;

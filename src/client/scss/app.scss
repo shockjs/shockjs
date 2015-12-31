@@ -1,12 +1,2 @@
+$icon-font-path: "/static/fonts/";
 @import '../../../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss';
-
-.text {
-  font-size: 2rem;
-  line-height: 1.5;
-  color: #FF0000;
-}
-
-.table td.footer-container {
-  padding: 0;
-  border: 0;
-}
