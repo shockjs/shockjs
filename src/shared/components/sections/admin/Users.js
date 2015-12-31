@@ -42,10 +42,16 @@ class Users extends Component
    */
   render()
   {
+
+    // If we are loading server side and no prefetching is done of data.
+    if (this.props.users === false) {
+      return false;
+    }
+
     return <div>
       <h1>Users</h1>
 
-      <ListView initData={ this.props.users }>
+      <ListView initData={ this.props.users } dataSource={ this.fetchMore.bind(this) }>
         <GridView>
           <GridColumn header="#" name="id" />
           <GridColumn header="First Name" name="firstName" />

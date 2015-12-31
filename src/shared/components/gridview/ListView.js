@@ -113,7 +113,10 @@ class ListView extends Component
 }
 
 ListView.propTypes = {
-  initData: React.PropTypes.object,
+  initData: React.PropTypes.oneOfType([
+    React.PropTypes.object,
+    React.PropTypes.array
+  ]),
   dataSource: React.PropTypes.func,
   perPage: React.PropTypes.number
 };

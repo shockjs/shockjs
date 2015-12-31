@@ -2,7 +2,7 @@ import * as ActionTypes from '../../constants/ActionTypes';
 import { parseServerData } from '../../utils/isomorphic';
 
 let defaultState = {
-  users: [],
+  users: false,
   renderedServer: false
 };
 
