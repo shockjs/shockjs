@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Table, Input } from 'react-bootstrap';
-import { fetchUsers, updateUser, renderServer } from '../../../actions/UsersActions';
+import { fetchUsers, updateUser, renderServer, cleanupServer } from '../../../actions/UsersActions';
 import GridView from '../../listview/GridView';
 import GridActive from '../../listview/GridActive';
 import Pagination from '../../listview/Pagination';
@@ -25,11 +25,10 @@ class Users extends Component
     }
   }
 
-  componentWillUpdate()
+  componentWillUnmount()
   {
     const { dispatch } = this.props;
-    console.log('test');
-    dispatch(fetchUsers());
+    dispatch(cleanupServer());
   }
 
   toggleActive(key, currentValue)

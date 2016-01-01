@@ -1,5 +1,5 @@
 import * as ActionTypes from '../../constants/ActionTypes';
-import { parseServerData } from '../../utils/isomorphic';
+import { parseServerData, clearServerData } from '../../utils/isomorphic';
 
 let defaultState = {
   users: false,
@@ -13,8 +13,12 @@ export default function(state = defaultState, action) {
         users: action.users || false
       });
       break;
+    case ActionTypes.CLEAR_SERVER_DATA:
+      return clearServerData('Users', state);
+      break;
     default:
       return parseServerData('Users', state);
+      break;
   }
 }
 

@@ -10,7 +10,6 @@ import { browserHistory } from '../store/configureStore';
 
 let staticReply;
 let staticRequest;
-let environment;
 
 /**
  * Checks if the data is meant for the server or client. Webpack has a special APP_ENV set for this purpose.
@@ -38,6 +37,32 @@ export function parseServerData(component, state)
       if (serverRenderedData[component] !== undefined) {
         serverRenderedData[component].renderedServer = true;
         return serverRenderedData[component];
+      }
+    }
+  }
+  return state;
+}
+
+/**
+ * removes the data that was rendered from the server.
+ *
+ * @param component
+ * @param state
+ * @returns {*}
+ */
+export function clearServerData(component, state)
+{
+  if (!isServer()) {
+    // Gets the data from the script component removes entry and saves back to dom.
+    let serverRenderedDataElement = document.getElementById('serverRenderedData');
+    if (serverRenderedDataElement) {
+      let serverRenderedData = JSON.parse(serverRenderedDataElement.textContent);
+      if (serverRenderedData[component] !== undefined) {
+        delete serverRenderedData[component];
+        serverRenderedDataElement.textContent = JSON.stringify(serverRenderedData);
+        return Object.assign({}, state, {
+          renderedServer: false
+        });
       }
     }
   }

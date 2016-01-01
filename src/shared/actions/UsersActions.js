@@ -1,7 +1,7 @@
 "use strict";
 
 import { fetch } from '../utils/isomorphic'
-import { DATA_REQUESTED, DATA_FETCHED, DATA_SUCCEEDED, DATA_FAILED } from '../constants/ActionTypes';
+import { DATA_REQUESTED, DATA_FETCHED, DATA_SUCCEEDED, DATA_FAILED, CLEAR_SERVER_DATA } from '../constants/ActionTypes';
 
 function requestData() {
   return {
@@ -49,6 +49,12 @@ export function renderServer() {
   return fetchUsersApi().then(function(json) {
     return { users: json };
   });
+}
+
+export function cleanupServer() {
+  return {
+    type: CLEAR_SERVER_DATA
+  }
 }
 
 export function fetchUsers(page) {
