@@ -7,7 +7,6 @@ let defaultState = {
 
 export default function(state = defaultState, action) {
   switch (action.type) {
-      break;
     default:
       return parseServerData('Admin', state);
   }

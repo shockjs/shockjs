@@ -25,6 +25,13 @@ class Users extends Component
     }
   }
 
+  componentWillUpdate()
+  {
+    const { dispatch } = this.props;
+    console.log('test');
+    dispatch(fetchUsers());
+  }
+
   toggleActive(key, currentValue)
   {
     const { dispatch } = this.props;

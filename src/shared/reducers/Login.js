@@ -7,7 +7,6 @@ let defaultState = {
 
 export default function(state = defaultState, action) {
   switch (action.type) {
-      break;
     case ActionTypes.DATA_REQUESTED:
       return Object.assign({}, state, {
         submitted: true
