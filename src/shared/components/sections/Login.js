@@ -11,7 +11,7 @@ class Login extends Component
 
   componentWillMount()
   {
-    const { dispatch } = this.props;
+    const { dispatch, app: { isAuthenticated } } = this.props;
     dispatch(fetchAuth());
     if (this.props.app.isAuthenticated) {
       redirect('/');

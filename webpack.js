@@ -4,7 +4,9 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const devFlagPlugin = new webpack.DefinePlugin({
   'process.env': {
     NODE_ENV: JSON.stringify('production'),
-    APP_ENV: JSON.stringify('browser')
+    ISO_ENV: JSON.stringify('browser'),
+    SHOCK_ENV: JSON.stringify(process.env.SHOCK_ENV || 'development'), //Development by default.
+    SHOCK_URI: JSON.stringify('') // Leave empty for relative routing.
   }
 });
 
@@ -35,7 +37,7 @@ module.exports = {
   resolve: {
     extensions: ['', '.js', '.json']
   },
-  //devtool: 'source-map',
+  devtool: 'source-map',
   node: {
     console: true,
     fs: 'empty',

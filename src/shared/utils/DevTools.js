@@ -7,11 +7,17 @@ import { createDevTools } from 'redux-devtools';
 import LogMonitor from 'redux-devtools-log-monitor';
 import DockMonitor from 'redux-devtools-dock-monitor';
 
-// createDevTools takes a monitor and produces a DevTools component
-const DevTools = createDevTools(
-    <DockMonitor defaultIsVisible={false} toggleVisibilityKey='ctrl-o' changePositionKey='ctrl-q'>
-        <LogMonitor theme='tomorrow' />
-    </DockMonitor>
-);
+let DevTools = (<div></div>);
+
+// Only show if we are in development mode.
+
+if (process.env.SHOCK_ENV === 'development') {
+  // createDevTools takes a monitor and produces a DevTools component
+  DevTools = createDevTools(
+      <DockMonitor defaultIsVisible={false} toggleVisibilityKey='ctrl-o' changePositionKey='ctrl-q'>
+          <LogMonitor theme='tomorrow' />
+      </DockMonitor>
+  );
+}
 
 export default DevTools;

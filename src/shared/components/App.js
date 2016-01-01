@@ -14,17 +14,19 @@ class App extends Component
     return fetchAuthApi();
   }
 
+  logoutHandler() {
+    const { dispatch } = this.props;
+    dispatch(logoutUser());
+  }
+
   /**
    * Render the component.
    */
   render()
   {
-    const { dispatch, isAuthenticated } = this.props;
-    let menus = [];
+    const { isAuthenticated } = this.props;
 
-    let logoutHandler = function(node, data) {
-      dispatch(logoutUser());
-    };
+    let menus = [];
 
     var authAction = <LinkContainer to="/login"><NavItem>Login</NavItem></LinkContainer>;
     if (isAuthenticated) {
@@ -37,7 +39,7 @@ class App extends Component
       );
 
       const { credentials: { username } } = this.props;
-      authAction = <NavItem onClick={ logoutHandler }>({ username }) Logout</NavItem>;
+      authAction = <NavItem onClick={ () => this.logoutHandler() }>({ username }) Logout</NavItem>;
     }
 
     return (

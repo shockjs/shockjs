@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Table, Input } from 'react-bootstrap';
 import { fetchUsers, updateUser, renderServer } from '../../../actions/UsersActions';
-import GridView from '../../gridview/GridView';
-import GridActive from '../../gridview/GridActive';
-import Pagination from '../../gridview/Pagination';
-import GridColumn from '../../gridview/GridColumn';
-import ListView from '../../gridview/ListView';
+import GridView from '../../listview/GridView';
+import GridActive from '../../listview/GridActive';
+import Pagination from '../../listview/Pagination';
+import GridColumn from '../../listview/GridColumn';
+import ListView from '../../listview/ListView';
 
 class Users extends Component
 {

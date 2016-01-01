@@ -8,8 +8,6 @@ let defaultState = {
 
 export default function(state = defaultState, action) {
   switch (action.type) {
-    case "@@INIT":
-      return parseServerData('Welcome', state);
       break;
     case ActionTypes.DATA_FETCHED:
       return Object.assign({}, state, {
@@ -17,7 +15,7 @@ export default function(state = defaultState, action) {
       });
       break;
     default:
-      return state;
+      return parseServerData('Welcome', state);
   }
 }
 

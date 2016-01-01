@@ -10,6 +10,7 @@ import { browserHistory } from '../store/configureStore';
 
 let staticReply;
 let staticRequest;
+let environment;
 
 /**
  * Checks if the data is meant for the server or client. Webpack has a special APP_ENV set for this purpose.
@@ -17,7 +18,7 @@ let staticRequest;
  * @returns {boolean}
    */
 export function isServer() {
-  return process.env.APP_ENV !== 'browser';
+  return process.env.ISO_ENV !== 'browser';
 }
 
 /**

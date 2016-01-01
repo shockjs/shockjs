@@ -11,11 +11,11 @@ export default function(state = defaultState, action) {
       return parseServerData('App', state);
       break;
     case ActionTypes.UPDATE_AUTH:
-      delete action.type;
       return Object.assign({}, state, action);
       break;
     default:
       return state;
+      break;
   }
 }
 

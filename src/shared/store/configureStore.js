@@ -6,8 +6,6 @@ import thunkMiddleware from 'redux-thunk';
 import { syncReduxAndRouter, routeReducer } from 'redux-simple-router';
 import { reducer as formReducer } from 'redux-form';
 import { isServer } from '../utils/isomorphic';
-
-import { persistState } from 'redux-devtools';
 import DevTools from '../utils/DevTools';
 
 //Load in our reducers.
@@ -19,11 +17,16 @@ const rootReducer = combineReducers(Object.assign({}, reducers, {
   form: formReducer
 }));
 
-const finalCreateStore = compose(
-    applyMiddleware(thunkMiddleware),
-    DevTools.instrument()
-)(createStore);
+const applyStore = [
+  applyMiddleware(thunkMiddleware)
+];
 
+// Add the devtools if we are in development mode.
+if (process.env.SHOCK_ENV === 'development') {
+  applyStore.push(DevTools.instrument());
+}
+
+const finalCreateStore = compose(...applyStore)(createStore);
 
 let history = false;
 

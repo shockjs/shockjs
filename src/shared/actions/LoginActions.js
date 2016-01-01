@@ -6,7 +6,7 @@ import { browserHistory } from '../store/configureStore';
 import Base from '../../client/models/Base';
 import { getAuth } from '../models/Auth';
 import forOwn from 'lodash/object/forOwn';
-import { updateAuth, fetchAuth } from './AppActions';
+import { fetchAuth } from './AppActions';
 
 function requestData() {
   return {
@@ -69,7 +69,7 @@ export function submitForm(values, dispatch) {
           })
           .then(() => {
             redirect('/');
-            resolve(json);
+            resolve();
           })
           .catch(function(err) {
             reject(err);
