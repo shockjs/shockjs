@@ -12,7 +12,7 @@ class GridActive extends Component
       <input type="checkbox"
         defaultChecked={ this.props.data }
         onClick={ () => this.props.toggleActive(this.props.row[this.props.primaryKey], this.props.data) } />
-    )
+    );
   }
 }
 

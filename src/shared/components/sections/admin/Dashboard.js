@@ -3,17 +3,19 @@ import { connect } from 'react-redux';
 
 class Dashboard extends Component
 {
-  static componentID = 'Dashboard';
-
   /**
    * Render the component.
    */
   render()
   {
-    return <div>
-      <h1>Dashboard</h1>
-    </div>
+    return (
+      <div>
+        <h1>Dashboard</h1>
+      </div>
+    );
   }
 }
+
+Dashboard.componentID = 'Dashboard';
 
 export default connect(state => state.Dashboard)(Dashboard);

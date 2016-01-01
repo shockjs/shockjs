@@ -3,16 +3,15 @@ import { connect } from 'react-redux';
 
 class Admin extends Component
 {
-
-  static componentID = 'Admin';
-
   /**
    * Render the component.
    */
   render()
   {
-    return <div>{ this.props.children }</div>
+    return <div>{ this.props.children }</div>;
   }
 }
+
+Admin.componentID = 'Admin';
 
 export default connect(state => state.Admin)(Admin);

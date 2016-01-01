@@ -6,9 +6,6 @@ import { connect } from 'react-redux';
 
 class Welcome extends Component
 {
-  // Easy way to identify our component since they are usually wrapped in a connect in displayName.
-  static componentID = 'Welcome';
-
   /**
    * Render our component.
    */
@@ -26,9 +23,11 @@ class Welcome extends Component
   }
 }
 
+Welcome.componentID = 'Welcome';
+
 export default connect((state) => {
   return {
     app: state.App,
     welcome: state.Welcome
-  }
-})(Welcome)
+  };
+})(Welcome);

@@ -4,7 +4,7 @@ import { Alert, Input, ButtonInput, Col } from 'react-bootstrap';
 import { submitForm } from '../../actions/LoginActions';
 import { reduxForm } from 'redux-form';
 import { fetchAuth } from '../../actions/AppActions';
-import { isServer, redirect } from '../../utils/isomorphic';
+import { redirect } from '../../utils/isomorphic';
 
 class Login extends Component
 {
@@ -13,7 +13,7 @@ class Login extends Component
   {
     const { dispatch, app: { isAuthenticated } } = this.props;
     dispatch(fetchAuth());
-    if (this.props.app.isAuthenticated) {
+    if (isAuthenticated) {
       redirect('/');
     }
   }
@@ -23,7 +23,7 @@ class Login extends Component
     const { fields: { username, password }, handleSubmit } = this.props;
 
     const errorTemplate = (element) => {
-      return element.touched && element.error && <Alert bsStyle="danger">{ element.error }</Alert>
+      return element.touched && element.error && <Alert bsStyle="danger">{ element.error }</Alert>;
     };
 
     return <Col xs={12} md={4}>
@@ -35,7 +35,7 @@ class Login extends Component
         { errorTemplate(password) }
         <ButtonInput bsStyle="success" className="pull-right" type="submit" value="Login" />
       </form>
-    </Col>
+    </Col>;
   }
 }
 
@@ -49,4 +49,4 @@ export default connect((state) => {
     app: state.App,
     login: state.Login
   };
-})(Login)
+})(Login);

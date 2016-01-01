@@ -2,21 +2,21 @@ import { getBase } from './Base';
 
 export function getAuth(Base) {
 
-    class Auth extends getBase(Base)
+  class Auth extends getBase(Base)
+  {
+    constructor(attributes)
     {
-        constructor(attributes)
-        {
-            super(attributes);
-        }
-
-        get rules()
-        {
-            return {
-                username: ['required'],
-                password: ['required']
-            };
-        }
+      super(attributes);
     }
 
-    return Auth;
+    get rules()
+    {
+      return {
+        username: ['required'],
+        password: ['required']
+      };
+    }
+  }
+
+  return Auth;
 }

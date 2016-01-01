@@ -11,6 +11,7 @@ import knex from 'knex';
 import bookshelf from 'bookshelf';
 import getBase from '../models/Base';
 
+
 process.env.SHOCK_ENV = process.env.SHOCK_ENV || 'development';
 
 /**
@@ -21,28 +22,28 @@ process.env.SHOCK_ENV = process.env.SHOCK_ENV || 'development';
  * @returns {*} The config
  */
 export function getConfig(env=process.env.SHOCK_ENV, commandLine=false) {
-    let environment;
-    switch (env) {
-        case 'staging':
-            environment = staging;
-            break;
-        case 'production':
-            environment = production;
-            break;
-        case 'development':
-        default:
-            environment = development;
-            break;
-    }
+  let environment;
+  switch (env) {
+  case 'staging':
+    environment = staging;
+    break;
+  case 'production':
+    environment = production;
+    break;
+  case 'development':
+  default:
+    environment = development;
+    break;
+  }
 
-    environment = merge(environment, main);
+  environment = merge(environment, main);
 
-    // Adds console only commands.
-    if (commandLine === true) {
-        environment = merge(environment, command);
-    }
+  // Adds console only commands.
+  if (commandLine === true) {
+    environment = merge(environment, command);
+  }
 
-    return environment;
+  return environment;
 }
 
 /**
@@ -52,7 +53,7 @@ export function getConfig(env=process.env.SHOCK_ENV, commandLine=false) {
  * @param commandLine
  */
 export function getKnex(env=process.env.SHOCK_ENV, commandLine=false) {
-    return knex(getConfig(env, commandLine).database);
+  return knex(getConfig(env, commandLine).database);
 }
 
 /**
@@ -63,8 +64,8 @@ export function getKnex(env=process.env.SHOCK_ENV, commandLine=false) {
  * @returns {*} The config
  */
 export function getServerModel(env=process.env.SHOCK_ENV, commandLine=false) {
-    let connection = getKnex(env, commandLine);
-    return getBase(bookshelf(connection).Model);
+  let connection = getKnex(env, commandLine);
+  return getBase(bookshelf(connection).Model);
 }
 
 /**
@@ -73,6 +74,6 @@ export function getServerModel(env=process.env.SHOCK_ENV, commandLine=false) {
  * @returns {string} The url
  */
 export function exposeUrl() {
-    let { ssl=false, host='localhost', port=80 } = getConfig();
-    return (ssl ? 'https' : 'http') + `://${host}` + (port !== 80 ? `:${port}` : '');
+  let { ssl=false, host='localhost', port=80 } = getConfig();
+  return (ssl ? 'https' : 'http') + `://${host}` + (port !== 80 ? `:${port}` : '');
 }

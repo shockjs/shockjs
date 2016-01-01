@@ -1,8 +1,7 @@
 "use strict";
 
 import { fetch, redirect } from '../utils/isomorphic';
-import { DATA_REQUESTED, DATA_FETCHED, DATA_SUCCEEDED, DATA_FAILED } from '../constants/ActionTypes';
-import { browserHistory } from '../store/configureStore';
+import { DATA_REQUESTED, DATA_FETCHED } from '../constants/ActionTypes';
 import Base from '../../client/models/Base';
 import { getAuth } from '../models/Auth';
 import forOwn from 'lodash/object/forOwn';
@@ -11,14 +10,14 @@ import { fetchAuth } from './AppActions';
 function requestData() {
   return {
     type: DATA_REQUESTED
-  }
+  };
 }
 
 function receiveData(data) {
   return {
     type: DATA_FETCHED,
     ...data
-  }
+  };
 }
 
 /**
@@ -37,12 +36,10 @@ function loginUser(form) {
   })
     .then((req) => {
       switch (req.status) {
-        case 200:
-          return req.json();
-          break;
-        default:
-          throw new Error(req);
-          break;
+      case 200:
+        return req.json();
+      default:
+        throw new Error(req);
       }
     });
 }

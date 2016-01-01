@@ -20,7 +20,7 @@ class RestApi
    * @param version
    * @param perPageLimit
    * @param perPage
-     */
+   */
   constructor(endPoint, model, version='v1', perPageLimit=50, perPage=20)
   {
 
@@ -79,25 +79,25 @@ class RestApi
               filters.forEach(({name, operator="=", value, clause='and', negate=false}) => {
                 if (name && value) {
                   switch (clause) {
-                    case "and":
-                      negate ? query.andWhereNot(name, operator, value) : query.andWhere(name, operator, value);
-                      break;
-                    case "or":
-                      negate ? query.orWhereNot(name, operator, value) : query.orWhere(name, operator, value);
-                      break;
+                  case "and":
+                    negate ? query.andWhereNot(name, operator, value) : query.andWhere(name, operator, value);
+                    break;
+                  case "or":
+                    negate ? query.orWhereNot(name, operator, value) : query.orWhere(name, operator, value);
+                    break;
                   }
                 } else if (name) {
                   switch (clause) {
-                    case "and":
-                      query.andWhere(function () {
-                        negate ? this.whereNotNull(name) : this.whereNull(name);
-                      });
-                      break;
-                    case "or":
-                      query.orWhere(function () {
-                        negate ? this.whereNotNull(name) : this.whereNull(name);
-                      });
-                      break;
+                  case "and":
+                    query.andWhere(function () {
+                      negate ? this.whereNotNull(name) : this.whereNull(name);
+                    });
+                    break;
+                  case "or":
+                    query.orWhere(function () {
+                      negate ? this.whereNotNull(name) : this.whereNull(name);
+                    });
+                    break;
                   }
                 }
               });
@@ -123,9 +123,9 @@ class RestApi
             }
 
             reply(data)
-                .header('X-Pagination-Per-Page', limit)
-                .header('X-Pagination-Total-Count', total)
-                .header('X-Pagination-Current-Page', page);
+              .header('X-Pagination-Per-Page', limit)
+              .header('X-Pagination-Total-Count', total)
+              .header('X-Pagination-Current-Page', page);
           });
         });
       }
@@ -133,7 +133,7 @@ class RestApi
 
     /**
      * Gets the current row count for the models table.
-       */
+     */
     this.fetchCount = {
       handler: (request, reply) => {
         this.model.count().then(total => {
@@ -151,9 +151,9 @@ class RestApi
         let tableName = model.tableName;
         if (this.model.knex !== undefined) {
           this.model.knex().raw(`SHOW COLUMNS FROM ${tableName}`)
-              .then(total => {
-                reply(pluck(total[0], 'Field'));
-              });
+            .then(total => {
+              reply(pluck(total[0], 'Field'));
+            });
         } else {
           reply(Boom.notImplemented("This method is unavailable for this model."));
         }
@@ -170,16 +170,16 @@ class RestApi
         let tableName = model.tableName;
         if (this.model.knex !== undefined) {
           this.model.knex().raw(`SHOW COLUMNS FROM ${tableName}`)
-              .then(total => {
-                reply(transform(
-                    total[0].map((row) => {
-                          let data = {};
-                          data[row['Field']] = row['Default'];
-                          return data;
-                        }
-                    ), ary(extend, 2), {}
-                ));
-              });
+            .then(total => {
+              reply(transform(
+                total[0].map((row) => {
+                  let data = {};
+                  data[row['Field']] = row['Default'];
+                  return data;
+                }
+              ), ary(extend, 2), {}
+              ));
+            });
         } else {
           reply(Boom.notImplemented("This method is unavailable for this model."));
         }
@@ -194,18 +194,18 @@ class RestApi
       handler: (request, reply) => {
         var model = this.model.forge({});
         model.query({where: { id: request.params.id }})
-        .fetch()
-        .then((modelInstance) => {
-          let filterAttribute = this.model.filterAttribute ? this.model.filterAttribute : () => { return true; };
-          if (modelInstance) {
-            reply(pick(modelInstance.attributes, Object.keys(modelInstance.attributes).filter(filterAttribute)));
-          } else {
-            reply(Boom.badRequest(model.constructor.name + ' #' + request.params.id + ' does not exist.'));
-          }
-        })
-        .catch((err) => {
-          reply(Boom.badImplementation(err));
-        });
+          .fetch()
+          .then((modelInstance) => {
+            let filterAttribute = this.model.filterAttribute ? this.model.filterAttribute : () => { return true; };
+            if (modelInstance) {
+              reply(pick(modelInstance.attributes, Object.keys(modelInstance.attributes).filter(filterAttribute)));
+            } else {
+              reply(Boom.badRequest(model.constructor.name + ' #' + request.params.id + ' does not exist.'));
+            }
+          })
+          .catch((err) => {
+            reply(Boom.badImplementation(err));
+          });
       }
     };
 
@@ -271,7 +271,7 @@ class RestApi
    * Gets all endpoints.
    *
    * @returns {*[]}
-     */
+   */
   get endPoints()
   {
     var path = '/api/' + this.version + '/' + this.endPoint;

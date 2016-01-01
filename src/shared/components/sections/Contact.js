@@ -15,5 +15,5 @@ export default connect((state) => {
   return {
     app: state.App,
     contact: state.Contact
-  }
-})(Contact)
+  };
+})(Contact);

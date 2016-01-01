@@ -1,5 +1,5 @@
 import {fetch} from './../../../shared/utils/isomorphic';
-import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLList, GraphQLInt } from 'graphql';
+import { GraphQLSchema, GraphQLObjectType, GraphQLList, GraphQLInt } from 'graphql';
 import queryString from 'querystring';
 import map from 'lodash/collection/map';
 
@@ -31,10 +31,10 @@ export default new GraphQLSchema({
           }
         },
         type: new GraphQLList(User),
-        resolve(source, { filters=[], sort=[], perPage=20, page=1 }, root, ast) {
+        resolve(source, { filters=[], sort=[], perPage=20, page=1 }, root) {
 
           // This path is subject to change...
-          let fields = map(root.fieldASTs[0].selectionSet.selections,({name}) => { return name.value });
+          let fields = map(root.fieldASTs[0].selectionSet.selections,({name}) => { return name.value; });
 
           var params = {
             "page": page,

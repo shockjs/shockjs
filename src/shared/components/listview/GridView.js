@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Table } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
 
 class GridView extends Component
 {
@@ -32,17 +32,15 @@ class GridView extends Component
     let rows = this.props.currentData.map((data) => {
       return colNames.map((row) => {
         switch (typeof row) {
-          case "string":
-            return data[row]; // Column name provided.
-            break;
-          default: // Provided a component.
-            return React.Children.toArray(row).map((child) => {
-              return React.cloneElement(child, {
-                data: data[child.props.name],
-                row: data
-              });
+        case "string":
+          return data[row]; // Column name provided.
+        default: // Provided a component.
+          return React.Children.toArray(row).map((child) => {
+            return React.cloneElement(child, {
+              data: data[child.props.name],
+              row: data
             });
-            break;
+          });
         }
       });
     });

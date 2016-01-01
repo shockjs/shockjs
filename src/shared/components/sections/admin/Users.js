@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Table, Input } from 'react-bootstrap';
 import { fetchUsers, updateUser, renderServer, cleanupServer } from '../../../actions/UsersActions';
 import GridView from '../../listview/GridView';
 import GridActive from '../../listview/GridActive';
@@ -10,8 +9,6 @@ import ListView from '../../listview/ListView';
 
 class Users extends Component
 {
-  static componentID = 'Users';
-
   static renderServer()
   {
     return renderServer();
@@ -54,25 +51,27 @@ class Users extends Component
       return false;
     }
 
-    return <div>
-      <h1>Users</h1>
+    return (
+      <div>
+        <h1>Users</h1>
 
-      <ListView initData={ this.props.users } dataSource={ this.fetchMore.bind(this) }>
-        <GridView>
-          <GridColumn header="#" name="id" />
-          <GridColumn header="First Name" name="firstName" />
-          <GridColumn header="Last Name" name="lastName" />
-          <GridColumn header="Username" name="username" />
-          <GridColumn header="Active" name="active">
-            <GridActive toggleActive={ (id, checked) => this.toggleActive(id, checked) } primaryKey="id" />
-          </GridColumn>
-        </GridView>
-        <Pagination />
-      </ListView>
-
-    </div>
-
+        <ListView initData={ this.props.users } dataSource={ this.fetchMore.bind(this) }>
+          <GridView>
+            <GridColumn header="#" name="id" />
+            <GridColumn header="First Name" name="firstName" />
+            <GridColumn header="Last Name" name="lastName" />
+            <GridColumn header="Username" name="username" />
+            <GridColumn header="Active" name="active">
+              <GridActive toggleActive={ (id, checked) => this.toggleActive(id, checked) } primaryKey="id" />
+            </GridColumn>
+          </GridView>
+          <Pagination />
+        </ListView>
+      </div>
+    );
   }
 }
+
+Users.componentID = 'Users';
 
 export default connect(state => state.Users)(Users);

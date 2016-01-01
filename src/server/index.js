@@ -18,14 +18,12 @@ import Hapi from 'hapi';
 import Vision from 'vision'; // Templating.
 import Inert from 'inert'; // Static Content
 import Jade from 'jade';
-import Boom from 'boom';
 import HapiCookieAuth from 'hapi-auth-cookie';
 import GraphQL from 'hapi-graphql';
 
 // Useful libraries.
 import Path from 'path';
-import merge from 'lodash/object/merge';
-import { fetch, setReply, setRequest } from '../shared/utils/isomorphic';
+import { setReply, setRequest } from '../shared/utils/isomorphic';
 
 // Shared store configuration.
 import { configureStore } from '../shared/store/configureStore';

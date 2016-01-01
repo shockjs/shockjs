@@ -7,17 +7,15 @@ let defaultState = {
 
 export default function(state = defaultState, action) {
   switch (action.type) {
-    case ActionTypes.DATA_REQUESTED:
-      return Object.assign({}, state, {
-        submitted: true
-      });
-      break;
-    case ActionTypes.DATA_FETCHED:
-      return Object.assign({}, state, {
-        completed: true
-      });
-      break;
-    default:
-      return parseServerData('Login', state);
+  case ActionTypes.DATA_REQUESTED:
+    return Object.assign({}, state, {
+      submitted: true
+    });
+  case ActionTypes.DATA_FETCHED:
+    return Object.assign({}, state, {
+      completed: true
+    });
+  default:
+    return parseServerData('Login', state);
   }
 }

@@ -77,11 +77,11 @@ class Pagination extends Component
     }
     for (var i = startPos; i <= endPos; i++) {
       ((i) => {
-      pageLinks.push(
-        <li key={identifier++} className={ currentPage === i ? 'active' : '' } onClick={() => changePage(i)}>
-          <a aria-label={i}>{i}</a>
-        </li>
-      );
+        pageLinks.push(
+          <li key={identifier++} className={ currentPage === i ? 'active' : '' } onClick={() => changePage(i)}>
+            <a aria-label={i}>{i}</a>
+          </li>
+        );
       })(i);
     }
     if (endPos + 1 != pagesCount) {
@@ -117,7 +117,7 @@ class Pagination extends Component
             )}
           </ul>
         </nav>
-      )
+      );
     }
 
   }

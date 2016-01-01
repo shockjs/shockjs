@@ -12,7 +12,7 @@ class GridColumn extends Component
       <td>
         { this.props.children }
       </td>
-    )
+    );
   }
 }
 

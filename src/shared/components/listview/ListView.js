@@ -83,32 +83,32 @@ class ListView extends Component
       let props = {};
       let { perPage, currentPage, currentData } = this.state;
       switch (child.type.name) {
-        case 'GridView':
-          let data = currentData;
-          if (this.props.dataSource === undefined) {
-            let offset = (currentPage - 1) * perPage;
-            data = currentData.slice(offset, offset + perPage);
-          }
-          props = merge(props, {
-            currentPage: currentPage,
-            currentData: data,
-            perPage: perPage
-          });
-          break;
-        case 'Pagination':
-          props = merge(props, {
-            currentPage: currentPage,
-            pagesCount: this.getPageCount(),
-            changePage: (page) => this.changePage(page)
-          });
-          break;
+      case 'GridView':
+        let data = currentData;
+        if (this.props.dataSource === undefined) {
+          let offset = (currentPage - 1) * perPage;
+          data = currentData.slice(offset, offset + perPage);
+        }
+        props = merge(props, {
+          currentPage: currentPage,
+          currentData: data,
+          perPage: perPage
+        });
+        break;
+      case 'Pagination':
+        props = merge(props, {
+          currentPage: currentPage,
+          pagesCount: this.getPageCount(),
+          changePage: (page) => this.changePage(page)
+        });
+        break;
       }
       return React.cloneElement(child, props);
     });
 
     return (
       <div>{ componentsWithProps }</div>
-    )
+    );
   }
 }
 

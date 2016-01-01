@@ -3,12 +3,10 @@ import { LinkContainer, IndexLinkContainer } from 'react-router-bootstrap';
 import { Nav, Navbar, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import { fetchAuthApi, fetchAuth, logoutUser } from '../actions/AppActions';
+import { fetchAuthApi, logoutUser } from '../actions/AppActions';
 
 class App extends Component
 {
-  static componentID = 'App';
-
   static renderServer()
   {
     return fetchAuthApi();
@@ -70,8 +68,11 @@ class App extends Component
           { this.props.children }
         </div>
       </div>
-    )
+    );
   }
 }
+
+App.componentID = 'App';
+
 
 export default connect(state => state.App)(App);

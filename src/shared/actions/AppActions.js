@@ -1,8 +1,7 @@
 "use strict";
 
-import { fetch, redirect } from '../utils/isomorphic'
+import { fetch, redirect } from '../utils/isomorphic';
 import { UPDATE_AUTH } from '../constants/ActionTypes';
-import { browserHistory } from '../store/configureStore';
 
 /**
  * Updates the authentication for the current user.
@@ -36,8 +35,8 @@ export function fetchAuth() {
       .then(auth => dispatch({
         type: UPDATE_AUTH,
         ...auth
-      }))
-  }
+      }));
+  };
 }
 
 function logoutUserApi() {
@@ -47,9 +46,9 @@ function logoutUserApi() {
 
 export function logoutUser() {
   return (dispatch) => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       logoutUserApi()
-        .then(json => fetchAuthApi())
+        .then(() => fetchAuthApi())
         .then((auth) => {
           resolve(dispatch({
             type: UPDATE_AUTH,
@@ -58,5 +57,5 @@ export function logoutUser() {
           redirect('/login');
         });
     });
-  }
+  };
 }

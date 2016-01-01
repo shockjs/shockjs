@@ -1,4 +1,3 @@
-import * as ActionTypes from '../../constants/ActionTypes';
 import { parseServerData } from '../../utils/isomorphic';
 
 let defaultState = {
@@ -7,7 +6,7 @@ let defaultState = {
 
 export default function(state = defaultState, action) {
   switch (action.type) {
-    default:
-      return parseServerData('Dashboard', state);
+  default:
+    return parseServerData('Dashboard', state);
   }
 }
