@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchUsers, updateUser, renderServer, cleanupServer } from '../../../actions/UsersActions';
-import GridView from '../../listview/GridView';
+import { ListView, GridView, Pagination, GridColumn } from 'react-list-combo';
 import GridActive from '../../listview/GridActive';
-import Pagination from '../../listview/Pagination';
-import GridColumn from '../../listview/GridColumn';
-import ListView from '../../listview/ListView';
 
 class Users extends Component
 {
@@ -56,7 +53,7 @@ class Users extends Component
         <h1>Users</h1>
 
         <ListView initData={ this.props.users } dataSource={ this.fetchMore.bind(this) }>
-          <GridView>
+          <GridView tableClassName="table table-bordered table-response table-hover table-condensed">
             <GridColumn header="#" name="id" />
             <GridColumn header="First Name" name="firstName" />
             <GridColumn header="Last Name" name="lastName" />

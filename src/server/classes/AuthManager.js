@@ -4,14 +4,14 @@
 class AuthManager
 {
 
-  constructor(db)
+  constructor(knex)
   {
-    this.db = db;
+    this.knex = knex;
   }
 
   createRole(roleName, description = 'Not provided.')
   {
-    return this.db('tbl_authType').insert({
+    return this.knex('tbl_authType').insert({
       name: roleName,
       type: 1,
       description: description,
@@ -22,7 +22,7 @@ class AuthManager
 
   assignRole(roleName, userId)
   {
-    return this.db('tbl_authAssignment').insert({
+    return this.knex('tbl_authAssignment').insert({
       name: roleName,
       userID: userId
     });

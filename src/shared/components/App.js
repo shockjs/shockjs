@@ -3,7 +3,7 @@ import { LinkContainer, IndexLinkContainer } from 'react-router-bootstrap';
 import { Nav, Navbar, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import { fetchAuthApi, logoutUser } from '../actions/AppActions';
+import { fetchAuthApi, fetchAuth, logoutUser } from '../actions/AppActions';
 
 class App extends Component
 {
