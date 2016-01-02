@@ -26,22 +26,29 @@ function receiveData(data) {
  * @returns {*}
  */
 function loginUser(form) {
-  return fetch(`/api/v1/auth/login`, {
-    method: 'post',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(form)
-  })
-    .then((req) => {
-      switch (req.status) {
-      case 200:
-        return req.json();
-      default:
-        throw new Error(req);
-      }
-    });
+  return new Promise((resolve, reject) => {
+    fetch(`/api/v1/auth/login`, {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(form)
+    })
+      .then((req) => {
+        switch (req.status) {
+          case 200:
+            req.json().then((data) => {
+              resolve(data);
+            });
+            break;
+          default:
+            req.json().then((data) => {
+              reject({status: req.status, results: data});
+            });
+        }
+      });
+  });
 }
 
 /**
@@ -58,9 +65,6 @@ export function submitForm(values, dispatch) {
       .then(() => {
         dispatch(requestData());
         return loginUser(values)
-          .then(json => {
-            return dispatch(receiveData(json));
-          })
           .then(() => {
             return dispatch(fetchAuth());
           })
@@ -69,14 +73,13 @@ export function submitForm(values, dispatch) {
             resolve();
           })
           .catch(function(err) {
-            reject(err);
+            reject({"_error": [err.results.message]});
           });
       })
       .catch((err) => {
-        let errors = {"_error": []};
+        let errors = {};
         forOwn(err.errors, (value, key) => {
           errors[key] = value.message;
-          errors['_error'].push(value.message);
         });
         reject(errors);
       });

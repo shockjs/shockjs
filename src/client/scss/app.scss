@@ -1,2 +1,10 @@
 $icon-font-path: "/static/fonts/";
 @import '../../../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss';
+
+.text-error {
+  color: $state-danger-text;
+  font-weight: bold;
+  padding-bottom: 10px;
+  display: inline-block;
+}
+

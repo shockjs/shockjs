@@ -40,7 +40,7 @@ class Auth extends BaseAuth
         .fetch({required: true})
         .then((data) => {
           if (data === null) {
-            reject(Boom.badData('Invalid credentials.'));
+            reject(Boom.badData('Sorry your login attempt was unsuccessful.'));
           } else {
 
             bcrypt.compare(this.attributes.password, data.attributes.password, (err, res) => {
@@ -54,7 +54,7 @@ class Auth extends BaseAuth
                 resolve(pick(data.attributes, Object.keys(data.attributes).filter(User.filterAttribute)));
               }
               else {
-                reject(Boom.badData('Invalid credentials.'));
+                reject(Boom.badData('Sorry your login attempt was unsuccessful.'));
               }
             });
           }

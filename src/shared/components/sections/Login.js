@@ -8,34 +8,27 @@ import { redirect } from '../../utils/isomorphic';
 
 class Login extends Component
 {
-
-  componentWillMount()
-  {
-    const { dispatch, app: { isAuthenticated } } = this.props;
-    dispatch(fetchAuth());
-    if (isAuthenticated) {
-      redirect('/');
-    }
-  }
-
   render()
   {
-    const { fields: { username, password }, handleSubmit } = this.props;
+    const { fields: { username, password }, handleSubmit, error } = this.props;
 
     const errorTemplate = (element) => {
-      return element.touched && element.error && <Alert bsStyle="danger">{ element.error }</Alert>;
+      return element.touched && element.error && <span className="text-error">{ element.error }</span>;
     };
 
-    return <Col xs={12} md={4}>
-      <h1>Login</h1>
-      <form onSubmit={ handleSubmit(submitForm.bind(this)) }>
-        <Input type="text" label="Username" placeholder="Enter username" {...username} />
-        { errorTemplate(username) }
-        <Input type="password" label="Password" placeholder="Enter password" {...password} />
-        { errorTemplate(password) }
-        <ButtonInput bsStyle="success" className="pull-right" type="submit" value="Login" />
-      </form>
-    </Col>;
+    return (
+      <Col xs={12} md={4}>
+        <h1>Login</h1>
+        <form onSubmit={ handleSubmit(submitForm.bind(this)) }>
+          <Input type="text" label="Username" placeholder="Enter username" {...username} />
+          { errorTemplate(username) }
+          <Input type="password" label="Password" placeholder="Enter password" {...password} />
+          { errorTemplate(password) }
+          { error && <Alert bsStyle="danger">{ error }</Alert> }
+          <ButtonInput bsStyle="success" className="pull-right" type="submit" value="Login" />
+        </form>
+      </Col>
+    );
   }
 }
 
@@ -44,9 +37,4 @@ Login = reduxForm({
   fields: ['username', 'password']
 })(Login);
 
-export default connect((state) => {
-  return {
-    app: state.App,
-    login: state.Login
-  };
-})(Login);
+export default connect((state) => state.Login)(Login);
