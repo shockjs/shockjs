@@ -5,3 +5,4 @@ export const DATA_REQUESTED = 'DATA_REQUESTED';
 export const DATA_SERVER = 'DATA_SERVER';
 export const UPDATE_AUTH = 'UPDATE_AUTH';
 export const CLEAR_SERVER_DATA = 'CLEAR_SERVER_DATA';
+export const CAPTCHA_KEY = 'CAPTCHA_KEY';

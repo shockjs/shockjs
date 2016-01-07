@@ -2,8 +2,22 @@
   "modelPath": "./models",
   "auth": {
     "cookie": "sid",
-    "password": "hsTs3dsdssa38338",
+    "password": "xxxxxxxxxx",
     "isSecure": false,
     "ttl": 86400000
+  },
+  "params": {
+    "adminEmail": "xxxx@xxxx.com"
+  },
+  "recaptcha": {
+    "siteKey": "xxxxxxxxxxxxxxxxxxxxxx",
+    "secret": "xxxxxxxxxxxxxxxxxxxxxx"
+  },
+  "mail": {
+    "service": "Gmail",
+    "auth": {
+      "user": "xxxx@xxxx.com",
+      "pass": "xxxxxxxx"
+    }
   }
 }

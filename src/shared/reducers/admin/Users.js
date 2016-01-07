@@ -1,5 +1,5 @@
 import * as ActionTypes from '../../constants/ActionTypes';
-import { parseServerData, clearServerData } from '../../utils/isomorphic';
+import { parseServerData, clearServerData } from '../../utils/IsoBridge';
 
 let defaultState = {
   users: false,

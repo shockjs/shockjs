@@ -1,6 +1,6 @@
 "use strict";
 
-import { fetch, redirect } from '../utils/isomorphic';
+import { fetch, redirect } from '../utils/IsoBridge';
 import { UPDATE_AUTH } from '../constants/ActionTypes';
 
 /**

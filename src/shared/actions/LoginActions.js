@@ -1,6 +1,6 @@
 "use strict";
 
-import { fetch, redirect } from '../utils/isomorphic';
+import { fetch, redirect } from '../utils/IsoBridge';
 import { DATA_REQUESTED, DATA_FETCHED } from '../constants/ActionTypes';
 import Base from '../../client/models/Base';
 import { getAuth } from '../models/Auth';
@@ -73,7 +73,7 @@ export function submitForm(values, dispatch) {
             resolve();
           })
           .catch(function(err) {
-            reject({"_error": [err.results.message]});
+            reject({ "_error": [err.results.message] });
           });
       })
       .catch((err) => {

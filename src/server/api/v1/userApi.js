@@ -18,4 +18,4 @@ class UserApi extends RestApi
   }
 }
 
-module.exports = new UserApi().endPoints;
+export default new UserApi().endPoints;

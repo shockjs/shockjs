@@ -1,4 +1,4 @@
-import {fetch} from './../../../shared/utils/isomorphic';
+import {fetch} from './../../../shared/utils/IsoBridge';
 import { GraphQLSchema, GraphQLObjectType, GraphQLList, GraphQLInt } from 'graphql';
 import queryString from 'querystring';
 import map from 'lodash/collection/map';

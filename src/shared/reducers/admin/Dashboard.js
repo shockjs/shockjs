@@ -1,4 +1,4 @@
-import { parseServerData } from '../../utils/isomorphic';
+import { parseServerData } from '../../utils/IsoBridge';
 
 let defaultState = {
   renderedServer: false

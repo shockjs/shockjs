@@ -1,9 +1,8 @@
 const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const devFlagPlugin = new webpack.DefinePlugin({
   'process.env': {
-    NODE_ENV: JSON.stringify('production'),
+    NODE_ENV: JSON.stringify(process.env.SHOCK_ENV || 'development'),
     ISO_ENV: JSON.stringify('browser'),
     SHOCK_ENV: JSON.stringify(process.env.SHOCK_ENV || 'development'), //Development by default.
     SHOCK_URI: JSON.stringify('') // Leave empty for relative routing.

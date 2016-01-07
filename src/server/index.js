@@ -5,7 +5,7 @@
 "use strict";
 
 // Main configuration file.
-import { getConfig, exposeUrl } from "./config/index";
+import { getConfig, exposeUrl, getClientConfig } from "./config/index";
 
 // Libraries built around react.
 import React from 'react';
@@ -23,7 +23,7 @@ import GraphQL from 'hapi-graphql';
 
 // Useful libraries.
 import Path from 'path';
-import { setReply, setRequest } from '../shared/utils/isomorphic';
+import { setReply, setRequest } from '../shared/utils/IsoBridge';
 
 // Shared store configuration.
 import { configureStore } from '../shared/store/configureStore';
@@ -40,6 +40,7 @@ import console from './utils/tracer';
 
 // Fetch our configuration.
 const config = getConfig();
+const clientConfig = getClientConfig();
 
 // Expose our full uri to our application.
 process.env.SHOCK_URI = exposeUrl();
@@ -147,17 +148,21 @@ server.register(
 
               let componentData = {};
 
-              let componentRequests = components.map(({ WrappedComponent: { componentID, renderServer } }) => {
+              let componentRequests = components.map((component) => {
 
-                // This allows us to load data before rendering to allow the client to just take over without dom manipulation.
-                if (componentID !== undefined && renderServer !== undefined) {
-                  return renderServer()
-                    .then((data) => {
-                      componentData[componentID] = data;
-                    })
-                    .catch((err) => {
-                      console.error(err);
-                    });
+                if (component.WrappedComponent !== undefined) {
+                  let { WrappedComponent: { componentID, renderServer } } = component;
+
+                  // This allows us to load data before rendering to allow the client to just take over without dom manipulation.
+                  if (componentID !== undefined && renderServer !== undefined) {
+                    return renderServer()
+                      .then((data) => {
+                        componentData[componentID] = data;
+                      })
+                      .catch((err) => {
+                        console.error(err);
+                      });
+                  }
                 }
                 return true; // Will get converted to promise.
               });
@@ -167,7 +172,10 @@ server.register(
                   const store = configureStore(componentData);
                   reply.view('layouts/index', {
                     content: renderToString(<Provider store={store}><RoutingContext {...renderProps} /></Provider>),
-                    jsonData: JSON.stringify(componentData) //Loads required data into the dom for client.
+                    jsonData: JSON.stringify({
+                      config: clientConfig,
+                      components: componentData
+                    }) //Loads required data into the dom for client.
                   });
                 })
                 .catch((error) => {

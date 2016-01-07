@@ -27,16 +27,15 @@ export function isServer() {
  * @param state The current state.
  * @returns {*}
    */
-export function parseServerData(component, state)
-{
+export function parseServerData(component, state) {
   if (!isServer()) {
     // Gets the data from the script component then adds to state.
     let serverRenderedDataElement = document.getElementById('serverRenderedData');
     if (serverRenderedDataElement) {
       let serverRenderedData = JSON.parse(serverRenderedDataElement.textContent);
-      if (serverRenderedData[component] !== undefined) {
-        serverRenderedData[component].renderedServer = true;
-        return serverRenderedData[component];
+      if (serverRenderedData.components[component] !== undefined) {
+        serverRenderedData.components[component].renderedServer = true;
+        return serverRenderedData.components[component];
       }
     }
   }
@@ -50,15 +49,14 @@ export function parseServerData(component, state)
  * @param state
  * @returns {*}
  */
-export function clearServerData(component, state)
-{
+export function clearServerData(component, state) {
   if (!isServer()) {
     // Gets the data from the script component removes entry and saves back to dom.
     let serverRenderedDataElement = document.getElementById('serverRenderedData');
     if (serverRenderedDataElement) {
       let serverRenderedData = JSON.parse(serverRenderedDataElement.textContent);
-      if (serverRenderedData[component] !== undefined) {
-        delete serverRenderedData[component];
+      if (serverRenderedData.components[component] !== undefined) {
+        delete serverRenderedData.components[component];
         serverRenderedDataElement.textContent = JSON.stringify(serverRenderedData);
         return Object.assign({}, state, {
           renderedServer: false
@@ -67,6 +65,20 @@ export function clearServerData(component, state)
     }
   }
   return state;
+}
+
+export function getConfig() {
+  if (!isServer()) {
+    // Gets the data from the script component removes entry and saves back to dom.
+    let serverRenderedDataElement = document.getElementById('serverRenderedData');
+    if (serverRenderedDataElement) {
+      let serverRenderedData = JSON.parse(serverRenderedDataElement.textContent);
+      if (serverRenderedData.config !== undefined) {
+        return serverRenderedData.config;
+      }
+    }
+  }
+  return {};
 }
 
 /**

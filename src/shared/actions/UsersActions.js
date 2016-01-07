@@ -1,6 +1,6 @@
 "use strict";
 
-import { fetch } from '../utils/isomorphic';
+import { fetch } from '../utils/IsoBridge';
 import { DATA_REQUESTED, DATA_FETCHED, CLEAR_SERVER_DATA } from '../constants/ActionTypes';
 
 function requestData() {

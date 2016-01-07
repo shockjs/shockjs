@@ -12,7 +12,7 @@ import Admin from './components/sections/Admin';
 import Dashboard from './components/sections/admin/Dashboard';
 import Users from './components/sections/admin/Users';
 import { fetchAuthApi } from './actions/AppActions';
-import { redirect, isServer } from './utils/isomorphic';
+import { redirect, isServer } from './utils/IsoBridge';
 
 export default {
   path: '/',

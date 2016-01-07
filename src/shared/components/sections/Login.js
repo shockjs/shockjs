@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Alert, Input, ButtonInput, Col } from 'react-bootstrap';
+import { Input, ButtonInput, Col } from 'react-bootstrap';
+import AlertAutoDismissable from '../alerts/AlertAutoDismissable';
 import { submitForm } from '../../actions/LoginActions';
 import { reduxForm } from 'redux-form';
 import { fetchAuth } from '../../actions/AppActions';
-import { redirect } from '../../utils/isomorphic';
+import { redirect } from '../../utils/IsoBridge';
 
 class Login extends Component
 {
   render()
   {
-    const { fields: { username, password }, handleSubmit, error } = this.props;
+    const { fields: { username, password }, handleSubmit, error, resetForm } = this.props;
 
     const errorTemplate = (element) => {
       return element.touched && element.error && <span className="text-error">{ element.error }</span>;
@@ -24,7 +25,7 @@ class Login extends Component
           { errorTemplate(username) }
           <Input type="password" label="Password" placeholder="Enter password" {...password} />
           { errorTemplate(password) }
-          { error && <Alert bsStyle="danger">{ error }</Alert> }
+          { error && <AlertAutoDismissable showAlert={true} resetForm={resetForm} bsStyle="danger">{ error }</AlertAutoDismissable> }
           <ButtonInput bsStyle="success" className="pull-right" type="submit" value="Login" />
         </form>
       </Col>

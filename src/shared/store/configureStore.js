@@ -5,7 +5,7 @@ import {createStore, applyMiddleware, combineReducers, compose} from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { syncReduxAndRouter, routeReducer } from 'redux-simple-router';
 import { reducer as formReducer } from 'redux-form';
-import { isServer } from '../utils/isomorphic';
+import { isServer } from '../utils/IsoBridge';
 import DevTools from '../utils/DevTools';
 
 //Load in our reducers.

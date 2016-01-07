@@ -222,16 +222,23 @@ gulp.task('run:pm2', (cb) => {
   });
 
   pm2.connect(() => {
-    pm2.restart('dist/server/index.js', (err) => {
+    pm2.stop('dist/server/index.js', (err) => {
 
       if (err) {
-        gutil.log("[compilation]", err);
-        cb();
-        return false;
+        gutil.log("[compilation]", err.msg);
       }
 
-      gutil.log("[compilation]", `server started..`);
-      return cb();
+      pm2.start('dist/server/index.js', (err) => {
+
+        if (err) {
+          gutil.log("[compilation]", err.msg);
+          cb();
+          return false;
+        }
+
+        gutil.log("[compilation]", `server started..`);
+        return cb();
+      });
     });
   })
 });
