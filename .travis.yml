@@ -4,7 +4,7 @@ env:
 node_js:
   - "5.0.0"
 before_script:
-  - npm install -g gulp webpack babel nodemon slush
+  - npm install -g gulp
 script: gulp compile
 
 addons:

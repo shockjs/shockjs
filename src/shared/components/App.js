@@ -31,7 +31,7 @@ class App extends Component
 
       menus.push(
         <NavDropdown key="admin" title="Admin" id="basic-nav-dropdown">
-          <LinkContainer key="dashboard" to="/admin"><MenuItem>Dashboard</MenuItem></LinkContainer>
+          <IndexLinkContainer key="dashboard" to="/admin"><MenuItem>Dashboard</MenuItem></IndexLinkContainer>
           <LinkContainer key="users" to="/admin/users"><MenuItem>Users</MenuItem></LinkContainer>
         </NavDropdown>
       );
