@@ -1,5 +1,7 @@
-$icon-font-path: "/static/fonts/";
+$icon-font-path: "/static/fonts/bootstrap";
 @import '../../../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss';
+$fa-font-path: "/static/fonts/font-awesome";
+@import '../../../node_modules/font-awesome/scss/font-awesome.scss';
 
 .text-error {
   color: $state-danger-text;
@@ -8,3 +10,11 @@ $icon-font-path: "/static/fonts/";
   display: inline-block;
 }
 
+@media screen and (max-height: 575px) {
+  #rc-imageselect, .g-recaptcha {
+    transform: scale(0.77);
+    -webkit-transform: scale(0.77);
+    transform-origin: 0 0;
+    -webkit-transform-origin: 0 0;
+  }
+}

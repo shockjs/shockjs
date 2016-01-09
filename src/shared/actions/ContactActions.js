@@ -1,8 +1,10 @@
 "use strict";
 
 import { fetch, redirect } from '../utils/IsoBridge';
-import { DATA_REQUESTED, DATA_FETCHED, CAPTCHA_KEY } from '../constants/ActionTypes';
-
+import { CAPTCHA_KEY, SUBMIT_FORM_SUCCESS, SUBMIT_FORM_FAILURE } from '../constants/ActionTypes';
+import Base from '../../client/models/Base';
+import { getContact } from '../models/Contact';
+import forOwn from 'lodash/object/forOwn';
 
 export function setCaptchaKey(data) {
   console.log('[action] => setCaptchaKey: ', data);
@@ -35,8 +37,41 @@ export function captchaLoaded() {
  * @returns {Promise}
  */
 export function submitForm(values, dispatch) {
-  console.log(values);
   return new Promise((resolve, reject) => {
-
+    const Contact = getContact(Base);
+    const contactInstance = new Contact(values);
+    contactInstance.validate()
+      .then(() => {
+        fetch(`/api/v1/email/contact`, {
+          method: 'post',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(values)
+        })
+          .then(resp => resp.json())
+          .then((data) => {
+            switch (data.success) {
+              case true:
+                resolve({
+                  type: SUBMIT_FORM_SUCCESS
+                });
+                break;
+              case false:
+                resolve({
+                  type: SUBMIT_FORM_FAILURE
+                });
+                break;
+            }
+          });
+      })
+      .catch((err) => {
+        let errors = {};
+        forOwn(err.errors, (value, key) => {
+          errors[key] = value.message;
+        });
+        reject(errors);
+      });
   });
 }

@@ -1,4 +1,4 @@
-import { CAPTCHA_KEY } from '../constants/ActionTypes';
+import { CAPTCHA_KEY, SUBMIT_FORM_FAILURE, SUBMIT_FORM_SUCCESS } from '../constants/ActionTypes';
 import { parseServerData, getConfig, isServer } from '../utils/IsoBridge';
 const config = getConfig();
 
@@ -12,8 +12,16 @@ if (!isServer()) {
 
 export default function(state = defaultState, action) {
   switch (action.type) {
+  case SUBMIT_FORM_SUCCESS:
+    let successState = Object.assign({}, state, {
+
+    });
+    console.log(`[reducer] => ${CAPTCHA_KEY}: `, successState);
+    return successState;
+  case SUBMIT_FORM_FAILURE:
+    return state;
   case CAPTCHA_KEY:
-    var newState = Object.assign({}, state, {
+    let newState = Object.assign({}, state, {
       fieldData: {
         captcha: action.captcha
       }

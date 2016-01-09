@@ -11,7 +11,7 @@ class Login extends Component
 {
   render()
   {
-    const { fields: { username, password }, handleSubmit, error, resetForm } = this.props;
+    const { fields: { username, password }, handleSubmit, error, resetForm, submitting, invalid } = this.props;
 
     const errorTemplate = (element) => {
       return element.touched && element.error && <span className="text-error">{ element.error }</span>;
@@ -26,16 +26,17 @@ class Login extends Component
           <Input type="password" label="Password" placeholder="Enter password" {...password} />
           { errorTemplate(password) }
           { error && <AlertAutoDismissable showAlert={true} resetForm={resetForm} bsStyle="danger">{ error }</AlertAutoDismissable> }
-          <ButtonInput bsStyle="success" className="pull-right" type="submit" value="Login" />
+          <button disabled={ submitting || invalid } className="btn btn-primary btn-lg pull-right" type="submit">
+            { submitting ? <i className="fa fa-spinner fa-pulse" /> : <i className="fa fa-user" /> } Login
+          </button>
         </form>
       </Col>
     );
   }
 }
 
-Login = reduxForm({
+export default reduxForm({
   form: 'login-form',
   fields: ['username', 'password']
 })(Login);
 
-export default connect((state) => state.Login)(Login);

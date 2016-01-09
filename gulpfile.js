@@ -202,9 +202,14 @@ gulp.task('build:sass', () => {
     .pipe(gulp.dest('dist/client/static'));
 });
 
-gulp.task('copy:fonts', () => {
+gulp.task('copy:bootstrap-fonts', () => {
   gulp.src('node_modules/bootstrap-sass/assets/fonts/bootstrap/*')
-    .pipe(gulp.dest('dist/client/static/fonts'));
+    .pipe(gulp.dest('dist/client/static/fonts/bootstrap'));
+});
+
+gulp.task('copy:fontawesome-fonts', () => {
+  gulp.src('node_modules/font-awesome/fonts/*')
+    .pipe(gulp.dest('dist/client/static/fonts/font-awesome'));
 });
 
 /**
@@ -299,7 +304,11 @@ gulp.task('restart:pm2', () => {
  * Compiles everything.
  */
 gulp.task('compile', (callback) => {
-  runSequence('clean:dist', 'move:dist', ['build:dist', 'copy:fonts'], ['build:webpack', 'build:sass'], () => {
+  runSequence('clean:dist', 'move:dist', [
+    'build:dist',
+    'copy:bootstrap-fonts',
+    'copy:fontawesome-fonts'
+  ], ['build:webpack', 'build:sass'], () => {
     callback();
   });
 });

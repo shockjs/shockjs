@@ -18,7 +18,14 @@ class Welcome extends Component
     }
 
     return (
+      <div>
         <h1>Welcome { fullName }</h1>
+        <p>
+          This is the homepage. To edit this page, edit the following file:
+        </p>
+        <pre>/src/shared/components/section/Welcome.js</pre>
+        <p>All other top level pages can be found in the same directory that the page above resides.</p>
+      </div>
     );
   }
 }

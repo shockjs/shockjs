@@ -10,22 +10,18 @@ import { setCaptchaKey, captchaLoaded, clearCaptchaKey, submitForm } from '../..
 
 class Contact extends Component
 {
+
   render()
   {
     const {
-      fields: {
-        name,
-        phone,
-        email,
-        description,
-        captcha
-      },
+      fields: { name, phone, email, comments, captcha },
       handleSubmit,
       siteKey,
       verifyCallback,
       expiredCallback,
-      onLoadCallback
-
+      onLoadCallback,
+      submitting,
+      invalid
     } = this.props;
 
     let showCaptcha = '';
@@ -44,17 +40,27 @@ class Contact extends Component
       );
     }
 
+    const errorTemplate = (element) => {
+      return element.touched && element.error && <span className="text-error">{ element.error }</span>;
+    };
+
     return (
       <div>
         <h1>Contact Us</h1>
         <form onSubmit={ handleSubmit(submitForm.bind(this)) }>
           <Input type="text" label="name" placeholder="Enter name" { ...name } />
+          { errorTemplate(name) }
           <Input type="text" label="phone" placeholder="Enter phone" { ...phone } />
+          { errorTemplate(phone) }
           <Input type="text" label="email" placeholder="Enter email" { ...email } />
-          <Input type="textarea" label="comments" placeholder="Enter comments and questions." { ...description } />
-          <Input type="text" { ...captcha } />
+          { errorTemplate(email) }
+          <Input type="textarea" label="comments" placeholder="Enter comments and questions." { ...comments } />
+          { errorTemplate(comments) }
           { showCaptcha }
-          <ButtonInput bsStyle="success" className="pull-right" type="submit" value="Send" />
+          { errorTemplate(captcha) }
+          <button disabled={ submitting || invalid } className="btn btn-primary btn-lg pull-right" type="submit">
+            { submitting ? <i className="fa fa-spinner fa-pulse" /> : <i className="fa fa-send" /> } Send
+          </button>
         </form>
       </div>
     );
@@ -64,7 +70,7 @@ class Contact extends Component
 export default reduxForm(
   {
     form: 'contact-form',
-    fields: ['name', 'phone', 'email', 'description', 'captcha']
+    fields: ['name', 'phone', 'email', 'comments', 'captcha']
   },
   state => {
     const newState = {

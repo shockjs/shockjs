@@ -3,8 +3,11 @@
 import mailer from 'nodemailer';
 import { getConfig } from '../../config/index';
 const config = getConfig();
+import jade from 'jade';
+import fetch from 'isomorphic-fetch';
 
-const smtpTransport = mailer.createTransport("SMTP",config.mail);
+const emailPath = __dirname + '/../../templates/emails';
+const smtpTransport = mailer.createTransport("SMTP", config.mail);
 
 class EmailApi
 {
@@ -14,49 +17,42 @@ class EmailApi
 
     this.contact = {
       handler: (request, reply) => {
+        fetch(`https://www.google.com/recaptcha/api/siteverify`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: `secret=${config.recaptcha.secret}&response=${request.payload.captcha}`
+        })
+          .then(res => res.json())
+          .then((data) => {
+            console.log(data);
+            if (data.success === true) {
+              var html = jade.compileFile(emailPath + '/contact/html.jade', {})(request.payload);
+              var text = jade.compileFile(emailPath + '/contact/text.jade', {})(request.payload);
 
-        const mail = {
-          from: `Administrator <${adminEmail}>`,
-          to: config.params.adminEmail,
-          subject: "Contact Form Submission.",
-          text: `
-            You have received the following contact request:\n
-            Name: ${request.payload.name}\n
-            Phone: ${request.payload.phone}\n
-            Email: ${request.payload.email}\n
-            Comments: ${request.payload.comments}\n
-          `,
-          html: `
-            <h4>You have received the following contact request:</h4>
-            <p>
-              <b>Name: </b>${request.payload.name}
-            </p>
-            <p>
-              <b>Phone: </b>${request.payload.phone}
-            </p>
-            <p>
-              <b>Email: </b>${request.payload.email}
-            </p>
-            <p>
-              <b>Comments: </b>${request.payload.comments}
-            </p>
-          `
-        };
+              const mail = {
+                from: `Administrator ${config.params.adminEmail}`,
+                to: config.params.adminEmail,
+                subject: "Contact Form Submission.",
+                text: text,
+                html: html
+              };
 
-        smtpTransport.sendMail(mail, function(error, response){
-          if(error) {
-            console.log(error);
-            reply({ 'success': false });
-          } else {
-            console.log("Message sent: " + response.message);
-            reply({ 'success': true });
-          }
-
-          smtpTransport.close();
-
-        });
-
-
+              smtpTransport.sendMail(mail, function (error, response) {
+                if (error) {
+                  console.log(error);
+                  reply({'success': false});
+                } else {
+                  console.log("Message sent: " + response.message);
+                  reply({'success': true});
+                }
+                smtpTransport.close();
+              });
+            } else {
+              reply(data);
+            }
+          });
       }
     }
   }
