@@ -48,13 +48,13 @@ class Contact extends Component
       <div>
         <h1>Contact Us</h1>
         <form onSubmit={ handleSubmit(submitForm.bind(this)) }>
-          <Input type="text" label="name" placeholder="Enter name" { ...name } />
+          <Input type="text" label="Name" placeholder="Enter name" { ...name } />
           { errorTemplate(name) }
-          <Input type="text" label="phone" placeholder="Enter phone" { ...phone } />
+          <Input type="text" label="Phone" placeholder="Enter phone" { ...phone } />
           { errorTemplate(phone) }
-          <Input type="text" label="email" placeholder="Enter email" { ...email } />
+          <Input type="text" label="Email" placeholder="Enter email" { ...email } />
           { errorTemplate(email) }
-          <Input type="textarea" label="comments" placeholder="Enter comments and questions." { ...comments } />
+          <Input type="textarea" label="Comments" placeholder="Enter comments and questions." { ...comments } />
           { errorTemplate(comments) }
           { showCaptcha }
           { errorTemplate(captcha) }

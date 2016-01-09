@@ -24,7 +24,11 @@ class Welcome extends Component
           This is the homepage. To edit this page, edit the following file:
         </p>
         <pre>/src/shared/components/section/Welcome.js</pre>
-        <p>All other top level pages can be found in the same directory that the page above resides.</p>
+        <p>All other top level pages can be found in the same directory.</p>
+        <p>To alter the routes edit the following file:</p>
+        <pre>/src/shared/routes.js</pre>
+        <p>To alter the navbar edit the following file:</p>
+        <pre>/src/shared/components/App.js</pre>
       </div>
     );
   }
