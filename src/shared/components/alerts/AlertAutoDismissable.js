@@ -14,7 +14,9 @@ class AlertAutoDismissable extends Component
   handleAlertDismiss()
   {
     this.setState({ alertVisible: false });
-    this.props.resetForm();
+    if (this.props.resetForm !== undefined) {
+      this.props.resetForm();
+    }
   }
 
   handleAlertShow()
@@ -34,7 +36,7 @@ class AlertAutoDismissable extends Component
   {
     if (this.state.alertVisible) {
       return (
-        <Alert bsStyle="danger" onDismiss={ this.handleAlertDismiss.bind(this) } dismissAfter={ 2000 }>
+        <Alert bsStyle={ this.props.bsStyle ? this.props.bsStyle : 'danger' } onDismiss={ this.handleAlertDismiss.bind(this) } dismissAfter={ 5000 }>
           { this.props.children }
         </Alert>
       );

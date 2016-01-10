@@ -11,10 +11,26 @@ import DevTools from '../utils/DevTools';
 //Load in our reducers.
 import * as reducers from '../reducers/index';
 
+import { SUBMIT_FORM_SUCCESS } from '../constants/ActionTypes';
 
 const rootReducer = combineReducers(Object.assign({}, reducers, {
   routing: routeReducer,
-  form: formReducer
+  form: formReducer.plugin({
+    "contact-form": (state, action) => {
+      switch (action.type) {
+        case SUBMIT_FORM_SUCCESS:
+          // Clear the form.
+          grecaptcha && grecaptcha.reset(); //Resets captcha.
+          return {
+            comments: {
+              value: ''
+            }
+          };
+        default:
+          return state;
+      }
+    }
+  })
 }));
 
 const applyStore = [

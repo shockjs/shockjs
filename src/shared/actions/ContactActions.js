@@ -1,7 +1,7 @@
 "use strict";
 
 import { fetch, redirect } from '../utils/IsoBridge';
-import { CAPTCHA_KEY, SUBMIT_FORM_SUCCESS, SUBMIT_FORM_FAILURE } from '../constants/ActionTypes';
+import { CAPTCHA_KEY, SUBMIT_FORM_SUCCESS, SUBMIT_FORM_FAILURE, CLEAR_SUBMIT } from '../constants/ActionTypes';
 import Base from '../../client/models/Base';
 import { getContact } from '../models/Contact';
 import forOwn from 'lodash/object/forOwn';
@@ -30,6 +30,12 @@ export function captchaLoaded() {
   };
 }
 
+export function clearSubmitted() {
+  return {
+    type: CLEAR_SUBMIT
+  };
+}
+
 /**
  * This is the action that is submitted through the form.
  * @param values
@@ -54,16 +60,17 @@ export function submitForm(values, dispatch) {
           .then((data) => {
             switch (data.success) {
               case true:
-                resolve({
+                dispatch({
                   type: SUBMIT_FORM_SUCCESS
                 });
                 break;
               case false:
-                resolve({
+                dispatch({
                   type: SUBMIT_FORM_FAILURE
                 });
                 break;
             }
+            resolve(true);
           });
       })
       .catch((err) => {
