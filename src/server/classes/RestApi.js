@@ -41,7 +41,6 @@ class RestApi
           let page = parseInt(request.query.page) || 1;
           let limit = parseInt(request.query['per-page']) <= this.perPageLimit ? request.query['per-page'] : this.perPage;
           let fields;
-          let filters;
           let sort;
 
           var query = this.model.query();
@@ -74,37 +73,10 @@ class RestApi
 
           // Attempt to get filters selected by client.
           try {
-            filters = JSON.parse(request.query['filters'] || '[]');
-            if (isArray(filters)) {
-              filters.forEach(({name, operator="=", value, clause='and', negate=false}) => {
-                if (name && value) {
-                  switch (clause) {
-                  case "and":
-                    negate ? query.andWhereNot(name, operator, value) : query.andWhere(name, operator, value);
-                    break;
-                  case "or":
-                    negate ? query.orWhereNot(name, operator, value) : query.orWhere(name, operator, value);
-                    break;
-                  }
-                } else if (name) {
-                  switch (clause) {
-                  case "and":
-                    query.andWhere(function () {
-                      negate ? this.whereNotNull(name) : this.whereNull(name);
-                    });
-                    break;
-                  case "or":
-                    query.orWhere(function () {
-                      negate ? this.whereNotNull(name) : this.whereNull(name);
-                    });
-                    break;
-                  }
-                }
-              });
-            }
+            query = this.extractFilters(request, query);
           } catch(e) {
             console.error(e);
-            reply(Boom.badRequest('Invalid json filters parsed to server: ' + request.query['filters']));
+            reply(Boom.badRequest(e));
             return;
           }
 
@@ -136,7 +108,11 @@ class RestApi
      */
     this.fetchCount = {
       handler: (request, reply) => {
-        this.model.count().then(total => {
+        this.model
+          .query((qb) => {
+            this.extractFilters(request, qb)
+          })
+          .count().then(total => {
           reply(total);
         });
       }
@@ -265,6 +241,45 @@ class RestApi
       }
     };
 
+  }
+
+  extractFilters(request, query)
+  {
+    var filters = [];
+    try {
+      filters = JSON.parse(request.query['filters'] || '[]');
+      if (isArray(filters)) {
+        filters.forEach(({name, operator="=", value, clause='and', negate=false}) => {
+          if (name && value) {
+            switch (clause) {
+              case "and":
+                negate ? query.andWhereNot(name, operator, value) : query.andWhere(name, operator, value);
+                break;
+              case "or":
+                negate ? query.orWhereNot(name, operator, value) : query.orWhere(name, operator, value);
+                break;
+            }
+          } else if (name) {
+            switch (clause) {
+              case "and":
+                query.andWhere(function () {
+                  negate ? this.whereNotNull(name) : this.whereNull(name);
+                });
+                break;
+              case "or":
+                query.orWhere(function () {
+                  negate ? this.whereNotNull(name) : this.whereNull(name);
+                });
+                break;
+            }
+          }
+        });
+      }
+    } catch(e) {
+      console.error(e);
+      throw new Error('Invalid json filters parsed to server: ' + request.query['filters']);
+    }
+    return query;
   }
 
   /**
