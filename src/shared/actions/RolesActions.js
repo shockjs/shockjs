@@ -1,6 +1,7 @@
 "use strict";
 
 import { fetch } from '../utils/IsoBridge';
+import QueryBuilder from '../classes/QueryBuilder';
 import { DATA_REQUESTED, DATA_FETCHED, CLEAR_SERVER_DATA } from '../constants/ActionTypes';
 
 function requestData() {
@@ -18,7 +19,13 @@ function receiveData(json) {
 }
 
 function fetchRolesApi(page=1) {
-  return fetch(`/api/v1/auth-type?page=${page}&filters=[{"name": "type", "value": 1}]`)
+  return new QueryBuilder('/api/v1/auth-type')
+    .addParam('page', page)
+    .addParam('filters', {
+      name: "type",
+      value: 1
+    })
+    .fetch()
     .then((req) => {
       return new Promise((resolve) => {
         req.json().then((data) => {
