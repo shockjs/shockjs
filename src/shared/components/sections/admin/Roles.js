@@ -41,7 +41,9 @@ class Roles extends Component
 
     return (
       <div>
-        <h1>Roles</h1>
+        <div className="page-header">
+          <h1>Roles</h1>
+        </div>
         <ListView initData={ this.props.roles } dataSource={ this.fetchMore.bind(this) }>
           <GridView tableClassName="table table-bordered table-response table-hover table-condensed">
             <GridColumn header="Name" name="name" />

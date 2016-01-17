@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const path = require('path');
 
 const devFlagPlugin = new webpack.DefinePlugin({
   'process.env': {
@@ -34,7 +35,15 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['', '.js', '.json']
+    extensions: ['', '.js', '.json'],
+    fallback: path.join(__dirname, "node_modules"),
+    alias: {
+      "react": path.resolve('./node_modules/react'),
+      "react-dom": path.resolve('./node_modules/react-dom')
+    }
+  },
+  resolveLoader: {
+    fallback: path.join(__dirname, "node_modules")
   },
   devtool: 'source-map',
   node: {

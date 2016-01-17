@@ -10,6 +10,9 @@
     "graphql"
   ],
   "main": "server/index.js",
+  "engines": {
+    "node": "5.0.0"
+  },
   "scripts": {
     "test": "node --version"
   },
@@ -51,8 +54,9 @@
     "q": "^1.4.1",
     "react": "^0.14.3",
     "react-bootstrap": "^0.28.1",
-    "react-dom": "^0.14.0",
-    "react-list-combo": "0.0.14",
+    "react-dom": "^0.14.3",
+    "react-list-combo": "^0.1.8",
+    "react-password-strength-meter": "^1.0.5",
     "react-recaptcha": "https://github.com/shockjs/react-recaptcha/tarball/router-fixes",
     "react-redux": "^4.0.0",
     "react-router": "^1.0.2",

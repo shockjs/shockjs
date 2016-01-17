@@ -19,7 +19,9 @@ class Login extends Component
 
     return (
       <Col xs={12} md={4}>
-        <h1>Login</h1>
+        <div className="page-header">
+          <h1>Login</h1>
+        </div>
         <form onSubmit={ handleSubmit(submitForm.bind(this)) }>
           <Input type="text" label="Username" placeholder="Enter username" {...username} />
           { errorTemplate(username) }

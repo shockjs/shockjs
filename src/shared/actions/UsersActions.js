@@ -1,7 +1,10 @@
 "use strict";
 
 import { fetch } from '../utils/IsoBridge';
-import { DATA_REQUESTED, DATA_FETCHED, CLEAR_SERVER_DATA } from '../constants/ActionTypes';
+import Base from '../../client/models/Base';
+import { getUser } from '../models/User';
+import forOwn from 'lodash/object/forOwn';
+import { DATA_REQUESTED, DATA_FETCHED, CLEAR_SERVER_DATA, OPEN_MODAL, CLOSE_MODAL } from '../constants/ActionTypes';
 
 function requestData() {
   return {
@@ -70,4 +73,41 @@ export function updateUser(key, value) {
     return updateUserApi(key, value)
       .then(() => dispatch(fetchUsers()));
   };
+}
+
+export function openUserModal() {
+  return {
+    type: OPEN_MODAL,
+    showModal: true
+  };
+}
+
+export function closeUserModal() {
+  return {
+    type: CLOSE_MODAL,
+    showModal: false
+  };
+}
+
+export function submitForm(values, dispatch) {
+  console.log('test');
+  return new Promise((resolve, reject) => {
+    console.log('test1');
+    const User = getUser(Base);
+    const userInstance = new User(values);
+    console.log(userInstance);
+    userInstance.validate()
+      .then(() => {
+        console.warn('true');
+        resolve(true);
+      })
+      .catch((err) => {
+        console.error(err);
+        let errors = {};
+        forOwn(err.errors, (value, key) => {
+          errors[key] = value.message;
+        });
+        reject(errors);
+      });
+  });
 }

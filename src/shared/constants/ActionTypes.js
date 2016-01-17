@@ -9,3 +9,5 @@ export const CAPTCHA_KEY = 'CAPTCHA_KEY';
 export const SUBMIT_FORM_SUCCESS = 'SUBMIT_FORM_SUCCESS';
 export const SUBMIT_FORM_FAILURE = 'SUBMIT_FORM_FAILURE';
 export const CLEAR_SUBMIT = 'CLEAR_SUBMIT';
+export const OPEN_MODAL = 'OPEN_MODAL';
+export const CLOSE_MODAL = 'CLOSE_MODAL';

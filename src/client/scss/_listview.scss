@@ -1,0 +1,19 @@
+@import '../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss';
+
+.toolbar {
+  padding: 20px 0;
+}
+
+.list-header {
+  color: lighten($brand-primary, 50%);
+  border: darken($brand-primary, 20%);
+  background-color: $brand-primary;
+  padding: 10px;
+  font-weight: bold;
+}
+
+.list-row {
+  padding: 10px;
+  line-height: 14px;
+  background-color: lighten($brand-primary, 45%);
+}

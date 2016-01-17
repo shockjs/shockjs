@@ -32,7 +32,9 @@ class Dashboard extends Component
   {
     return (
       <div>
-        <h1>Dashboard</h1>
+        <div className="page-header">
+          <h1>Dashboard</h1>
+        </div>
         <div className="jumbotron" style={{display: 'inline-block'}}>
           <h1 style={{textAlign: 'center'}}><Link to="/admin/users">{ this.props.userCount }</Link></h1>
           <h3><Link to="/admin/users">Users</Link></h3>

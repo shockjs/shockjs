@@ -19,7 +19,9 @@ class Welcome extends Component
 
     return (
       <div>
-        <h1>Welcome { fullName }</h1>
+        <div className="page-header">
+          <h1>Welcome { fullName }</h1>
+        </div>
         <p>
           This is the homepage. To edit this page, edit the following file:
         </p>

@@ -12,10 +12,18 @@ export default function(state = defaultState, action) {
     return Object.assign({}, state, {
       users: action.users || false
     });
+  case ActionTypes.OPEN_MODAL:
+  case ActionTypes.CLOSE_MODAL:
+    return Object.assign({}, state, {
+      showModal: action.showModal
+    });
   case ActionTypes.CLEAR_SERVER_DATA:
     return clearServerData('Users', state);
-  default:
+  case '@INIT':
+    console.log('default', state, action);
     return parseServerData('Users', state);
+  default:
+    return state;
   }
 }
 

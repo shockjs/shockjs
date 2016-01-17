@@ -8,6 +8,7 @@ import { isServer } from '../../utils/IsoBridge';
 import Recaptcha from 'react-recaptcha';
 import { setCaptchaKey, captchaLoaded, clearCaptchaKey, submitForm, clearSubmitted } from '../../actions/ContactActions';
 import AlertAutoDismissable from '../alerts/AlertAutoDismissable';
+import Error from '../form/Error';
 
 class Contact extends Component
 {
@@ -43,27 +44,25 @@ class Contact extends Component
       );
     }
 
-    const errorTemplate = (element) => {
-      return element.touched && element.error && <span className="text-error">{ element.error }</span>;
-    };
-
     return (
       <div>
-        <h1>Contact Us</h1>
+        <div className="page-header">
+          <h1>Contact Us</h1>
+        </div>
         <form onSubmit={ handleSubmit(submitForm.bind(this)) }>
           <AlertAutoDismissable bsStyle="success" showAlert={ submitted } resetForm={ () => dispatch(clearSubmitted()) }>
             Your request has been submitted...
           </AlertAutoDismissable>
           <Input type="text" label="Name" placeholder="Enter name" { ...name } />
-          { errorTemplate(name) }
+          <Error element={ name } />
           <Input type="text" label="Phone" placeholder="Enter phone" { ...phone } />
-          { errorTemplate(phone) }
+          <Error element={phone } />
           <Input type="text" label="Email" placeholder="Enter email" { ...email } />
-          { errorTemplate(email) }
+          <Error element={email } />
           <Input type="textarea" label="Comments" placeholder="Enter comments and questions." { ...comments } />
-          { errorTemplate(comments) }
+          <Error element={comments } />
           { showCaptcha }
-          { errorTemplate(captcha) }
+          <Error element={captcha } />
           <button disabled={ submitting || invalid } className="btn btn-primary btn-lg pull-right" type="submit">
             { submitting ? <i className="fa fa-spinner fa-pulse" /> : <i className="fa fa-send" /> } Send
           </button>

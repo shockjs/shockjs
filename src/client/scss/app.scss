@@ -1,7 +1,7 @@
-$icon-font-path: "/static/fonts/bootstrap";
-@import '../../../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss';
-$fa-font-path: "/static/fonts/font-awesome";
-@import '../../../node_modules/font-awesome/scss/font-awesome.scss';
+@import './variables';
+@import '../../../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap';
+@import '../../../node_modules/font-awesome/scss/font-awesome';
+@import 'listview';
 
 .dropdown-menu>.active>a, .dropdown-menu>.active>a:hover, .dropdown-menu>.active>a:focus {
   background-color: $navbar-inverse-bg;
