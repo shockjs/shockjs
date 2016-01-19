@@ -140,12 +140,17 @@ export default class QueryBuilder
 
   /**
    * Run the query.
+   * @param {boolean} returnJSON true to return json data or false to return the Response object.
    */
   execute(returnJSON = true)
   {
+    const params = Object.keys(this._params).map((value, index) => {
+      return `${value}=${JSON.stringify(this._params[value])}`;
+    }).join('&');
+
     switch (this._meta.method.toLowerCase()) {
       case 'get':
-        return fetch(this._endpoint + '?' + JSON.stringify(this._params), this._meta)
+        return fetch(this._endpoint + '?' + params, this._meta)
           .then((req) => {
             if (returnJSON) {
               return req.json();
@@ -159,7 +164,7 @@ export default class QueryBuilder
       case 'delete':
         return fetch(this._endpoint, {
           ...this._meta,
-          body: JSON.stringify(this._params)
+          body: params
         })
           .then((req) => {
             if (returnJSON) {

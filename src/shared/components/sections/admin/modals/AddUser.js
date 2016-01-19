@@ -12,6 +12,14 @@ class AddUser extends Component
   render()
   {
     const { showModal, closeModal, fields: { firstName, lastName, password, confirmPassword, username, email }, handleSubmit } =  this.props;
+
+    const errors = (element) => {
+      return {
+        bsStyle: element.error ? 'error' : null,
+        help: element.error
+      };
+    };
+
     return (
       <Modal show={ showModal } onHide={ closeModal }>
         <form onSubmit={ handleSubmit(submitForm.bind(this)) }>
@@ -19,18 +27,12 @@ class AddUser extends Component
             <Modal.Title>Add User</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Input type="text" label="First name" placeholder="Enter first name" { ...firstName } />
-            <Error element={ firstName } />
-            <Input type="text" label="Last name" placeholder="Enter last name" { ...lastName } />
-            <Error element={ lastName } />
-            <BootstrapPasswordStrength { ...password } placeholder="Enter password for privacy." />
-            <Error element={ password } />
-            <Input type="password" label="Confirm password" placeholder="Confirm password for correctness" { ...confirmPassword } />
-            <Error element={ confirmPassword } />
-            <Input type="text" label="Username" placeholder="Enter username for easy login." { ...username } />
-            <Error element={ username } />
-            <Input type="text" label="Email" placeholder="Enter email so we can contact you." { ...email } />
-            <Error element={ email } />
+            <Input { ...errors(firstName) } type="text" label="First name" placeholder="Enter first name" { ...firstName } />
+            <Input { ...errors(lastName) } type="text" label="Last name" placeholder="Enter last name" { ...lastName } />
+            <Input { ...errors(email) } type="text" label="Email" placeholder="Enter email so we can contact you." { ...email } />
+            <Input { ...errors(username) } type="text" label="Username" placeholder="Enter username for easy login." { ...username } />
+            <BootstrapPasswordStrength { ...errors(password) } placeholder="Enter password for privacy." { ...password } />
+            <Input { ...errors(confirmPassword) }type="password" label="Confirm password" placeholder="Confirm password for correctness" { ...confirmPassword } />
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={ closeModal }>Close</Button>
