@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Input, ButtonInput, Col } from 'react-bootstrap';
 import AlertAutoDismissable from '../alerts/AlertAutoDismissable';
-import { submitForm } from '../../actions/LoginActions';
+import { submitForm } from '../../ducks/Login';
 import { reduxForm } from 'redux-form';
-import { fetchAuth } from '../../actions/AppActions';
+import { fetchAuth } from '../../ducks/App';
 import { redirect } from '../../utils/IsoBridge';
 
 class Login extends Component

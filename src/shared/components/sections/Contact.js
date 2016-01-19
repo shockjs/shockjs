@@ -6,7 +6,7 @@ import { reduxForm } from 'redux-form';
 import { Input, ButtonInput, Col, Alert } from 'react-bootstrap';
 import { isServer } from '../../utils/IsoBridge';
 import Recaptcha from 'react-recaptcha';
-import { setCaptchaKey, captchaLoaded, clearCaptchaKey, submitForm, clearSubmitted } from '../../actions/ContactActions';
+import { setCaptchaKey, captchaLoaded, clearCaptchaKey, submitForm, clearSubmitted } from '../../ducks/Contact';
 import AlertAutoDismissable from '../alerts/AlertAutoDismissable';
 import Error from '../form/Error';
 

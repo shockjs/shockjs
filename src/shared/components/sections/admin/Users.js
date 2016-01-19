@@ -7,7 +7,7 @@ import {
   cleanupServer,
   openUserModal,
   closeUserModal
-} from '../../../actions/UsersActions';
+} from '../../../ducks/Users';
 import { ListView, Pagination, ListRows, Counter } from 'react-list-combo';
 import GridActive from '../../listview/GridActive';
 import Row from '../../listview/Row';

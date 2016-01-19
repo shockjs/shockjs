@@ -12,7 +12,7 @@ import Admin from './components/sections/Admin';
 import Dashboard from './components/sections/admin/Dashboard';
 import Users from './components/sections/admin/Users';
 import Roles from './components/sections/admin/Roles';
-import { fetchAuthApi } from './actions/AppActions';
+import { fetchAuthApi } from './ducks/App';
 import { redirect, isServer } from './utils/IsoBridge';
 
 export default {

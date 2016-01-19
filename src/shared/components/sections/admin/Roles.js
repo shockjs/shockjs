@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchRoles, renderServer, cleanupServer } from '../../../actions/RolesActions';
+import { fetchRoles, renderServer, cleanupServer } from '../../../ducks/Roles';
 import { ListView, GridView, Pagination, GridColumn } from 'react-list-combo';
 
 class Roles extends Component

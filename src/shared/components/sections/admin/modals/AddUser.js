@@ -3,7 +3,7 @@ import { Button, Modal, Input, ProgressBar } from 'react-bootstrap';
 import { reduxForm } from 'redux-form';
 import BootstrapPasswordStrength from 'bootstrap-react-password-strength';
 import Error from '../../../form/Error';
-import { submitForm } from '../../../../actions/UsersActions';
+import { submitForm } from '../../../../ducks/Users';
 class AddUser extends Component
 {
   /**

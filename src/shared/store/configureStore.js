@@ -9,7 +9,7 @@ import { isServer } from '../utils/IsoBridge';
 import DevTools from '../utils/DevTools';
 
 //Load in our reducers.
-import * as reducers from '../reducers/index';
+import * as reducers from '../ducks/index';
 
 import { SUBMIT_FORM_SUCCESS } from '../constants/ActionTypes';
 
