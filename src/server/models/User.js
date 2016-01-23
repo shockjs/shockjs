@@ -10,6 +10,27 @@ let BaseUser = getUser(getServerModel());
 
 class User extends BaseUser
 {
+
+  constructor(attributes)
+  {
+    super(attributes);
+    this._confirmPassword = '';
+  }
+
+  get virtuals()
+  {
+    return {
+      confirmPassword: {
+        get: function () {
+          return this._confirmPassword;
+        },
+        set: function(value) {
+          this._confirmPassword = value;
+        }
+      }
+    };
+  }
+
   get rules()
   {
     return merge(super.rules, {});
@@ -21,6 +42,8 @@ class User extends BaseUser
   }
 
 }
+
+User.tableName = 'tbl_user';
 
 export default User;
 

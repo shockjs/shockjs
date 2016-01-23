@@ -6,7 +6,8 @@ import {
   renderServer,
   cleanupServer,
   openUserModal,
-  closeUserModal
+  closeUserModal,
+  removeUser
 } from '../../../ducks/Users';
 import { ListView, Pagination, ListRows, Counter } from 'react-list-combo';
 import GridActive from '../../listview/GridActive';
@@ -60,6 +61,12 @@ class Users extends Component
     return dispatch(closeUserModal());
   }
 
+  removeUser(id)
+  {
+    const { dispatch } = this.props;
+    return dispatch(removeUser(id));
+  }
+
   /**
    * Render the component.
    */
@@ -88,7 +95,7 @@ class Users extends Component
             <span className="col-lg-1">&nbsp;</span>
           </div>
           <ListRows rowClassName="col-lg-12">
-            <Row />
+            <Row remove={ (id) => this.removeUser(id) } />
           </ListRows>
           <Counter label="users" wrapperClassName="toolbar pull-left" />
           <Pagination wrapperClassName="pull-right" />

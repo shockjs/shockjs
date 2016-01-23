@@ -190,7 +190,14 @@ class RestApi
      */
     this.createOne = {
       handler: (request, reply) => {
-        this.model.forge(request.payload)
+        let payload = request.payload;
+        try {
+          payload = JSON.parse(payload);
+        } catch(e) {
+          //Do nothing as request may not be json.
+        }
+        new this.model;
+        this.model.forge(payload)
           .save()
           .then((model) => {
             reply(model);
@@ -237,7 +244,7 @@ class RestApi
      */
     this.deleteOne = {
       handler: (request, reply) => {
-        reply(this.model.destroy(request.params.id));
+        reply(this.model.forge({id: request.params.id}).destroy());
       }
     };
 

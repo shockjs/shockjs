@@ -1,6 +1,7 @@
 "use strict";
 
 import { fetch } from '../utils/IsoBridge';
+import isPrimative from '../utils/isPrimative';
 
 export default class QueryBuilder
 {
@@ -144,12 +145,12 @@ export default class QueryBuilder
    */
   execute(returnJSON = true)
   {
-    const params = Object.keys(this._params).map((value, index) => {
-      return `${value}=${JSON.stringify(this._params[value])}`;
-    }).join('&');
-
     switch (this._meta.method.toLowerCase()) {
       case 'get':
+        const params = Object.keys(this._params).map((value) => {
+          const data = isPrimative(this._params[value]) ? this._params[value] : JSON.stringify(this._params[value]);
+          return `${value}=${data}`;
+        }).join('&');
         return fetch(this._endpoint + '?' + params, this._meta)
           .then((req) => {
             if (returnJSON) {
@@ -164,7 +165,7 @@ export default class QueryBuilder
       case 'delete':
         return fetch(this._endpoint, {
           ...this._meta,
-          body: params
+          body: JSON.stringify(this._params)
         })
           .then((req) => {
             if (returnJSON) {

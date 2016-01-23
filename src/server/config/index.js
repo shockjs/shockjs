@@ -93,7 +93,9 @@ export function getKnex(env=process.env.SHOCK_ENV, commandLine=false) {
  */
 export function getServerModel(env=process.env.SHOCK_ENV, commandLine=false) {
   let connection = getKnex(env, commandLine);
-  return getBase(bookshelf(connection).Model);
+  const bookshelfInstance = bookshelf(connection);
+  bookshelfInstance.plugin('virtuals');
+  return getBase(bookshelfInstance.Model);
 }
 
 /**

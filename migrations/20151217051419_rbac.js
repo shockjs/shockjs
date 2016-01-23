@@ -47,7 +47,9 @@ exports.up = (knex, Promise) => {
         .unsigned()
         .references('id')
         .inTable('tbl_user')
-        .notNullable();
+        .notNullable()
+        .onDelete('cascade')
+        .onUpdate('cascade');
 
       table.primary(['name', 'userID']);
     });

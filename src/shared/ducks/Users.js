@@ -29,6 +29,7 @@ function receiveData(json) {
 function fetchUsersApi(page=1) {
   return new QueryBuilder(`/api/v1/users`)
     .addParam('page', page)
+    .addParam('per-page', 5)
     .fetchList();
 }
 
@@ -36,6 +37,11 @@ function updateUserApi(key, value) {
   return new QueryBuilder(`/api/v1/users/${key}`)
     .addParam('active', value)
     .update();
+}
+
+function removeUserApi(key) {
+  return new QueryBuilder(`/api/v1/users/${key}`)
+    .remove();
 }
 
 export function renderServer() {
@@ -79,21 +85,21 @@ export function closeUserModal() {
   };
 }
 
+export function removeUser(key) {
+  return dispatch => {
+    return removeUserApi(key)
+      .then(() => dispatch(fetchUsers()));
+  };
+}
+
 export function submitForm(values, dispatch) {
   return new Promise((resolve, reject) => {
     const User = getUser(Base);
     const userInstance = new User(values);
-    userInstance.validate()
+    userInstance.save()
       .then(() => {
-        fetch(`/api/v1/users`)
-          .then(() => {
-            dispatch(fetchUsers(1));
-            resolve(true);
-          })
-          .catch((err) => {
-            console.error(err);
-          });
-
+        dispatch(fetchUsers(1));
+        resolve(true);
       })
       .catch((err) => {
         let errors = {};
