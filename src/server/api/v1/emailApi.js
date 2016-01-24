@@ -26,7 +26,6 @@ class EmailApi
         })
           .then(res => res.json())
           .then((data) => {
-            console.log(data);
             if (data.success === true) {
               var html = jade.compileFile(emailPath + '/contact/html.jade', {})(request.payload);
               var text = jade.compileFile(emailPath + '/contact/text.jade', {})(request.payload);
@@ -41,7 +40,6 @@ class EmailApi
 
               smtpTransport.sendMail(mail, function (error, response) {
                 if (error) {
-                  console.log(error);
                   reply({'success': false});
                 } else {
                   console.log("Message sent: " + response.message);

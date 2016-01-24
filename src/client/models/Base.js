@@ -6,6 +6,7 @@ class Base
   constructor(attributes)
   {
     this.attributes = attributes;
+    this._isNewRecord = true;
   }
 
   primaryKey()
@@ -13,9 +14,14 @@ class Base
     return 'id';
   }
 
-  isNewRecord()
+  get isNewRecord()
   {
-    return typeof this.attributes[this.primaryKey()] === 'undefined';
+    return this._isNewRecord;
+  }
+
+  set isNewRecord(isNewRecord)
+  {
+    this._isNewRecord = isNewRecord;
   }
 
   save(validate = true, attributes = false)
@@ -43,7 +49,7 @@ class Base
   {
     const updateAttributes = attributes ? pick(this.attributes, attributes) : this.attributes;
 
-    if (this.isNewRecord()) {
+    if (this.isNewRecord) {
       return (new QueryBuilder(this._endpoint)
         .addParams(updateAttributes)
         .create());

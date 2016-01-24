@@ -244,7 +244,10 @@ class RestApi
      */
     this.deleteOne = {
       handler: (request, reply) => {
-        reply(this.model.forge({id: request.params.id}).destroy());
+        const Model = new this.model();
+        const variables = {};
+        variables[Model.idAttribute] = request.params.id;
+        reply(this.model.forge(variables).destroy());
       }
     };
 

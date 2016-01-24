@@ -6,14 +6,19 @@ export function getAuth(Base) {
   {
     constructor(attributes)
     {
-      super(attributes);
+      super(attributes, '/api/v1/auth-type');
+    }
+
+    primaryKey()
+    {
+      return 'name';
     }
 
     get rules()
     {
       return {
-        username: ['required'],
-        password: ['required']
+        name: ['required'],
+        description: ['required']
       };
     }
   }

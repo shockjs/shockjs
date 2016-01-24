@@ -1,8 +1,11 @@
 "use strict";
 
 import { fetch, parseServerData, clearServerData } from '../utils/IsoBridge';
+import Base from '../../client/models/Base';
 import QueryBuilder from '../classes/QueryBuilder';
+import forOwn from 'lodash/object/forOwn';
 import * as ActionTypes from '../constants/ActionTypes';
+import { getAuth } from '../models/Auth';
 
 let defaultState = {
   roles: false,
@@ -51,6 +54,17 @@ function fetchRolesApi(page=1) {
 }
 
 /**
+ * Query for removing role.
+ *
+ * @param key
+ * @returns {*}
+ */
+function removeRoleApi(key) {
+  return new QueryBuilder(`/api/v1/auth-type/${key}`)
+    .remove();
+}
+
+/**
  * Fetches the promise for server side rendering.
  */
 export function renderServer() {
@@ -83,6 +97,68 @@ export function fetchRoles(page) {
 }
 
 /**
+ * Action: Open role dialog.
+ *
+ * @returns {{type, showModal: boolean}}
+ */
+export function openRoleModal() {
+  return {
+    type: ActionTypes.OPEN_MODAL,
+    showModal: true
+  };
+}
+
+/**
+ * Action: Close role dialog.
+ *
+ * @returns {{type, showModal: boolean}}
+ */
+export function closeRoleModal() {
+  return {
+    type: ActionTypes.CLOSE_MODAL,
+    showModal: false
+  };
+}
+
+/**
+ * Action: Removes a role.
+ *
+ * @param key
+ * @returns {Function}
+ */
+export function removeRole(key) {
+  return dispatch => {
+    return removeRoleApi(key)
+      .then(() => dispatch(fetchRoles()));
+  };
+}
+
+export function submitForm(values, dispatch) {
+  return new Promise((resolve, reject) => {
+
+    try {
+      const Role = getAuth(Base);
+      const roleInstance = new Role(values);
+      roleInstance.save()
+        .then(() => {
+          dispatch(fetchRoles(1));
+          resolve(true);
+        })
+        .catch((err) => {
+          let errors = {};
+          forOwn(err.errors, (value, key) => {
+            errors[key] = value.message;
+          });
+          reject(errors);
+        });
+    }
+    catch (e) {
+      console.error(e);
+    }
+  });
+}
+
+/**
  * Roles Reducer
  *
  * @param {object} state The existing or default state.
@@ -95,8 +171,15 @@ export default function(state = defaultState, action) {
       return Object.assign({}, state, {
         roles: action.roles || false
       });
-    default:
+    case ActionTypes.OPEN_MODAL:
+    case ActionTypes.CLOSE_MODAL:
+      return Object.assign({}, state, {
+        showModal: action.showModal
+      });
+    case '@INIT':
       return parseServerData('Roles', state);
+    default:
+      return state;
   }
 }
 

@@ -12,12 +12,23 @@ let defaultState = {
   renderedServer: false
 };
 
+/**
+ * Action: Set that a data request is underway.
+ *
+ * @returns {{type}}
+ */
 function requestData() {
   return {
     type: ActionTypes.DATA_REQUESTED
   };
 }
 
+/**
+ * Action: When data has been received.
+ *
+ * @param json
+ * @returns {{type, users: *, receivedAt: number}}
+ */
 function receiveData(json) {
   return {
     type: ActionTypes.DATA_FETCHED,
@@ -26,6 +37,12 @@ function receiveData(json) {
   };
 }
 
+/**
+ * Query for fetching the list of users.
+ *
+ * @param page
+ * @returns {Promise}
+ */
 function fetchUsersApi(page=1) {
   return new QueryBuilder(`/api/v1/users`)
     .addParam('page', page)
@@ -33,29 +50,59 @@ function fetchUsersApi(page=1) {
     .fetchList();
 }
 
+/**
+ * Query for updating user.
+ *
+ * @param key
+ * @param value
+ * @returns {*}
+ */
 function updateUserApi(key, value) {
   return new QueryBuilder(`/api/v1/users/${key}`)
     .addParam('active', value)
     .update();
 }
 
+/**
+ * Query for removing user.
+ *
+ * @param key
+ * @returns {*}
+ */
 function removeUserApi(key) {
   return new QueryBuilder(`/api/v1/users/${key}`)
     .remove();
 }
 
+/**
+ * Action: Renders server side data.
+ *
+ * @returns {Promise}
+ */
 export function renderServer() {
-  return fetchUsersApi().then(function(json) {
-    return { users: json };
-  });
+  return fetchUsersApi()
+    .then(function(json) {
+      return { users: json };
+    });
 }
 
+/**
+ * Action: Remove rendered from server when route changes.
+ *
+ * @returns {{type}}
+ */
 export function cleanupServer() {
   return {
     type: ActionTypes.CLEAR_SERVER_DATA
   };
 }
 
+/**
+ * Action: Fetches all users.
+ *
+ * @param page
+ * @returns {Function}
+ */
 export function fetchUsers(page) {
   return dispatch => {
     dispatch(requestData());
@@ -64,6 +111,13 @@ export function fetchUsers(page) {
   };
 }
 
+/**
+ * Action: Updates the a specific user.
+ *
+ * @param key
+ * @param value
+ * @returns {Function}
+ */
 export function updateUser(key, value) {
   return dispatch => {
     return updateUserApi(key, value)
@@ -71,6 +125,11 @@ export function updateUser(key, value) {
   };
 }
 
+/**
+ * Action: Open user dialog.
+ *
+ * @returns {{type, showModal: boolean}}
+ */
 export function openUserModal() {
   return {
     type: ActionTypes.OPEN_MODAL,
@@ -78,6 +137,11 @@ export function openUserModal() {
   };
 }
 
+/**
+ * Action: Close user dialog.
+ *
+ * @returns {{type, showModal: boolean}}
+ */
 export function closeUserModal() {
   return {
     type: ActionTypes.CLOSE_MODAL,
@@ -85,6 +149,12 @@ export function closeUserModal() {
   };
 }
 
+/**
+ * Action: Removes a user.
+ *
+ * @param key
+ * @returns {Function}
+ */
 export function removeUser(key) {
   return dispatch => {
     return removeUserApi(key)
@@ -92,6 +162,13 @@ export function removeUser(key) {
   };
 }
 
+/**
+ * Action: Submit the new user form.
+ *
+ * @param values
+ * @param dispatch
+ * @returns {Promise}
+ */
 export function submitForm(values, dispatch) {
   return new Promise((resolve, reject) => {
     const User = getUser(Base);
@@ -111,6 +188,13 @@ export function submitForm(values, dispatch) {
   });
 }
 
+/**
+ * Users Reducer
+ *
+ * @param {object} state The existing or default state.
+ * @param {object} action The action specified.
+ * @returns {object} The new state
+ */
 export default function(state = defaultState, action) {
   switch (action.type) {
     case ActionTypes.DATA_FETCHED:
