@@ -2,6 +2,9 @@
 # shockjs
 
 ![Build Status](https://travis-ci.org/shockjs/shockjs.svg)
+[![Code Climate](https://codeclimate.com/github/shockjs/shockjs/badges/gpa.svg)](https://codeclimate.com/github/shockjs/shockjs)
+<a href="https://codeclimate.com/github/shockjs/shockjs/coverage"><img src="https://codeclimate.com/github/shockjs/shockjs/badges/coverage.svg" /></a>
+<a href="https://codeclimate.com/github/shockjs/shockjs"><img src="https://codeclimate.com/github/shockjs/shockjs/badges/issue_count.svg" /></a>
 
 *An opinionated framework built with some well known libraries including reactjs, hapijs, redux, graphql, babel, jade, knex, bookshelf and more... Shockjs attempts to make a full isomorphic application with minimal differences between server and client code.*
 
