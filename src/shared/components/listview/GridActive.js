@@ -11,13 +11,13 @@ class GridActive extends Component
     return (
       <input type="checkbox"
         defaultChecked={ this.props.data }
-        onClick={ () => this.props.toggleActive(this.props.row[this.props.primaryKey], this.props.data) } />
+        onClick={ () => this.props.toggleActive(this.props.row[this.props.idAttribute], this.props.data) } />
     );
   }
 }
 
 GridActive.propTypes = {
-  primaryKey: React.PropTypes.string,
+  idAttribute: React.PropTypes.string,
   toggleActive: React.PropTypes.func,
   data: React.PropTypes.oneOfType([
     React.PropTypes.string,

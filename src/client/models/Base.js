@@ -6,22 +6,25 @@ class Base
   constructor(attributes)
   {
     this.attributes = attributes;
-    this._isNewRecord = true;
   }
 
-  primaryKey()
+  /**
+   * Mimics bookshelf id field lookup.
+   * @returns {string}
+   */
+  get idAttribute()
   {
     return 'id';
   }
 
-  get isNewRecord()
+  /**
+   * Mimics bookshelf's check to see if model is a new record.
+   *
+   * @returns {boolean}
+   */
+  isNew()
   {
-    return this._isNewRecord;
-  }
-
-  set isNewRecord(isNewRecord)
-  {
-    this._isNewRecord = isNewRecord;
+    return this[this.idAttribute] == null;
   }
 
   save(validate = true, attributes = false)
@@ -49,12 +52,12 @@ class Base
   {
     const updateAttributes = attributes ? pick(this.attributes, attributes) : this.attributes;
 
-    if (this.isNewRecord) {
+    if (this.isNew()) {
       return (new QueryBuilder(this._endpoint)
         .addParams(updateAttributes)
         .create());
     } else {
-      return (new QueryBuilder(this._endpoint + this.attributes[this.primaryKey()])
+      return (new QueryBuilder(this._endpoint + this.attributes[this.idAttribute])
         .addParams(updateAttributes)
         .update());
     }

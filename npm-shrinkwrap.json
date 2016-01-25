@@ -4167,7 +4167,7 @@
     },
     "knex": {
       "version": "0.9.0",
-      "from": "knex@>=0.9.0 <0.10.0",
+      "from": "knex@0.9.0",
       "resolved": "https://registry.npmjs.org/knex/-/knex-0.9.0.tgz"
     },
     "latest-version": {

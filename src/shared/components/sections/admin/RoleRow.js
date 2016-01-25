@@ -7,14 +7,14 @@ class RoleRow extends Component
    */
   render()
   {
-    const { name, description } = this.props.data;
+    const { id, name, description } = this.props.data;
 
     return (
       <div className="row list-row">
         <span className="col-lg-4">{ name }</span>
         <span className="col-lg-4">{ description }</span>
         <span className="col-lg-offset-3 col-lg-1 text-right">
-          <a className="fa fa-times fa-lg" onClick={ () => this.props.remove(name) } />
+          <a className="fa fa-times fa-lg" onClick={ () => this.props.remove(id) } />
         </span>
       </div>
     );

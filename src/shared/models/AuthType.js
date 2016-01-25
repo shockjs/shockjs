@@ -5,15 +5,16 @@ export function getAuthType(Base) {
   class AuthType extends getBase(Base)
   {
 
-    get idAttribute()
+    constructor(attributes)
     {
-      return 'name';
+      super(attributes, '/api/v1/auth-type');
     }
 
     get rules()
     {
       return {
-
+        name: ['required'],
+        description: ['required']
       };
     }
   }

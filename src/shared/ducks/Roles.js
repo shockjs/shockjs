@@ -5,7 +5,7 @@ import Base from '../../client/models/Base';
 import QueryBuilder from '../classes/QueryBuilder';
 import forOwn from 'lodash/object/forOwn';
 import * as ActionTypes from '../constants/ActionTypes';
-import { getAuth } from '../models/Auth';
+import { getAuthType } from '../models/AuthType';
 
 let defaultState = {
   roles: false,
@@ -137,7 +137,8 @@ export function submitForm(values, dispatch) {
   return new Promise((resolve, reject) => {
 
     try {
-      const Role = getAuth(Base);
+      const Role = getAuthType(Base);
+      values.type = 1;
       const roleInstance = new Role(values);
       roleInstance.save()
         .then(() => {

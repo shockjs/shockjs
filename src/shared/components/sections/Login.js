@@ -13,8 +13,11 @@ class Login extends Component
   {
     const { fields: { username, password }, handleSubmit, error, resetForm, submitting, invalid } = this.props;
 
-    const errorTemplate = (element) => {
-      return element.touched && element.error && <span className="text-error">{ element.error }</span>;
+    const errors = (element) => {
+      return {
+        bsStyle: element.error ? 'error' : null,
+        help: element.error
+      };
     };
 
     return (
@@ -23,10 +26,8 @@ class Login extends Component
           <h1>Login</h1>
         </div>
         <form onSubmit={ handleSubmit(submitForm.bind(this)) }>
-          <Input type="text" label="Username" placeholder="Enter username" {...username} />
-          { errorTemplate(username) }
-          <Input type="password" label="Password" placeholder="Enter password" {...password} />
-          { errorTemplate(password) }
+          <Input { ...errors(username) } type="text" label="Username" placeholder="Enter username" {...username} />
+          <Input { ...errors(password) } type="password" label="Password" placeholder="Enter password" {...password} />
           { error && <AlertAutoDismissable showAlert={true} resetForm={resetForm} bsStyle="danger">{ error }</AlertAutoDismissable> }
           <button disabled={ submitting || invalid } className="btn btn-primary btn-lg pull-right" type="submit">
             { submitting ? <i className="fa fa-spinner fa-pulse" /> : <i className="fa fa-user" /> } Login

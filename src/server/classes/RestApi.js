@@ -196,9 +196,9 @@ class RestApi
         } catch(e) {
           //Do nothing as request may not be json.
         }
-        new this.model;
-        this.model.forge(payload)
-          .save()
+        let model = new this.model(payload);
+        model
+          .save(null, { method: 'insert' })
           .then((model) => {
             reply(model);
           })

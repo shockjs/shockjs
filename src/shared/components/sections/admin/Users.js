@@ -95,7 +95,7 @@ class Users extends Component
             <span className="col-lg-1">&nbsp;</span>
           </div>
           <ListRows rowClassName="col-lg-12">
-            <Row remove={ () => this.removeUser(id) } />
+            <Row remove={ (id) => this.removeUser(id) } />
           </ListRows>
           <Counter label="users" wrapperClassName="toolbar pull-left" />
           <Pagination wrapperClassName="pull-right" />

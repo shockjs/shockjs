@@ -5,18 +5,19 @@ const AuthManager = require('../dist/server/classes/AuthManager').default;
 exports.up = (knex, Promise) => {
 
   const type = knex.schema.createTable('tbl_authType', (table) => {
-    table.string('name').notNullable();
+    table.increments();
+    table.string('name').notNullable().unique();
     table.integer('type').notNullable();
     table.text('description');
     table.string('createdAt').notNullable();
     table.string('updatedAt').notNullable();
-    table.primary('name');
   }).catch(function(error) {
     console.error(error);
   });
 
   const typeChild = type.then(() => {
     return knex.schema.createTable('tbl_authTypeChild', (table) => {
+      table.increments();
       table.string('parent')
         .references('name')
         .inTable('tbl_authType')
@@ -29,7 +30,7 @@ exports.up = (knex, Promise) => {
         .onDelete('cascade')
         .onUpdate('cascade')
         .notNullable();
-      table.primary(['parent', 'child']);
+      table.unique(['parent', 'child']);
     });
   }).catch((error) => {
     console.error(error);
@@ -37,6 +38,7 @@ exports.up = (knex, Promise) => {
 
   const typeAssign = typeChild.then(() => {
     return knex.schema.createTable('tbl_authAssignment', (table) => {
+      table.increments();
       table.string('name')
         .references('name')
         .inTable('tbl_authType')
@@ -51,7 +53,7 @@ exports.up = (knex, Promise) => {
         .onDelete('cascade')
         .onUpdate('cascade');
 
-      table.primary(['name', 'userID']);
+      table.unique(['name', 'userID']);
     });
   }).catch((error) => {
     console.error(error);

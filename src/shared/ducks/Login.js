@@ -62,33 +62,38 @@ function loginUser(form) {
  * @returns {Promise}
  */
 export function submitForm(values, dispatch) {
-  return new Promise((resolve, reject) => {
-    const Auth = getAuth(Base);
-    const authInstance = new Auth(values);
-    authInstance.validate()
-      .then(() => {
-        dispatch(requestData());
-        return loginUser(values)
-          .then(() => {
-            return dispatch(fetchAuth());
-          })
-          .then(() => {
-            redirect('/');
-            resolve();
-          })
-          .catch(function(err) {
-            reject({ "_error": [err.results.message] });
+  try {
+    return new Promise((resolve, reject) => {
+      const Auth = getAuth(Base);
+      const authInstance = new Auth(values);
+      authInstance.validate()
+        .then(() => {
+          dispatch(requestData());
+          return loginUser(values)
+            .then(() => {
+              return dispatch(fetchAuth());
+            })
+            .then(() => {
+              redirect('/');
+              resolve();
+            })
+            .catch(function (err) {
+              reject({"_error": [err.results.message]});
+            });
+        })
+        .catch((err) => {
+          let errors = {};
+          forOwn(err.errors, (value, key) => {
+            errors[key] = value.message;
           });
-      })
-      .catch((err) => {
-        let errors = {};
-        forOwn(err.errors, (value, key) => {
-          errors[key] = value.message;
+          reject(errors);
         });
-        reject(errors);
-      });
 
-  });
+    });
+  }
+  catch (e) {
+    console.error(e);
+  }
 }
 
 /**

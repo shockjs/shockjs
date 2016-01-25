@@ -17,6 +17,7 @@ import knex from 'knex';
 import bookshelf from 'bookshelf';
 import getBase from '../models/Base';
 import fs from 'fs';
+import merge from 'lodash/object/merge';
 
 process.env.SHOCK_ENV = process.env.SHOCK_ENV || 'development';
 
@@ -42,19 +43,19 @@ export function getConfig(env=process.env.SHOCK_ENV, commandLine=false) {
     break;
   }
 
-  environment = Object.assign({}, environment, main);
+  environment = merge(environment, main);
 
   try {
     let localMain = fs.readFileSync(__dirname + '/main-local.json', 'utf8');
     localMain = JSON.parse(localMain);
-    environment = Object.assign({}, environment, localMain);
+    environment = merge(environment, localMain);
   } catch (e) {
     //Do nothing as file does not exist.
   }
 
   // Adds console only commands.
   if (commandLine === true) {
-    environment = Object.assign({}, environment, command);
+    environment = merge(environment, command);
   }
 
   return environment;

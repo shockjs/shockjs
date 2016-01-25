@@ -24,8 +24,8 @@ export function getUser(Base) {
               const builder = new QueryBuilder(`${this._endpoint}/unique-username`)
                 .addParam('username', val)
                 .setMethod('POST');
-              if (!this.isNewRecord()) {
-                builder.addParam('id', this.attributes[this.primaryKey()]);
+              if (!this.isNew()) {
+                builder.addParam('id', this.attributes[this.idAttribute]);
               }
               return builder.execute()
                 .then((result) => {
@@ -74,8 +74,8 @@ export function getUser(Base) {
               const builder = new QueryBuilder(`${this._endpoint}/unique-email`)
                 .addParam('email', val)
                 .setMethod('POST');
-              if (!this.isNewRecord()) {
-                builder.addParam('id', this.attributes[this.primaryKey()]);
+              if (!this.isNew()) {
+                builder.addParam('id', this.attributes[this.idAttribute]);
               }
               return builder.execute()
                 .then((result) => {

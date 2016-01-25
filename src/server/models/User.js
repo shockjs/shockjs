@@ -17,11 +17,6 @@ class User extends BaseUser
     this._confirmPassword = '';
   }
 
-  get idAttribute()
-  {
-    return 'id';
-  }
-
   get virtuals()
   {
     return {
