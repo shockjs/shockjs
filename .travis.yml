@@ -2,9 +2,11 @@ language: node_js
 env:
   - CXX=g++-4.8
 node_js:
-  - "5.0.0"
+  - "4"
 before_script:
+  - $CXX --version
   - npm install -g gulp
+
 script: gulp compile
 
 addons:
@@ -17,3 +19,5 @@ addons:
 addons:
     code_climate:
         repo_token: 052a5ae4de33b8e16e3d18e84c09d9c6079d26c923daa19fba8a7cc5a756f671
+
+sudo: false
