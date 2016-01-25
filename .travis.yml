@@ -7,7 +7,7 @@ before_script:
   - $CXX --version
   - npm install -g gulp
 
-script: gulp compile
+script: gulp compile && npm test
 before_install:
   - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
   - sudo apt-get update -q
