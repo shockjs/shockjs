@@ -8,14 +8,10 @@ before_script:
   - npm install -g gulp
 
 script: gulp compile
-
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - gcc-4.8
-      - g++-4.8
+before_install:
+  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+  - sudo apt-get update -q
+  - sudo apt-get install gcc-4.8 -y
 addons:
     code_climate:
         repo_token: 052a5ae4de33b8e16e3d18e84c09d9c6079d26c923daa19fba8a7cc5a756f671
