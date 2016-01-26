@@ -44,6 +44,13 @@ class Contact extends Component
       );
     }
 
+    const errors = (element) => {
+      return {
+        bsStyle: element.error ? 'error' : null,
+        help: element.error
+      };
+    };
+
     return (
       <div>
         <div className="page-header">
@@ -53,14 +60,10 @@ class Contact extends Component
           <AlertAutoDismissable bsStyle="success" showAlert={ submitted } resetForm={ () => dispatch(clearSubmitted()) }>
             Your request has been submitted...
           </AlertAutoDismissable>
-          <Input type="text" label="Name" placeholder="Enter name" { ...name } />
-          <Error element={ name } />
-          <Input type="text" label="Phone" placeholder="Enter phone" { ...phone } />
-          <Error element={phone } />
-          <Input type="text" label="Email" placeholder="Enter email" { ...email } />
-          <Error element={email } />
-          <Input type="textarea" label="Comments" placeholder="Enter comments and questions." { ...comments } />
-          <Error element={comments } />
+          <Input { ...errors(name) } type="text" label="Name" placeholder="Enter name" { ...name } />
+          <Input { ...errors(phone) } type="text" label="Phone" placeholder="Enter phone" { ...phone } />
+          <Input { ...errors(email) } type="text" label="Email" placeholder="Enter email" { ...email } />
+          <Input { ...errors(comments) } type="textarea" label="Comments" placeholder="Enter comments and questions." { ...comments } />
           { showCaptcha }
           <Error element={captcha } />
           <button disabled={ submitting || invalid } className="btn btn-primary btn-lg pull-right" type="submit">
