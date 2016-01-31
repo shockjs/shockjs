@@ -1,10 +1,12 @@
 import authApi from './authApi';
 import userApi from './userApi';
 import emailApi from './emailApi';
-import roleApi from './authTypeApi';
+import authTypeApi from './authTypeApi';
+import authAssignmentApi from './authAssignmentApi';
 
 export default authApi.concat(
     userApi,
     emailApi,
-    roleApi
+    authTypeApi,
+    authAssignmentApi
 );

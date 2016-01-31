@@ -9,6 +9,7 @@
       "user": "shock",
       "password": "123",
       "database": "shock"
-    }
+    },
+    "debug": true
   }
 }

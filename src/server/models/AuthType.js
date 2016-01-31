@@ -1,6 +1,7 @@
 import { getServerModel } from "../config/index";
 import { getAuthType } from '../../shared/models/AuthType';
 import merge from 'lodash/object/merge';
+import AuthAssignment from '../models/AuthAssignment';
 
 /**
  * User Model
@@ -12,7 +13,12 @@ class AuthType extends BaseUser
 {
   get tableName()
   {
-    return this.prefix + 'authType';
+    return 'tbl_authType';
+  }
+
+  authAssignment()
+  {
+    return this.belongsTo(AuthAssignment, 'name');
   }
 
   get rules()

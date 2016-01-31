@@ -7,11 +7,12 @@ import {
   cleanupServer,
   openUserModal,
   closeUserModal,
-  removeUser
+  removeUser,
+  fetchPermissions
 } from '../../../ducks/Users';
 import { ListView, Pagination, ListRows, Counter } from 'react-list-combo';
 import GridActive from '../../listview/GridActive';
-import Row from '../../listview/Row';
+import UserRow from './UserRow';
 import { ButtonToolbar, ButtonGroup, Button } from 'react-bootstrap';
 import AddUser from './modals/AddUser';
 
@@ -67,6 +68,12 @@ class Users extends Component
     return dispatch(removeUser(id));
   }
 
+  showPermissions(id, showPermissions)
+  {
+    const { dispatch } = this.props;
+    return dispatch(fetchPermissions(id, showPermissions));
+  }
+
   /**
    * Render the component.
    */
@@ -95,7 +102,8 @@ class Users extends Component
             <span className="col-lg-1">&nbsp;</span>
           </div>
           <ListRows rowClassName="col-lg-12">
-            <Row remove={ (id) => this.removeUser(id) } />
+            <UserRow remove={ id => this.removeUser(id) }
+                     showPermissions={ (id, showPermissions) => this.showPermissions(id, showPermissions) } />
           </ListRows>
           <Counter label="users" wrapperClassName="toolbar pull-left" />
           <Pagination wrapperClassName="pull-right" />

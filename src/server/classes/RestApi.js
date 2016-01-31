@@ -42,54 +42,66 @@ class RestApi
           let limit = parseInt(request.query['per-page']) <= this.perPageLimit ? request.query['per-page'] : this.perPage;
           let fields;
           let sort;
+          let relations = [];
 
-          var query = this.model.query();
+          this.model.query((query) => {
 
-          // Attempt to get fields selected by client.
-          try {
-            fields = JSON.parse(request.query['fields'] || '["*"]');
-            query.select(fields);
-          } catch(e) {
-            console.error(e);
-            reply(Boom.badRequest('Invalid json fields parsed to server: ' + request.query['fields']));
-            return;
-          }
-
-          // Attempt to get sorts selected by client.
-          try {
-            if (request.query['sort'] !== undefined) {
-              sort = JSON.parse(request.query['sort']);
-              if (isArray(sort)) {
-                sort.forEach(function ({name, direction="ASC"}) {
-                  query.orderBy(name, direction);
-                });
-              }
+            // Attempt to get fields selected by client.
+            try {
+              fields = JSON.parse(request.query['fields'] || '["*"]');
+              query.select(fields);
+            } catch (e) {
+              console.error(e);
+              reply(Boom.badRequest('Invalid json fields parsed to server: ' + request.query['fields']));
+              return;
             }
-          } catch(e) {
-            console.error(e);
-            reply(Boom.badRequest('Invalid json sort parsed to server: ' + request.query['sort']));
-            return;
-          }
 
-          // Attempt to get filters selected by client.
-          try {
-            query = this.extractFilters(request, query);
-          } catch(e) {
-            console.error(e);
-            reply(Boom.badRequest(e));
-            return;
-          }
+            // Attempt to get sorts selected by client.
+            try {
+              if (request.query['sort'] !== undefined) {
+                sort = JSON.parse(request.query['sort']);
+                if (isArray(sort)) {
+                  sort.forEach(function ({name, direction="ASC"}) {
+                    query.orderBy(name, direction);
+                  });
+                }
+              }
+            } catch (e) {
+              console.error(e);
+              reply(Boom.badRequest('Invalid json sort parsed to server: ' + request.query['sort']));
+              return;
+            }
 
-          // Add pagination
-          query.limit(limit).offset(limit * page - limit);
+            // Attempt to get filters selected by client.
+            try {
+              query = this.extractFilters(request, query);
+            } catch (e) {
+              console.error(e);
+              reply(Boom.badRequest(e));
+              return;
+            }
 
-          //console.log(query.toSQL());
+            try {
+              relations = this.extractRelations(request);
+            } catch (e) {
+              console.error(e);
+              reply(Boom.badRequest(e));
+              return;
+            }
 
-          query.then((data) => {
+            // Add pagination
+            query.limit(limit).offset(limit * page - limit);
 
+          })
+          .fetchAll(
+            {
+              withRelated: relations
+            }
+          )
+          .then((data) => {
             // Removes any sensitive data as specified in the model.
             if (this.model.filterAttribute !== undefined) {
-              data = data.map((row) => {
+              data = data.toJSON().map((row) => {
                 return pick(row, Object.keys(row).filter(this.model.filterAttribute));
               });
             }
@@ -290,6 +302,27 @@ class RestApi
       throw new Error('Invalid json filters parsed to server: ' + request.query['filters']);
     }
     return query;
+  }
+
+  extractRelations(request)
+  {
+    let relations = [];
+    let allowedRelations = [];
+    try {
+      relations = JSON.parse(request.query['relations'] || '[]');
+    } catch(e) {
+      console.error(e);
+      throw new Error('Invalid json relations parsed to server: ' + request.query['relations']);
+    }
+    if (isArray(relations)) {
+      relations.forEach(({ name }) => {
+        if (this.model.allowedRelations() &&
+          this.model.allowedRelations().indexOf(name) !== -1) {
+          allowedRelations.push(name);
+        }
+      });
+    }
+    return allowedRelations;
   }
 
   /**

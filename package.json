@@ -11,7 +11,7 @@
   ],
   "main": "server/index.js",
   "engines": {
-    "node": "5.0.0"
+    "node": "5.5.0"
   },
   "scripts": {
     "test": "jest"
@@ -126,7 +126,8 @@
       "<rootDir>/node_modules/react",
       "<rootDir>/node_modules/react-dom",
       "<rootDir>/node_modules/react-addons-test-utils",
-      "<rootDir>/node_modules/fbjs"
+      "<rootDir>/node_modules/fbjs",
+      "<rootDir>/node_modules/core-js"
     ],
     "collectCoverage": true
   }

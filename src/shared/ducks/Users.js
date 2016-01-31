@@ -6,6 +6,7 @@ import { getUser } from '../models/User';
 import forOwn from 'lodash/object/forOwn';
 import QueryBuilder from '../classes/QueryBuilder';
 import * as ActionTypes from '../constants/ActionTypes';
+import findIndex from 'lodash/array/findIndex';
 
 let defaultState = {
   users: false,
@@ -34,6 +35,14 @@ function receiveData(json) {
     type: ActionTypes.DATA_FETCHED,
     users: json,
     receivedAt: Date.now()
+  };
+}
+
+function receivePermissionData(user_id, json) {
+  return {
+    type: ActionTypes.PERMISSION_DATA_FETCHED,
+    user_id: user_id,
+    permissions: json
   };
 }
 
@@ -162,6 +171,24 @@ export function removeUser(key) {
   };
 }
 
+export function fetchPermissions(key, toggle) {
+  if (toggle === undefined) {
+    return dispatch => {
+      return new QueryBuilder(`/api/v1/auth-assignment`)
+        .addParam('filters', [{name: 'userID', value: key}])
+        .addParam('relations', [{name: 'authType'}])
+        .fetch()
+        .then(json => dispatch(receivePermissionData(key, json)));
+    }
+  } else {
+    return {
+      type: ActionTypes.PERMISSION_DATA_FETCHED,
+      user_id: key,
+      showPermissions: !toggle
+    };
+  }
+}
+
 /**
  * Action: Submit the new user form.
  *
@@ -202,6 +229,21 @@ export default function(state = defaultState, action) {
         users: action.users || false,
         showModal: false
       });
+    case ActionTypes.PERMISSION_DATA_FETCHED:
+      let users = state.users;
+      const userIndex = findIndex(state.users.payload, (user) => user.id === action.user_id);
+      if (userIndex !== -1) {
+        if (action.permissions) {
+          users.payload[userIndex].permissions = action.permissions;
+          users.payload[userIndex].showPermissions = true;
+        } else {
+          users.payload[userIndex].showPermissions = action.showPermissions;
+        }
+      }
+      return {
+        users: users,
+        time: Date.now() //Always triggers a re-render.
+      };
     case ActionTypes.OPEN_MODAL:
     case ActionTypes.CLOSE_MODAL:
       return Object.assign({}, state, {
@@ -210,7 +252,6 @@ export default function(state = defaultState, action) {
     case ActionTypes.CLEAR_SERVER_DATA:
       return clearServerData('Users', state);
     case '@INIT':
-      console.log('default', state, action);
       return parseServerData('Users', state);
     default:
       return state;

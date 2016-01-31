@@ -15,5 +15,12 @@
 .list-row {
   padding: 10px;
   line-height: 14px;
+}
+
+.lighter-row {
   background-color: lighten($brand-primary, 45%);
+}
+
+.shift-right {
+  margin-left: 10px;
 }

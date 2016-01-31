@@ -9,9 +9,10 @@ class AuthManager
     this.knex = knex;
   }
 
-  createRole(roleName, description = 'Not provided.')
+  createRole(roleLabel, roleName, description = 'Not provided.')
   {
     return this.knex('tbl_authType').insert({
+      label: roleLabel,
       name: roleName,
       type: 1,
       description: description,
@@ -22,10 +23,20 @@ class AuthManager
 
   assignRole(roleName, userId)
   {
-    return this.knex('tbl_authAssignment').insert({
-      name: roleName,
-      userID: userId
-    });
+    return this.knex
+      .from('tbl_authType')
+      .where('name', roleName)
+      .select('id')
+      .then((result) => {
+        return this.knex('tbl_authAssignment').insert({
+          authTypeID: result[0].id,
+          userID: userId
+        });
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+
   }
 
 }
