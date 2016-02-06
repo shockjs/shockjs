@@ -19,7 +19,8 @@ class UserRow extends Component
       username,
       email,
       showPermissions,
-      permissions
+      permissions,
+      isPermissionsModalShown
     } = this.props.data;
 
     let icon = 'fa-plus';
@@ -65,8 +66,8 @@ class UserRow extends Component
             );
           })
         }
-        <AssignAuth userID={ id } showModal={ this.props.isPermissionModalShown }
-                    closeModal={ () => this.props.closePermissionModal() } />
+        <AssignAuth userID={ id } showModal={ isPermissionsModalShown }
+                    closeModal={ () => this.props.closePermissionModal(id) } />
       </div>
     );
   }

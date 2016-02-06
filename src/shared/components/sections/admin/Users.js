@@ -89,16 +89,16 @@ class Users extends Component
     const { dispatch } = this.props;
   }
 
-  openPermissionModal()
+  openPermissionModal(id)
   {
     const { dispatch } = this.props;
-    return dispatch(openPermissionModal());
+    return dispatch(openPermissionModal(id));
   }
 
-  closePermissionModal()
+  closePermissionModal(id)
   {
     const { dispatch } = this.props;
-    return dispatch(closePermissionModal());
+    return dispatch(closePermissionModal(id));
   }
 
   /**
@@ -134,9 +134,8 @@ class Users extends Component
                      showPermissions={ (id, showPermissions) => this.showPermissions(id, showPermissions) }
                      removePermission={ (id) => this.removePermission(id) }
                      assignPermissions={ (id) => this.assignPermissions(id) }
-                     isPermissionModalShown={ this.props.isPermissionsModalShown }
-                     openPermissionModal={ () => this.openPermissionModal() }
-                     closePermissionModal={ () => this.closePermissionModal() }
+                     openPermissionModal={ (id) => this.openPermissionModal(id) }
+                     closePermissionModal={ (id) => this.closePermissionModal(id) }
             />
           </ListRows>
           <Counter label="users" wrapperClassName="toolbar pull-left" />

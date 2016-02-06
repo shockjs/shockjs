@@ -230,15 +230,16 @@ export function openPermissionModal(id)
   return {
     type: ActionTypes.OPEN_PERMISSIONS_MODAL,
     isPermissionsModalShown: true,
-    id: id
+    user_id: id
   }
 }
 
-export function closePermissionModal()
+export function closePermissionModal(id)
 {
   return {
     type: ActionTypes.CLOSE_PERMISSIONS_MODAL,
-    isPermissionsModalShown: false
+    isPermissionsModalShown: false,
+    user_id: id
   }
 }
 
@@ -250,6 +251,9 @@ export function closePermissionModal()
  * @returns {object} The new state
  */
 export default function(state = defaultState, action) {
+  let users = state.users;
+  let userIndex;
+
   switch (action.type) {
     case ActionTypes.DATA_FETCHED:
       return Object.assign({}, state, {
@@ -257,8 +261,7 @@ export default function(state = defaultState, action) {
         showModal: false
       });
     case ActionTypes.PERMISSION_DATA_FETCHED:
-      let users = state.users;
-      const userIndex = findIndex(state.users.payload, (user) => user.id === action.user_id);
+      userIndex = findIndex(state.users.payload, (user) => user.id === action.user_id);
       if (userIndex !== -1) {
         if (action.permissions) {
           users.payload[userIndex].permissions = action.permissions;
@@ -273,12 +276,16 @@ export default function(state = defaultState, action) {
       };
     case ActionTypes.OPEN_PERMISSIONS_MODAL:
     case ActionTypes.CLOSE_PERMISSIONS_MODAL:
-      return Object.assign({}, state, {
-        isPermissionsModalShown: action.isPermissionsModalShown != undefined
+      userIndex = findIndex(state.users.payload, (user) => user.id === action.user_id);
+      if (userIndex !== -1) {
+        users.payload[userIndex].isPermissionsModalShown = action.isPermissionsModalShown != undefined
           ? action.isPermissionsModalShown
-          : state.isPermissionsModalShown,
+          : state.isPermissionsModalShown;
+      }
+      return {
+        users: users,
         time: Date.now() //Always triggers a re-render.
-      });
+      };
     case ActionTypes.OPEN_MODAL:
     case ActionTypes.CLOSE_MODAL:
       return Object.assign({}, state, {
