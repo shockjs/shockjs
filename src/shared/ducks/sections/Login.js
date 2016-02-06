@@ -1,12 +1,12 @@
 "use strict";
 
-import { fetch, redirect, parseServerData } from '../utils/IsoBridge';
-import * as ActionTypes from '../constants/ActionTypes';
-import Base from '../../client/models/Base';
-import { getAuth } from '../models/Auth';
+import { fetch, redirect, parseServerData } from '../../utils/IsoBridge';
+import * as ActionTypes from '../../constants/ActionTypes';
+import Base from '../../../client/models/Base';
+import { getAuth } from '../../models/Auth';
 import forOwn from 'lodash/object/forOwn';
-import { fetchAuth } from './App';
-import QueryBuilder from '../classes/QueryBuilder';
+import { fetchAuth } from './../App';
+import QueryBuilder from '../../classes/QueryBuilder';
 
 let defaultState = {
 

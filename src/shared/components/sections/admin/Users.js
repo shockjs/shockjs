@@ -8,8 +8,12 @@ import {
   openUserModal,
   closeUserModal,
   removeUser,
-  fetchPermissions
-} from '../../../ducks/Users';
+  fetchPermissions,
+  removePermission,
+  openPermissionModal,
+  closePermissionModal
+
+} from '../../../ducks/sections/admin/Users';
 import { ListView, Pagination, ListRows, Counter } from 'react-list-combo';
 import GridActive from '../../listview/GridActive';
 import UserRow from './UserRow';
@@ -74,6 +78,29 @@ class Users extends Component
     return dispatch(fetchPermissions(id, showPermissions));
   }
 
+  removePermission(id)
+  {
+    const { dispatch } = this.props;
+    return dispatch(removePermission(id));
+  }
+
+  assignPermissions(id)
+  {
+    const { dispatch } = this.props;
+  }
+
+  openPermissionModal()
+  {
+    const { dispatch } = this.props;
+    return dispatch(openPermissionModal());
+  }
+
+  closePermissionModal()
+  {
+    const { dispatch } = this.props;
+    return dispatch(closePermissionModal());
+  }
+
   /**
    * Render the component.
    */
@@ -96,14 +123,21 @@ class Users extends Component
           </ButtonToolbar>
           <Pagination wrapperClassName="pull-right" />
           <div className="col-lg-12 list-header">
+            <span className="col-lg-1">&nbsp;</span>
             <span className="col-lg-3">Name</span>
             <span className="col-lg-3">Username</span>
             <span className="col-lg-3">Email</span>
-            <span className="col-lg-1">&nbsp;</span>
+            <span className="col-lg-2">&nbsp;</span>
           </div>
           <ListRows rowClassName="col-lg-12">
             <UserRow remove={ id => this.removeUser(id) }
-                     showPermissions={ (id, showPermissions) => this.showPermissions(id, showPermissions) } />
+                     showPermissions={ (id, showPermissions) => this.showPermissions(id, showPermissions) }
+                     removePermission={ (id) => this.removePermission(id) }
+                     assignPermissions={ (id) => this.assignPermissions(id) }
+                     isPermissionModalShown={ this.props.isPermissionsModalShown }
+                     openPermissionModal={ () => this.openPermissionModal() }
+                     closePermissionModal={ () => this.closePermissionModal() }
+            />
           </ListRows>
           <Counter label="users" wrapperClassName="toolbar pull-left" />
           <Pagination wrapperClassName="pull-right" />

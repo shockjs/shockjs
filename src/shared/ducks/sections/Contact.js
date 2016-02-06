@@ -1,12 +1,12 @@
 "use strict";
 
-import { fetch, redirect, parseServerData, getConfig, isServer  } from '../utils/IsoBridge';
-import * as ActionTypes from '../constants/ActionTypes';
-import Base from '../../client/models/Base';
-import { getContact } from '../models/Contact';
+import { fetch, redirect, parseServerData, getConfig, isServer  } from '../../utils/IsoBridge';
+import * as ActionTypes from '../../constants/ActionTypes';
+import Base from '../../../client/models/Base';
+import { getContact } from '../../models/Contact';
 import forOwn from 'lodash/object/forOwn';
 const config = getConfig();
-import QueryBuilder from '../classes/QueryBuilder';
+import QueryBuilder from '../../classes/QueryBuilder';
 
 let defaultState = {
   fieldData: {}

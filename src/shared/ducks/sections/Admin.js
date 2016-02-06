@@ -1,4 +1,4 @@
-import { parseServerData } from '../utils/IsoBridge';
+import { parseServerData } from '../../utils/IsoBridge';
 
 let defaultState = {
 

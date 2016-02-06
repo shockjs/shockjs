@@ -1,6 +1,6 @@
 import { getBase } from './Base';
 
-export function getAuthType(Base) {
+export function getAuthType(Base=function(){}) {
 
   class AuthType extends getBase(Base)
   {
@@ -18,6 +18,9 @@ export function getAuthType(Base) {
       };
     }
   }
+
+  AuthType.ROLE = 1;
+  AuthType.OPERATION = 2;
 
   return AuthType;
 }

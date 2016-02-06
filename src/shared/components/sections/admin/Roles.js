@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchRoles, renderServer, cleanupServer, openRoleModal, closeRoleModal, removeRole } from '../../../ducks/Roles';
+import {
+  fetchRoles,
+  renderServer,
+  cleanupServer,
+  openRoleModal,
+  closeRoleModal,
+  removeRole
+} from '../../../ducks/sections/admin/Roles';
 import { ListView, Pagination, ListRows, Counter } from 'react-list-combo';
 import { ButtonToolbar, ButtonGroup, Button } from 'react-bootstrap';
 import RoleRow from './RoleRow';

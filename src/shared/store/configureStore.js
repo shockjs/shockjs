@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * Central Store (Server)
  */
@@ -11,7 +13,7 @@ import DevTools from '../utils/DevTools';
 //Load in our reducers.
 import * as reducers from '../ducks/index';
 
-import { SUBMIT_FORM_SUCCESS } from '../constants/ActionTypes';
+import { SUBMIT_FORM_SUCCESS, OPEN_PERMISSIONS_MODAL } from '../constants/ActionTypes';
 
 const rootReducer = combineReducers(Object.assign({}, reducers, {
   routing: routeReducer,
@@ -26,6 +28,14 @@ const rootReducer = combineReducers(Object.assign({}, reducers, {
               value: ''
             }
           };
+        default:
+          return state;
+      }
+    },
+    "assign-auth-form": (state, action) => {
+      switch (action.type) {
+        case OPEN_PERMISSIONS_MODAL:
+          return {};
         default:
           return state;
       }

@@ -1,11 +1,11 @@
 "use strict";
 
-import { fetch, parseServerData, clearServerData } from '../utils/IsoBridge';
-import Base from '../../client/models/Base';
-import { getUser } from '../models/User';
+import { fetch, parseServerData, clearServerData } from '../../../utils/IsoBridge';
+import Base from '../../../../client/models/Base';
+import { getUser } from '../../../models/User';
 import forOwn from 'lodash/object/forOwn';
-import QueryBuilder from '../classes/QueryBuilder';
-import * as ActionTypes from '../constants/ActionTypes';
+import QueryBuilder from '../../../classes/QueryBuilder';
+import * as ActionTypes from '../../../constants/ActionTypes';
 import findIndex from 'lodash/array/findIndex';
 
 let defaultState = {
@@ -35,14 +35,6 @@ function receiveData(json) {
     type: ActionTypes.DATA_FETCHED,
     users: json,
     receivedAt: Date.now()
-  };
-}
-
-function receivePermissionData(user_id, json) {
-  return {
-    type: ActionTypes.PERMISSION_DATA_FETCHED,
-    user_id: user_id,
-    permissions: json
   };
 }
 
@@ -81,6 +73,14 @@ function updateUserApi(key, value) {
 function removeUserApi(key) {
   return new QueryBuilder(`/api/v1/users/${key}`)
     .remove();
+}
+
+function receivePermissionData(user_id, json) {
+  return {
+    type: ActionTypes.PERMISSION_DATA_FETCHED,
+    user_id: user_id,
+    permissions: json
+  };
 }
 
 /**
@@ -189,6 +189,16 @@ export function fetchPermissions(key, toggle) {
   }
 }
 
+export function removePermission(id) {
+  return new QueryBuilder(`/api/v1/auth-assignment/${id}`)
+    .remove()
+    .then(() => {
+      return dispatch => {
+        //fetchPermissions()
+      }
+    });
+}
+
 /**
  * Action: Submit the new user form.
  *
@@ -213,6 +223,23 @@ export function submitForm(values, dispatch) {
         reject(errors);
       });
   });
+}
+
+export function openPermissionModal(id)
+{
+  return {
+    type: ActionTypes.OPEN_PERMISSIONS_MODAL,
+    isPermissionsModalShown: true,
+    id: id
+  }
+}
+
+export function closePermissionModal()
+{
+  return {
+    type: ActionTypes.CLOSE_PERMISSIONS_MODAL,
+    isPermissionsModalShown: false
+  }
 }
 
 /**
@@ -244,6 +271,14 @@ export default function(state = defaultState, action) {
         users: users,
         time: Date.now() //Always triggers a re-render.
       };
+    case ActionTypes.OPEN_PERMISSIONS_MODAL:
+    case ActionTypes.CLOSE_PERMISSIONS_MODAL:
+      return Object.assign({}, state, {
+        isPermissionsModalShown: action.isPermissionsModalShown != undefined
+          ? action.isPermissionsModalShown
+          : state.isPermissionsModalShown,
+        time: Date.now() //Always triggers a re-render.
+      });
     case ActionTypes.OPEN_MODAL:
     case ActionTypes.CLOSE_MODAL:
       return Object.assign({}, state, {
@@ -251,7 +286,7 @@ export default function(state = defaultState, action) {
       });
     case ActionTypes.CLEAR_SERVER_DATA:
       return clearServerData('Users', state);
-    case '@INIT':
+    case ActionTypes.INIT:
       return parseServerData('Users', state);
     default:
       return state;

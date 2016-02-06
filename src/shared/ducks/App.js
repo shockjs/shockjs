@@ -86,7 +86,7 @@ export function logoutUser() {
  */
 export default function(state = defaultState, action) {
   switch (action.type) {
-    case "@@INIT":
+    case ActionTypes.INIT:
       return parseServerData('App', state);
     case ActionTypes.UPDATE_AUTH:
       return Object.assign({}, state, action);

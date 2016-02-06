@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Input, ButtonInput, Col } from 'react-bootstrap';
 import AlertAutoDismissable from '../alerts/AlertAutoDismissable';
-import { submitForm } from '../../ducks/Login';
+import { submitForm } from '../../ducks/sections/Login';
 import { reduxForm } from 'redux-form';
 import { fetchAuth } from '../../ducks/App';
 import { redirect } from '../../utils/IsoBridge';
@@ -30,7 +30,7 @@ class Login extends Component
           <Input { ...errors(password) } type="password" label="Password" placeholder="Enter password" {...password} />
           { error && <AlertAutoDismissable showAlert={true} resetForm={resetForm} bsStyle="danger">{ error }</AlertAutoDismissable> }
           <button disabled={ submitting || invalid } className="btn btn-primary btn-lg pull-right" type="submit">
-            { submitting ? <i className="fa fa-spinner fa-pulse" /> : <i className="fa fa-user" /> } Login
+            { submitting ? <i className="fa fa-spinner fa-pulse" /> : <i className="fa fa-send" /> } Login
           </button>
         </form>
       </Col>

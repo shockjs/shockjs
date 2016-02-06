@@ -1,8 +1,8 @@
 "use strict";
 
-import { fetch, redirect, parseServerData } from '../utils/IsoBridge';
-import * as ActionTypes from '../constants/ActionTypes';
-import QueryBuilder from '../classes/QueryBuilder';
+import { fetch, redirect, parseServerData } from '../../../utils/IsoBridge';
+import * as ActionTypes from '../../../constants/ActionTypes';
+import QueryBuilder from '../../../classes/QueryBuilder';
 
 let defaultState = {
   userCount: 0,

@@ -12,7 +12,10 @@ export function getAuthAssignment(Base) {
 
     get rules()
     {
-
+      return {
+        authTypeID: 'required',
+        userID: 'required'
+      };
     }
   }
 

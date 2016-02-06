@@ -1,8 +1,9 @@
 export { default as App } from './App';
-export { default as Welcome } from './Welcome';
-export { default as Contact } from './Contact';
-export { default as Login } from './Login';
-export { default as Admin } from './Admin';
-export { default as Dashboard } from './Dashboard';
-export { default as Users } from './Users';
-export { default as Roles } from './Roles';
+export { default as Welcome } from './sections/Welcome';
+export { default as Contact } from './sections/Contact';
+export { default as Login } from './sections/Login';
+export { default as Admin } from './sections/Admin';
+export { default as Dashboard } from './sections/admin/Dashboard';
+export { default as Users } from './sections/admin/Users';
+export { default as Roles } from './sections/admin/Roles';
+export { default as AssignAuth } from './sections/admin/modals/AssignAuth';

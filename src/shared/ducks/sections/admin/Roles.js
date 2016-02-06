@@ -1,11 +1,11 @@
 "use strict";
 
-import { fetch, parseServerData, clearServerData } from '../utils/IsoBridge';
-import Base from '../../client/models/Base';
-import QueryBuilder from '../classes/QueryBuilder';
+import { fetch, parseServerData, clearServerData } from '../../../utils/IsoBridge';
+import Base from '../../../../client/models/Base';
+import QueryBuilder from '../../../classes/QueryBuilder';
 import forOwn from 'lodash/object/forOwn';
-import * as ActionTypes from '../constants/ActionTypes';
-import { getAuthType } from '../models/AuthType';
+import * as ActionTypes from '../../../constants/ActionTypes';
+import { getAuthType } from '../../../models/AuthType';
 
 let defaultState = {
   roles: false,
@@ -177,7 +177,7 @@ export default function(state = defaultState, action) {
       return Object.assign({}, state, {
         showModal: action.showModal
       });
-    case '@INIT':
+    case ActionTypes.INIT:
       return parseServerData('Roles', state);
     default:
       return state;
