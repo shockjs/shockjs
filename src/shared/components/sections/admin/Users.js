@@ -78,15 +78,10 @@ class Users extends Component
     return dispatch(fetchPermissions(id, showPermissions));
   }
 
-  removePermission(id)
+  removePermission(id, userID)
   {
     const { dispatch } = this.props;
-    return dispatch(removePermission(id));
-  }
-
-  assignPermissions(id)
-  {
-    const { dispatch } = this.props;
+    return dispatch(removePermission(id, userID));
   }
 
   openPermissionModal(id)
@@ -132,7 +127,7 @@ class Users extends Component
           <ListRows rowClassName="col-lg-12">
             <UserRow remove={ id => this.removeUser(id) }
                      showPermissions={ (id, showPermissions) => this.showPermissions(id, showPermissions) }
-                     removePermission={ (id) => this.removePermission(id) }
+                     removePermission={ (id, userID) => this.removePermission(id, userID) }
                      assignPermissions={ (id) => this.assignPermissions(id) }
                      openPermissionModal={ (id) => this.openPermissionModal(id) }
                      closePermissionModal={ (id) => this.closePermissionModal(id) }

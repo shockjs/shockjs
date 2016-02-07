@@ -13,7 +13,7 @@ class UserRow extends Component
   render()
   {
     const {
-      id,
+      id: userID,
       firstName,
       lastName,
       username,
@@ -32,7 +32,7 @@ class UserRow extends Component
       <div>
         <div className="row list-row lighter-row">
           <span className="col-lg-1">
-            <a onClick={ () => this.props.showPermissions(id, showPermissions) }>
+            <a onClick={ () => this.props.showPermissions(userID, showPermissions) }>
               <i className={ "row fa fa-1x " + icon } />
             </a>
           </span>
@@ -40,10 +40,10 @@ class UserRow extends Component
           <span className="col-lg-3">{ username }</span>
           <span className="col-lg-3">{ email }</span>
           <span className="col-lg-2 text-right row">
-            <a onClick={ () => this.props.remove(id) }>
+            <a onClick={ () => this.props.remove(userID) }>
               <i className="row fa fa-times fa-1x" />
             </a>
-            <a onClick={ () => this.props.openPermissionModal(id) }>
+            <a onClick={ () => this.props.openPermissionModal(userID) }>
               <i className="row fa fa-sitemap fa-1x" />
             </a>
           </span>
@@ -59,15 +59,16 @@ class UserRow extends Component
                 <span className="col-lg-5">{ description }</span>
                 <span className="col-lg-1 text-right">
                   <a>
-                    <i className="row fa fa-times fa-1x" />
+                    <i className="row fa fa-times fa-1x" onClick={ () => this.props.removePermission(id, userID) } />
                   </a>
                 </span>
               </div>
             );
           })
         }
-        <AssignAuth userID={ id } showModal={ isPermissionsModalShown }
-                    closeModal={ () => this.props.closePermissionModal(id) } />
+        <AssignAuth userID={ userID }
+                    showModal={ isPermissionsModalShown }
+                    closeModal={ () => this.props.closePermissionModal(userID) } />
       </div>
     );
   }
@@ -78,7 +79,8 @@ UserRow.propTypes = {
   data: React.PropTypes.object,
   remove: React.PropTypes.func,
   showPermissions: React.PropTypes.func,
-  assignPermissions: React.PropTypes.func
+  assignPermissions: React.PropTypes.func,
+  removePermission: React.PropTypes.func
 };
 UserRow.defaultProps = { };
 export default UserRow;

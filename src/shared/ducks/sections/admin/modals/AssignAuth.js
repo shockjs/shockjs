@@ -30,7 +30,6 @@ export function fetchPermissionTypes(id)
 }
 
 export function submitForm(values, dispatch) {
-  console.log(values);
   return new Promise((resolve, reject) => {
     const authInstance = new AuthAssignment(values);
     authInstance.save()

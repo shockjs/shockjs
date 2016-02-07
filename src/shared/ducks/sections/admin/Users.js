@@ -189,14 +189,14 @@ export function fetchPermissions(key, toggle) {
   }
 }
 
-export function removePermission(id) {
-  return new QueryBuilder(`/api/v1/auth-assignment/${id}`)
-    .remove()
-    .then(() => {
-      return dispatch => {
-        //fetchPermissions()
-      }
-    });
+export function removePermission(id, userID) {
+  return dispatch => {
+    return new QueryBuilder(`/api/v1/auth-assignment/${id}`)
+      .remove()
+      .then(() => {
+          dispatch(fetchPermissions(userID));
+      });
+  }
 }
 
 /**
