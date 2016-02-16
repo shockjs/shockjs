@@ -37,4 +37,11 @@
       color: darken($brand-warning, 30%);
     }
   }
+  &.no-perms {
+    background-color: lighten($brand-primary, 30%);
+    border-left: 4px solid darken($brand-primary, 30%);
+    a {
+      color: darken($brand-primary, 30%);
+    }
+  }
 }

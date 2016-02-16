@@ -6,14 +6,15 @@ import {
   cleanupServer,
   openRoleModal,
   closeRoleModal,
-  removeRole
-} from '../../../ducks/sections/admin/Roles';
+  removeRole,
+  fetchChildren
+} from '../../../ducks/sections/admin/Permissions';
 import { ListView, Pagination, ListRows, Counter } from 'react-list-combo';
 import { ButtonToolbar, ButtonGroup, Button } from 'react-bootstrap';
-import RoleRow from './RoleRow';
-import AddRole from './modals/AddRole';
+import PermissionRow from './PermissionRow';
+import AddPermission from './modals/AddPermission';
 
-class Roles extends Component
+class Permissions extends Component
 {
 
   static renderServer()
@@ -59,6 +60,12 @@ class Roles extends Component
     return dispatch(removeRole(id));
   }
 
+  showChildren(id, toggle)
+  {
+    const { dispatch } = this.props;
+    return dispatch(fetchChildren(id, toggle));
+  }
+
   render()
   {
 
@@ -70,30 +77,34 @@ class Roles extends Component
     return (
       <div>
         <div className="page-header">
-          <h1>Roles <small>modify, add or remove roles of the website.</small></h1>
+          <h1>Permissions <small>modify, add or remove permissions of the website.</small></h1>
         </div>
         <ListView initData={ this.props.roles } dataSource={ (page) => this.fetchMore(page) }>
           <ButtonToolbar bsClass="toolbar pull-left">
-            <Button bsStyle="primary" onClick={ () => this.openRoleModal() }>Add role</Button>
+            <Button bsStyle="primary" onClick={ () => this.openRoleModal() }>Add permission</Button>
           </ButtonToolbar>
           <Pagination wrapperClassName="pull-right" />
           <div className="col-lg-12 list-header">
-            <span className="col-lg-4">Name</span>
-            <span className="col-lg-4">Description</span>
+            <span className="col-lg-1">&nbsp;</span>
+            <span className="col-lg-2">Label</span>
+            <span className="col-lg-2">Type</span>
+            <span className="col-lg-2">Name</span>
+            <span className="col-lg-5">Description</span>
           </div>
           <ListRows rowClassName="col-lg-12">
-            <RoleRow remove={ (id) => this.removeRole(id) } />
+            <PermissionRow removeChild={ (id) => this.removeRole(id) }
+                           showChildren={ (id, toggle) => this.showChildren(id, toggle) } />
           </ListRows>
           <Counter label="users" wrapperClassName="toolbar pull-left" />
           <Pagination wrapperClassName="pull-right" />
         </ListView>
-        <AddRole showModal={ this.props.showModal } closeModal={ () => this.closeRoleModal() } />
+        <AddPermission showModal={ this.props.showModal } closeModal={ () => this.closeRoleModal() } />
       </div>
     )
   }
 }
 
 
-Roles.componentID = 'Roles';
+Permissions.componentID = 'Permissions';
 
-export default connect(state => state.Roles)(Roles);
+export default connect(state => state.Permissions)(Permissions);

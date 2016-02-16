@@ -5,5 +5,5 @@ export { default as Login } from './sections/Login';
 export { default as Admin } from './sections/Admin';
 export { default as Dashboard } from './sections/admin/Dashboard';
 export { default as Users } from './sections/admin/Users';
-export { default as Roles } from './sections/admin/Roles';
+export { default as Permissions } from './sections/admin/Permissions';
 export { default as AssignAuth } from './sections/admin/modals/AssignAuth';

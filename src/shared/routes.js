@@ -11,7 +11,7 @@ import Login from './components/sections/Login';
 import Admin from './components/sections/Admin';
 import Dashboard from './components/sections/admin/Dashboard';
 import Users from './components/sections/admin/Users';
-import Roles from './components/sections/admin/Roles';
+import Permissions from './components/sections/admin/Permissions';
 import { fetchAuthApi } from './ducks/App';
 import { redirect, isServer } from './utils/IsoBridge';
 
@@ -56,8 +56,8 @@ export default {
           component: Users
         },
         {
-          path: 'roles',
-          component: Roles
+          path: 'permissions',
+          component: Permissions
         }
       ]
     },

@@ -13,8 +13,10 @@ export function getAuthType(Base=function(){}) {
     get rules()
     {
       return {
+        label: ['required'],
         name: ['required'],
-        description: ['required']
+        description: ['required'],
+        type: ['required']
       };
     }
   }

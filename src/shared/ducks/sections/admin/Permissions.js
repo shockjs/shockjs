@@ -6,6 +6,9 @@ import QueryBuilder from '../../../classes/QueryBuilder';
 import forOwn from 'lodash/object/forOwn';
 import * as ActionTypes from '../../../constants/ActionTypes';
 import { getAuthType } from '../../../models/AuthType';
+import findIndex from 'lodash/array/findIndex';
+
+const CHILDREN_DATA_FETCHED = '/sections/admin/Permissions/CHILDREN_DATA_FETCHED';
 
 let defaultState = {
   roles: false,
@@ -133,12 +136,37 @@ export function removeRole(key) {
   };
 }
 
+function receiveChildrenData(user_id, json) {
+  return {
+    type: CHILDREN_DATA_FETCHED,
+    perm_id: user_id,
+    childrenRows: json
+  };
+}
+
+export function fetchChildren(key, toggle) {
+  if (toggle === undefined) {
+    return dispatch => {
+      return new QueryBuilder(`/api/v1/auth-type-child`)
+        .addParam('filters', [{name: 'userID', value: key}])
+        .addParam('relations', [{name: 'authType'}])
+        .fetch()
+        .then(json => dispatch(receiveChildrenData(key, json)));
+    }
+  } else {
+    return {
+      type: CHILDREN_DATA_FETCHED,
+      perm_id: key,
+      showChildren: !toggle
+    };
+  }
+}
+
 export function submitForm(values, dispatch) {
   return new Promise((resolve, reject) => {
 
     try {
       const Role = getAuthType(Base);
-      values.type = 1;
       const roleInstance = new Role(values);
       roleInstance.save()
         .then(() => {
@@ -167,6 +195,9 @@ export function submitForm(values, dispatch) {
  * @returns {object} The new state
  */
 export default function(state = defaultState, action) {
+  let permissionIndex;
+  let permissions = state.permissions;
+
   switch (action.type) {
     case ActionTypes.DATA_FETCHED:
       return Object.assign({}, state, {
@@ -177,8 +208,22 @@ export default function(state = defaultState, action) {
       return Object.assign({}, state, {
         showModal: action.showModal
       });
+    case CHILDREN_DATA_FETCHED:
+      permissionIndex = findIndex(state.permissions.payload, (permission) => permission.id === action.perm_id);
+      if (permissionIndex !== -1) {
+        if (action.childrenRows) {
+          permissions.payload[permissionIndex].childrenRows = action.childrenRows;
+          permissions.payload[permissionIndex].showChildren = true;
+        } else {
+          permissions.payload[permissionIndex].showChildren = action.showChildren;
+        }
+      }
+      return {
+        permissions: permissions,
+        time: Date.now() //Always triggers a re-render.
+      };
     case ActionTypes.INIT:
-      return parseServerData('Roles', state);
+      return parseServerData('Permissions', state);
     default:
       return state;
   }

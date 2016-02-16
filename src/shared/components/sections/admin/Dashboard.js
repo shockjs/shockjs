@@ -35,14 +35,14 @@ class Dashboard extends Component
         <div className="page-header">
           <h1>Dashboard</h1>
         </div>
-        <div className="jumbotron" style={{display: 'inline-block'}}>
+        <div className="jumbotron dash-section">
           <h1 style={{textAlign: 'center'}}><Link to="/admin/users">{ this.props.userCount }</Link></h1>
-          <h3><Link to="/admin/users">Users</Link></h3>
+          <h3 className="text-center"><Link to="/admin/users">Users</Link></h3>
         </div>
         &nbsp;
-        <div className="jumbotron" style={{display: 'inline-block'}}>
-          <h1 style={{textAlign: 'center'}}><Link to="/admin/roles">{ this.props.roleCount }</Link></h1>
-          <h3><Link to="/admin/roles">Roles</Link></h3>
+        <div className="jumbotron dash-section">
+          <h1 style={{textAlign: 'center'}}><Link to="/admin/permissions">{ this.props.roleCount }</Link></h1>
+          <h3 className="text-center"><Link to="/admin/roles">Permissions</Link></h3>
         </div>
       </div>
     );

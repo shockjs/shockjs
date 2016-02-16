@@ -32,7 +32,10 @@ class Users extends Component
   {
     const { dispatch, renderedServer } = this.props;
     if (renderedServer === false) {
+      console.log('fetching users...');
       dispatch(fetchUsers());
+    } else {
+      console.log('already rendered...');
     }
   }
 

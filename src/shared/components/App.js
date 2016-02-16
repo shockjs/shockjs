@@ -33,7 +33,7 @@ class App extends Component
         <NavDropdown key="admin" title="Admin" id="basic-nav-dropdown">
           <IndexLinkContainer key="dashboard" to="/admin"><MenuItem>Dashboard</MenuItem></IndexLinkContainer>
           <LinkContainer key="users" to="/admin/users"><MenuItem>Users</MenuItem></LinkContainer>
-          <LinkContainer key="roles" to="/admin/roles"><MenuItem>Roles</MenuItem></LinkContainer>
+          <LinkContainer key="permissions" to="/admin/permissions"><MenuItem>Permissions</MenuItem></LinkContainer>
         </NavDropdown>
       );
 

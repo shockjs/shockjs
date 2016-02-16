@@ -58,11 +58,12 @@ export function clearServerData(component, state) {
       if (serverRenderedData.components[component] !== undefined) {
         delete serverRenderedData.components[component];
         serverRenderedDataElement.textContent = JSON.stringify(serverRenderedData);
-        return Object.assign({}, state, {
-          renderedServer: false
-        });
+        console.log('clearing server render...');
       }
     }
+    return Object.assign({}, state, {
+      renderedServer: false
+    });
   }
   return state;
 }

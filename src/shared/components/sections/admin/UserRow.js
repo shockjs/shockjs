@@ -66,6 +66,11 @@ class UserRow extends Component
             );
           })
         }
+        { showPermissions && permissions.length == 0 && <div className="list-row nested-row row no-perms">
+          <span className="col-lg-12 row-header">
+            <i>NO PERMISSIONS</i>
+          </span>
+        </div> }
         <AssignAuth userID={ userID }
                     showModal={ isPermissionsModalShown }
                     closeModal={ () => this.props.closePermissionModal(userID) } />
