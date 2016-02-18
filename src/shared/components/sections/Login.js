@@ -28,8 +28,8 @@ class Login extends Component
         <form onSubmit={ handleSubmit(submitForm.bind(this)) }>
           <Input { ...errors(username) } type="text" label="Username" placeholder="Enter username" {...username} />
           <Input { ...errors(password) } type="password" label="Password" placeholder="Enter password" {...password} />
-          { error && <AlertAutoDismissable showAlert={true} resetForm={resetForm} bsStyle="danger">{ error }</AlertAutoDismissable> }
-          <button disabled={ submitting || invalid } className="btn btn-primary btn-lg pull-right" type="submit">
+          { error && <AlertAutoDismissable showAlert={true} bsStyle="danger">{ error }</AlertAutoDismissable> }
+          <button disabled={ submitting || invalid } className="btn btn-primary btn-md pull-right" type="submit">
             { submitting ? <i className="fa fa-spinner fa-pulse" /> : <i className="fa fa-send" /> } Login
           </button>
         </form>
