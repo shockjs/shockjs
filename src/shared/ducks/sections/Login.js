@@ -78,7 +78,7 @@ export function submitForm(values, dispatch) {
               resolve();
             })
             .catch(function (err) {
-              reject({"_error": [err.results.message]});
+              reject({"password": [err.results.message]});
             });
         })
         .catch((err) => {

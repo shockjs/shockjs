@@ -66,7 +66,7 @@ class Contact extends Component
           <Input { ...errors(comments) } type="textarea" label="Comments" placeholder="Enter comments and questions." { ...comments } />
           { showCaptcha }
           <Error element={captcha } />
-          <button disabled={ submitting || invalid } className="btn btn-primary btn-lg pull-right" type="submit">
+          <button disabled={ submitting || invalid } className="btn btn-primary pull-right" type="submit">
             { submitting ? <i className="fa fa-spinner fa-pulse" /> : <i className="fa fa-send" /> } Send
           </button>
         </form>
