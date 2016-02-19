@@ -6,17 +6,13 @@
 <a href="https://codeclimate.com/github/shockjs/shockjs/coverage"><img src="https://codeclimate.com/github/shockjs/shockjs/badges/coverage.svg" /></a>
 <a href="https://codeclimate.com/github/shockjs/shockjs"><img src="https://codeclimate.com/github/shockjs/shockjs/badges/issue_count.svg" /></a>
 [![node](https://img.shields.io/badge/node-v5.5.0-blue.svg)]()
+[![MySQL](https://img.shields.io/badge/MySQL-5.5-blue.svg)]()
 
 *An opinionated framework built with some well known libraries including reactjs, hapijs, redux, graphql, babel, jade, knex, bookshelf and more... Shockjs attempts to make a full isomorphic application with minimal differences between server and client code.*
 
-## requirements
-
-* Nodejs #5.0.0 or higher.
-* MySQL or MariaDB.
-
 ### global npm packages.
 ```bash
-npm install -g gulp slush knex
+npm install -g gulp slush
 ```
 
 > The MIT License (MIT)
