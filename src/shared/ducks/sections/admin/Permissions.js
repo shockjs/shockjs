@@ -222,6 +222,8 @@ export default function(state = defaultState, action) {
         permissions: permissions,
         time: Date.now() //Always triggers a re-render.
       };
+    case ActionTypes.CLEAR_SERVER_DATA:
+      return clearServerData('Permissions', state);
     case ActionTypes.INIT:
       return parseServerData('Permissions', state);
     default:
