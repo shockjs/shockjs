@@ -2,6 +2,7 @@ import { getServerModel } from "../config/index";
 import { getAuthType } from '../../shared/models/AuthType';
 import merge from 'lodash/object/merge';
 import AuthAssignment from '../models/AuthAssignment';
+import AuthTypeChild from '../models/AuthTypeChild';
 
 /**
  * User Model
@@ -19,6 +20,11 @@ class AuthType extends BaseUser
   authAssignment()
   {
     return this.belongsTo(AuthAssignment, 'name');
+  }
+
+  authTypeChildren()
+  {
+    return this.hasMany(AuthTypeChild, 'id');
   }
 
   get rules()

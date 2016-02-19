@@ -25,7 +25,7 @@ class AuthTypeChild extends BaseUser
 
   authType()
   {
-    return this.hasOne(AuthType, 'id');
+    return this.belongsTo(AuthType, 'child');
   }
 
   get rules()
