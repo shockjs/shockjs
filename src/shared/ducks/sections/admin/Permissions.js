@@ -11,7 +11,7 @@ import findIndex from 'lodash/array/findIndex';
 const CHILDREN_DATA_FETCHED = '/sections/admin/Permissions/CHILDREN_DATA_FETCHED';
 
 let defaultState = {
-  roles: false,
+  permissions: false,
   renderedServer: false
 };
 
@@ -30,18 +30,18 @@ function requestData() {
  * When data received.
  *
  * @param json
- * @returns {{type, roles: *, receivedAt: number}}
+ * @returns {{type, permissions: *, receivedAt: number}}
  */
 function receiveData(json) {
   return {
     type: ActionTypes.DATA_FETCHED,
-    roles: json,
+    permissions: json,
     receivedAt: Date.now()
   };
 }
 
 /**
- * Fetches the roles.
+ * Fetches the permissions.
  *
  * @param page
  * @returns {Promise}
@@ -72,7 +72,7 @@ function removeRoleApi(key) {
  */
 export function renderServer() {
   return fetchRolesApi().then(function(json) {
-    return { roles: json };
+    return { permissions: json };
   });
 }
 
@@ -148,7 +148,7 @@ export function fetchChildren(key, toggle) {
   if (toggle === undefined) {
     return dispatch => {
       return new QueryBuilder(`/api/v1/auth-type-child`)
-        .addParam('filters', [{name: 'userID', value: key}])
+        .addParam('filters', [{name: 'parent', value: key}])
         .addParam('relations', [{name: 'authType'}])
         .fetch()
         .then(json => dispatch(receiveChildrenData(key, json)));
@@ -201,7 +201,7 @@ export default function(state = defaultState, action) {
   switch (action.type) {
     case ActionTypes.DATA_FETCHED:
       return Object.assign({}, state, {
-        roles: action.roles || false
+        permissions: action.permissions || false
       });
     case ActionTypes.OPEN_MODAL:
     case ActionTypes.CLOSE_MODAL:

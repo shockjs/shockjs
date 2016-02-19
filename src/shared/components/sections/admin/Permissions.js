@@ -70,7 +70,7 @@ class Permissions extends Component
   {
 
     // If we are loading server side and no pre-fetching is done of data.
-    if (this.props.roles === false) {
+    if (this.props.permissions === false) {
       return false;
     }
 
@@ -79,7 +79,7 @@ class Permissions extends Component
         <div className="page-header">
           <h1>Permissions <small>modify, add or remove permissions of the website.</small></h1>
         </div>
-        <ListView initData={ this.props.roles } dataSource={ (page) => this.fetchMore(page) }>
+        <ListView initData={ this.props.permissions } dataSource={ (page) => this.fetchMore(page) }>
           <ButtonToolbar bsClass="toolbar pull-left">
             <Button bsStyle="primary" onClick={ () => this.openRoleModal() }>Add permission</Button>
           </ButtonToolbar>

@@ -316,7 +316,8 @@ class RestApi
     }
     if (isArray(relations)) {
       relations.forEach(({ name }) => {
-        if (this.model.allowedRelations() &&
+        if (this.model.allowedRelations &&
+          this.model.allowedRelations() &&
           this.model.allowedRelations().indexOf(name) !== -1) {
           allowedRelations.push(name);
         }
