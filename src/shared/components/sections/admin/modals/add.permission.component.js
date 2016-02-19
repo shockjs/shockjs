@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, Modal, Input, ProgressBar } from 'react-bootstrap';
 import { reduxForm } from 'redux-form';
 import { submitForm } from '../../../../ducks/sections/admin/Permissions';
-class AddPermission extends Component
+class AddPermissionComponent extends Component
 {
   /**
    * Render the component.
@@ -44,11 +44,11 @@ class AddPermission extends Component
   }
 }
 
-AddPermission.propTypes = {
+AddPermissionComponent.propTypes = {
   openModal: React.PropTypes.bool,
   closeModal: React.PropTypes.func
 };
-AddPermission.defaultProps = { };
+AddPermissionComponent.defaultProps = { };
 
 export default reduxForm(
   {
@@ -56,4 +56,4 @@ export default reduxForm(
     fields: ['name', 'description', 'label', 'type']
   },
   state => state.Permissions
-)(AddPermission);
+)(AddPermissionComponent);

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Alert } from 'react-bootstrap';
 
-class AlertAutoDismissable extends Component
+class AlertDismissComponent extends Component
 {
   constructor(props)
   {
@@ -37,7 +37,8 @@ class AlertAutoDismissable extends Component
   {
     if (this.state.alertVisible && !this.state.beenDismissed) {
       return (
-        <Alert bsStyle={ this.props.bsStyle ? this.props.bsStyle : 'danger' } onDismiss={ this.handleAlertDismiss.bind(this) } dismissAfter={ 5000 }>
+        <Alert bsStyle={ this.props.bsStyle ? this.props.bsStyle : 'danger' }
+               onDismiss={ this.handleAlertDismiss.bind(this) } dismissAfter={ 5000 }>
           { this.props.children }
         </Alert>
       );
@@ -46,10 +47,10 @@ class AlertAutoDismissable extends Component
   }
 }
 
-AlertAutoDismissable.propTypes = {
+AlertDismissComponent.propTypes = {
   showAlert: React.PropTypes.bool,
   resetForm: React.PropTypes.func
 };
-AlertAutoDismissable.defaultProps = { };
+AlertDismissComponent.defaultProps = { };
 
-export default AlertAutoDismissable;
+export default AlertDismissComponent;

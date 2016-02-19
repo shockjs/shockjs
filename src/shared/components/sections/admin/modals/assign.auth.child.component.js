@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Button, Modal, Input, ProgressBar } from 'react-bootstrap';
 import { reduxForm } from 'redux-form';
-import { fetchPermissionTypes, submitForm } from '../../../../ducks/sections/admin/modals/AssignAuth';
+import { fetchPermissionTypes, submitForm } from '../../../../ducks/sections/admin/modals/AssignAuthChild';
 
-class AssignAuth extends Component
+class AssignAuthChildComponent extends Component
 {
 
   fetchAuthTypes(event)
@@ -25,7 +25,7 @@ class AssignAuth extends Component
    */
   render()
   {
-    const { showModal, closeModal, authTypes, handleSubmit, fields: { authTypeID, type } } =  this.props;
+    const { showModal, closeModal, authTypes, handleSubmit, fields: { authTypeID } } =  this.props;
 
     const errors = (element) => {
       return {
@@ -41,11 +41,6 @@ class AssignAuth extends Component
             <Modal.Title>Assign Permission</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Input type="select" label="Select Permission Type" { ...type } onChange={ (event) => this.fetchAuthTypes(event) }>
-              <option value="" />
-              <option value="1">Role</option>
-              <option value="2">Operation</option>
-            </Input>
             { authTypes ?
               <Input { ...errors(authTypeID) } type="select" label="Select Permission" { ...authTypeID }>
                 <option value="" />
@@ -65,16 +60,16 @@ class AssignAuth extends Component
   }
 }
 
-AssignAuth.propTypes = {
+AssignAuthChildComponent.propTypes = {
   openModal: React.PropTypes.bool,
   closeModal: React.PropTypes.func
 };
-AssignAuth.defaultProps = { };
+AssignAuthChildComponent.defaultProps = { };
 
 export default reduxForm(
   {
     form: 'assign-auth-form',
-    fields: ['authTypeID', 'type']
+    fields: ['authTypeID']
   },
-  state => state.AssignAuth
-)(AssignAuth);
+  state => state.AssignAuthChild
+)(AssignAuthChildComponent);

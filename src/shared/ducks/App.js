@@ -3,6 +3,7 @@
 import { fetch, redirect, parseServerData } from '../utils/IsoBridge';
 import * as ActionTypes from '../constants/ActionTypes';
 import QueryBuilder from '../classes/QueryBuilder';
+const UPDATE_AUTH = '/App/UPDATE_AUTH';
 
 let defaultState = {
 
@@ -26,7 +27,7 @@ function logoutUserApi() {
  */
 export function updateAuth(auth) {
   return {
-    type: ActionTypes.UPDATE_AUTH,
+    type: UPDATE_AUTH,
     ...auth
   };
 }
@@ -50,7 +51,7 @@ export function fetchAuth() {
   return dispatch => {
     return fetchAuthApi()
       .then(auth => dispatch({
-        type: ActionTypes.UPDATE_AUTH,
+        type: UPDATE_AUTH,
         ...auth
       }));
   };
@@ -68,7 +69,7 @@ export function logoutUser() {
         .then(() => fetchAuthApi())
         .then((auth) => {
           resolve(dispatch({
-            type: ActionTypes.UPDATE_AUTH,
+            type: UPDATE_AUTH,
             ...auth
           }));
           redirect('/login');
@@ -88,7 +89,7 @@ export default function(state = defaultState, action) {
   switch (action.type) {
     case ActionTypes.INIT:
       return parseServerData('App', state);
-    case ActionTypes.UPDATE_AUTH:
+    case UPDATE_AUTH:
       return Object.assign({}, state, action);
     default:
       return state;

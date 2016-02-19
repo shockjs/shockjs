@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-class Admin extends Component
+class AdminComponent extends Component
 {
   /**
    * Render the component.
@@ -12,6 +12,6 @@ class Admin extends Component
   }
 }
 
-Admin.componentID = 'Admin';
+AdminComponent.componentID = 'Admin';
 
-export default connect(state => state.Admin)(Admin);
+export default connect(state => state.Admin)(AdminComponent);

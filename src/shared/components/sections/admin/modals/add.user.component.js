@@ -3,7 +3,7 @@ import { Button, Modal, Input, ProgressBar } from 'react-bootstrap';
 import { reduxForm } from 'redux-form';
 import BootstrapPasswordStrength from 'bootstrap-react-password-strength';
 import { submitForm } from '../../../../ducks/sections/admin/Users';
-class AddUser extends Component
+class AddUserComponent extends Component
 {
   /**
    * Render the component.
@@ -43,11 +43,11 @@ class AddUser extends Component
   }
 }
 
-AddUser.propTypes = {
+AddUserComponent.propTypes = {
   openModal: React.PropTypes.bool,
   closeModal: React.PropTypes.func
 };
-AddUser.defaultProps = { };
+AddUserComponent.defaultProps = { };
 
 export default reduxForm(
   {
@@ -55,4 +55,4 @@ export default reduxForm(
     fields: ['firstName', 'lastName', 'password', 'confirmPassword', 'username', 'email']
   },
   state => state.User
-)(AddUser);
+)(AddUserComponent);

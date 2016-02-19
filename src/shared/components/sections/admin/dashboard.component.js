@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { renderServer, cleanupServer, fetchCounts } from '../../../ducks/sections/admin/Dashboard';
 import { Link } from 'react-router';
 
-class Dashboard extends Component
+class DashboardComponent extends Component
 {
 
   static renderServer()
@@ -49,6 +49,6 @@ class Dashboard extends Component
   }
 }
 
-Dashboard.componentID = 'Dashboard';
+DashboardComponent.componentID = 'Dashboard';
 
-export default connect(state => state.Dashboard)(Dashboard);
+export default connect(state => state.Dashboard)(DashboardComponent);

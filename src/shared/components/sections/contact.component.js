@@ -7,10 +7,10 @@ import { Input, ButtonInput, Col, Alert } from 'react-bootstrap';
 import { isServer } from '../../utils/IsoBridge';
 import Recaptcha from 'react-recaptcha';
 import { setCaptchaKey, captchaLoaded, clearCaptchaKey, submitForm, clearSubmitted } from '../../ducks/sections/Contact';
-import AlertAutoDismissable from '../alerts/AlertAutoDismissable';
-import Error from '../form/Error';
+import AlertDismissComponent from '../alerts/alert.dismiss.component';
+import ErrorComponent from '../form/error.component';
 
-class Contact extends Component
+class ContactComponent extends Component
 {
 
   render()
@@ -57,15 +57,15 @@ class Contact extends Component
           <h1>Contact Us</h1>
         </div>
         <form onSubmit={ handleSubmit(submitForm.bind(this)) }>
-          <AlertAutoDismissable bsStyle="success" showAlert={ submitted } resetForm={ () => dispatch(clearSubmitted()) }>
+          <AlertDismissComponent bsStyle="success" showAlert={ submitted } resetForm={ () => dispatch(clearSubmitted()) }>
             Your request has been submitted...
-          </AlertAutoDismissable>
+          </AlertDismissComponent>
           <Input { ...errors(name) } type="text" label="Name" placeholder="Enter name" { ...name } />
           <Input { ...errors(phone) } type="text" label="Phone" placeholder="Enter phone" { ...phone } />
           <Input { ...errors(email) } type="text" label="Email" placeholder="Enter email" { ...email } />
           <Input { ...errors(comments) } type="textarea" label="Comments" placeholder="Enter comments and questions." { ...comments } />
           { showCaptcha }
-          <Error element={captcha } />
+          <ErrorComponent element={captcha } />
           <button disabled={ submitting || invalid } className="btn btn-primary pull-right" type="submit">
             { submitting ? <i className="fa fa-spinner fa-pulse" /> : <i className="fa fa-send" /> } Send
           </button>
@@ -94,5 +94,5 @@ export default reduxForm(
     onLoadCallback: captchaLoaded,
     expiredCallback: clearCaptchaKey
   }
-)(Contact);
+)(ContactComponent);
 

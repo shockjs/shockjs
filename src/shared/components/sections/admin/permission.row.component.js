@@ -1,13 +1,23 @@
 import React, { Component } from 'react';
+import AssignAuthChildComponent from './modals/assign.auth.child.component';
 
-class PermissionRow extends Component
+class PermissionRowComponent extends Component
 {
   /**
    * Render the component.
    */
   render()
   {
-    const { id, label, name, type, description, showChildren, childrenRows } = this.props.data;
+    const {
+      id: parentID,
+      label,
+      name,
+      type,
+      description,
+      showChildren,
+      childrenRows,
+      isPermissionsChildModalShown
+    } = this.props.data;
 
     let icon = 'fa-plus';
     if (showChildren) {
@@ -18,7 +28,7 @@ class PermissionRow extends Component
       <div>
         <div className="row list-row lighter-row">
           <span className="col-lg-1">
-            <a onClick={ () => this.props.showChildren(id, showChildren) }>
+            <a onClick={ () => this.props.showChildren(parentID, showChildren) }>
               <i className={ "row fa fa-1x " + icon } />
             </a>
           </span>
@@ -27,14 +37,14 @@ class PermissionRow extends Component
           <span className="col-lg-2">{ name }</span>
           <span className="col-lg-4">{ description }</span>
           <span className="col-lg-1 text-right row">
-            <a className="fa fa-times fa-1x row" onClick={ () => this.props.remove(id) } />
+            <a className="fa fa-times fa-1x row" onClick={ () => this.props.remove(parentID) } />
             <a>
-              <i className="row fa fa-sitemap fa-1x" />
+              <i className="row fa fa-sitemap fa-1x" onClick={ () => this.props.openPermissionModal(parentID) } />
             </a>
           </span>
         </div>
         { showChildren && childrenRows && childrenRows.map(permission => {
-          const { id, authType: { type, label, description } } = permission;
+          const { id, authType: { label, description } } = permission;
           return (
             <div key={ id } className={ "list-row nested-row row operation"}>
                 <span className="col-lg-1 row-header">
@@ -56,14 +66,17 @@ class PermissionRow extends Component
             <i>NO PERMISSIONS</i>
           </span>
         </div> }
+        <AssignAuthChildComponent permID={ parentID }
+                    showModal={ isPermissionsChildModalShown }
+                    closeModal={ () => this.props.closePermissionModal(parentID) } />
       </div>
     );
   }
 }
 
-PermissionRow.propTypes = {
+PermissionRowComponent.propTypes = {
   showChildren: React.PropTypes.func,
   removeChild: React.PropTypes.func
 };
-PermissionRow.defaultProps = { };
-export default PermissionRow;
+PermissionRowComponent.defaultProps = { };
+export default PermissionRowComponent;

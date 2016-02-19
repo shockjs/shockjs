@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { fetchAuthApi, fetchAuth, logoutUser } from '../ducks/App';
 
-class App extends Component
+class AppComponent extends Component
 {
   static renderServer()
   {
@@ -73,7 +73,6 @@ class App extends Component
   }
 }
 
-App.componentID = 'App';
+AppComponent.componentID = 'App';
 
-
-export default connect(state => state.App)(App);
+export default connect(state => state.App)(AppComponent);

@@ -8,7 +8,7 @@
 [![node](https://img.shields.io/badge/node-v5.5.0-blue.svg)]()
 [![MySQL](https://img.shields.io/badge/MySQL-5.5-blue.svg)]()
 
-*An opinionated framework built with some well known libraries including reactjs, hapijs, redux, graphql, babel, jade, knex, bookshelf and more... Shockjs attempts to make a full isomorphic application with minimal differences between server and client code.*
+*An opinionated starter kit/framework built with some well known libraries including reactjs, hapijs, redux, graphql, babel, jade, knex, bookshelf and more... Shockjs attempts to make a full isomorphic application with minimal differences between server and client code.*
 
 ### global npm packages.
 ```bash

@@ -8,6 +8,8 @@ import QueryBuilder from '../../../classes/QueryBuilder';
 import * as ActionTypes from '../../../constants/ActionTypes';
 import findIndex from 'lodash/array/findIndex';
 
+const PERMISSION_DATA_FETCHED = '/sections/admin/Users/PERMISSION_DATA_FETCHED';
+
 let defaultState = {
   users: false,
   renderedServer: false
@@ -77,7 +79,7 @@ function removeUserApi(key) {
 
 function receivePermissionData(user_id, json) {
   return {
-    type: ActionTypes.PERMISSION_DATA_FETCHED,
+    type: PERMISSION_DATA_FETCHED,
     user_id: user_id,
     permissions: json
   };
@@ -182,7 +184,7 @@ export function fetchPermissions(key, toggle) {
     }
   } else {
     return {
-      type: ActionTypes.PERMISSION_DATA_FETCHED,
+      type: PERMISSION_DATA_FETCHED,
       user_id: key,
       showPermissions: !toggle
     };
@@ -260,7 +262,7 @@ export default function(state = defaultState, action) {
         users: action.users || false,
         showModal: false
       });
-    case ActionTypes.PERMISSION_DATA_FETCHED:
+    case PERMISSION_DATA_FETCHED:
       userIndex = findIndex(state.users.payload, (user) => user.id === action.user_id);
       if (userIndex !== -1) {
         if (action.permissions) {

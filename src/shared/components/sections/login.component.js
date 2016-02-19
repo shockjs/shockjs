@@ -6,7 +6,7 @@ import { reduxForm } from 'redux-form';
 import { fetchAuth } from '../../ducks/App';
 import { redirect } from '../../utils/IsoBridge';
 
-class Login extends Component
+class LoginComponent extends Component
 {
   render()
   {
@@ -39,5 +39,5 @@ class Login extends Component
 export default reduxForm({
   form: 'login-form',
   fields: ['username', 'password']
-})(Login);
+})(LoginComponent);
 

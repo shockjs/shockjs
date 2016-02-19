@@ -7,14 +7,15 @@ import {
   openRoleModal,
   closeRoleModal,
   removeRole,
-  fetchChildren
+  fetchChildren,
+  openPermissionChildModal
 } from '../../../ducks/sections/admin/Permissions';
 import { ListView, Pagination, ListRows, Counter } from 'react-list-combo';
 import { ButtonToolbar, ButtonGroup, Button } from 'react-bootstrap';
-import PermissionRow from './PermissionRow';
-import AddPermission from './modals/AddPermission';
+import PermissionRowComponent from './permission.row.component';
+import AddPermissionComponent from './modals/add.permission.component';
 
-class Permissions extends Component
+class PermissionsComponent extends Component
 {
 
   static renderServer()
@@ -66,6 +67,12 @@ class Permissions extends Component
     return dispatch(fetchChildren(id, toggle));
   }
 
+  openPermissionChildModal(id)
+  {
+    const { dispatch } = this.props;
+    return dispatch(openPermissionChildModal(id));
+  }
+
   render()
   {
 
@@ -92,19 +99,19 @@ class Permissions extends Component
             <span className="col-lg-5">Description</span>
           </div>
           <ListRows rowClassName="col-lg-12">
-            <PermissionRow removeChild={ (id) => this.removeRole(id) }
+            <PermissionRowComponent removeChild={ (id) => this.removeRole(id) }
                            showChildren={ (id, toggle) => this.showChildren(id, toggle) } />
           </ListRows>
           <Counter label="users" wrapperClassName="toolbar pull-left" />
           <Pagination wrapperClassName="pull-right" />
         </ListView>
-        <AddPermission showModal={ this.props.showModal } closeModal={ () => this.closeRoleModal() } />
+        <AddPermissionComponent showModal={ this.props.showModal } closeModal={ () => this.closeRoleModal() } />
       </div>
     )
   }
 }
 
 
-Permissions.componentID = 'Permissions';
+PermissionsComponent.componentID = 'Permissions';
 
-export default connect(state => state.Permissions)(Permissions);
+export default connect(state => state.Permissions)(PermissionsComponent);

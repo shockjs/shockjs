@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { getAuthType } from '../../../models/AuthType';
 import Base from '../../../../client/models/Base';
-import AssignAuth from './modals/AssignAuth';
+import AssignAuthComponent from './modals/assign.auth.component';
 const AuthType = getAuthType(Base);
 
-class UserRow extends Component
+class UserRowComponent extends Component
 {
 
   /**
@@ -71,7 +71,7 @@ class UserRow extends Component
             <i>NO PERMISSIONS</i>
           </span>
         </div> }
-        <AssignAuth userID={ userID }
+        <AssignAuthComponent userID={ userID }
                     showModal={ isPermissionsModalShown }
                     closeModal={ () => this.props.closePermissionModal(userID) } />
       </div>
@@ -79,7 +79,7 @@ class UserRow extends Component
   }
 }
 
-UserRow.propTypes = {
+UserRowComponent.propTypes = {
   index: React.PropTypes.number,
   data: React.PropTypes.object,
   remove: React.PropTypes.func,
@@ -87,5 +87,5 @@ UserRow.propTypes = {
   assignPermissions: React.PropTypes.func,
   removePermission: React.PropTypes.func
 };
-UserRow.defaultProps = { };
-export default UserRow;
+UserRowComponent.defaultProps = { };
+export default UserRowComponent;

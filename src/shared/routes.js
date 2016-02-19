@@ -4,33 +4,33 @@
 
 "use strict";
 
-import App from './components/App';
-import Welcome from  './components/sections/Welcome';
-import Contact from './components/sections/Contact';
-import Login from './components/sections/Login';
-import Admin from './components/sections/Admin';
-import Dashboard from './components/sections/admin/Dashboard';
-import Users from './components/sections/admin/Users';
-import Permissions from './components/sections/admin/Permissions';
+import AppComponent from './components/app.component';
+import WelcomeComponent from  './components/sections/welcome.component';
+import ContactComponent from './components/sections/contact.component';
+import LoginComponent from './components/sections/login.component';
+import AdminComponent from './components/sections/admin.component';
+import DashboardComponent from './components/sections/admin/dashboard.component';
+import UsersComponent from './components/sections/admin/users.component';
+import PermissionsComponent from './components/sections/admin/permissions.component';
 import { fetchAuthApi } from './ducks/App';
 import { redirect, isServer } from './utils/IsoBridge';
 
 export default {
   path: '/',
-  component: App,
+  component: AppComponent,
   indexRoute: [
     {
-      component: Welcome
+      component: WelcomeComponent
     }
   ],
   childRoutes: [
     {
       path: 'contact-us',
-      component: Contact
+      component: ContactComponent
     },
     {
       path: 'admin',
-      component: Admin,
+      component: AdminComponent,
       onEnter: (nextState, replaceState, callback) => {
 
         //Make sure user is authenticated before entering.
@@ -47,23 +47,23 @@ export default {
       },
       indexRoute: [
         {
-          component: Dashboard
+          component: DashboardComponent
         }
       ],
       childRoutes: [
         {
           path: 'users',
-          component: Users
+          component: UsersComponent
         },
         {
           path: 'permissions',
-          component: Permissions
+          component: PermissionsComponent
         }
       ]
     },
     {
       path: '/login',
-      component: Login,
+      component: LoginComponent,
       onEnter: (nextState, replaceState, callback) => {
 
         //Redirect to home page if already logged in.

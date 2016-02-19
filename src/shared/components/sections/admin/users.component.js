@@ -15,12 +15,11 @@ import {
 
 } from '../../../ducks/sections/admin/Users';
 import { ListView, Pagination, ListRows, Counter } from 'react-list-combo';
-import GridActive from '../../listview/GridActive';
-import UserRow from './UserRow';
+import UserRowComponent from './user.row.component.js';
 import { ButtonToolbar, ButtonGroup, Button } from 'react-bootstrap';
-import AddUser from './modals/AddUser';
+import AddUserComponent from './modals/add.user.component';
 
-class Users extends Component
+class UsersComponent extends Component
 {
 
   static renderServer()
@@ -32,10 +31,7 @@ class Users extends Component
   {
     const { dispatch, renderedServer } = this.props;
     if (renderedServer === false) {
-      console.log('fetching users...');
       dispatch(fetchUsers());
-    } else {
-      console.log('already rendered...');
     }
   }
 
@@ -128,7 +124,7 @@ class Users extends Component
             <span className="col-lg-2">&nbsp;</span>
           </div>
           <ListRows rowClassName="col-lg-12">
-            <UserRow remove={ id => this.removeUser(id) }
+            <UserRowComponent remove={ id => this.removeUser(id) }
                      showPermissions={ (id, showPermissions) => this.showPermissions(id, showPermissions) }
                      removePermission={ (id, userID) => this.removePermission(id, userID) }
                      assignPermissions={ (id) => this.assignPermissions(id) }
@@ -139,12 +135,12 @@ class Users extends Component
           <Counter label="users" wrapperClassName="toolbar pull-left" />
           <Pagination wrapperClassName="pull-right" />
         </ListView>
-        <AddUser showModal={ this.props.showModal } closeModal={ () => this.closeUserModal() } />
+        <AddUserComponent showModal={ this.props.showModal } closeModal={ () => this.closeUserModal() } />
       </div>
     );
   }
 }
 
-Users.componentID = 'Users';
+UsersComponent.componentID = 'Users';
 
-export default connect(state => state.Users)(Users);
+export default connect(state => state.Users)(UsersComponent);

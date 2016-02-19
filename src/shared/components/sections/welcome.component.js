@@ -4,7 +4,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-class Welcome extends Component
+class WelcomeComponent extends Component
 {
   /**
    * Render our component.
@@ -36,11 +36,11 @@ class Welcome extends Component
   }
 }
 
-Welcome.componentID = 'Welcome';
+WelcomeComponent.componentID = 'Welcome';
 
 export default connect((state) => {
   return {
     app: state.App,
     welcome: state.Welcome
   };
-})(Welcome);
+})(WelcomeComponent);

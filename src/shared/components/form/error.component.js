@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class Error extends Component
+class ErrorComponent extends Component
 {
   /**
    * Render the component.
@@ -21,6 +21,6 @@ class Error extends Component
   }
 }
 
-Error.propTypes = { };
-Error.defaultProps = { };
-export default Error;
+ErrorComponent.propTypes = { };
+ErrorComponent.defaultProps = { };
+export default ErrorComponent;

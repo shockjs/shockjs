@@ -9,6 +9,8 @@ import { getAuthType } from '../../../models/AuthType';
 import findIndex from 'lodash/array/findIndex';
 
 const CHILDREN_DATA_FETCHED = '/sections/admin/Permissions/CHILDREN_DATA_FETCHED';
+const OPEN_PERMISSION_CHILD_MODAL = '/sections/admin/Permissions/OPEN_PERMISSION_CHILD_MODAL';
+const CLOSE_PERMISSION_CHILD_MODAL = '/sections/admin/Permissions/CLOSE_PERMISSION_CHILD_MODAL';
 
 let defaultState = {
   permissions: false,
@@ -111,6 +113,20 @@ export function openRoleModal() {
   };
 }
 
+export function openPermissionChildModal() {
+  return {
+    type: OPEN_PERMISSION_CHILD_MODAL,
+    showModal: true
+  };
+}
+
+export function closePermissionChildModal() {
+  return {
+    type: CLOSE_PERMISSION_CHILD_MODAL,
+    showModal: true
+  };
+}
+
 /**
  * Action: Close role dialog.
  *
@@ -136,6 +152,13 @@ export function removeRole(key) {
   };
 }
 
+/**
+ * Action: When child permission data is returned from the server.
+ *
+ * @param user_id
+ * @param json
+ * @returns {{type: string, perm_id: *, childrenRows: *}}
+ */
 function receiveChildrenData(user_id, json) {
   return {
     type: CHILDREN_DATA_FETCHED,
@@ -144,6 +167,13 @@ function receiveChildrenData(user_id, json) {
   };
 }
 
+/**
+ * Action: Fetches all child permissions for a permission.
+ *
+ * @param key
+ * @param toggle
+ * @returns {*}
+ */
 export function fetchChildren(key, toggle) {
   if (toggle === undefined) {
     return dispatch => {
@@ -162,6 +192,13 @@ export function fetchChildren(key, toggle) {
   }
 }
 
+/**
+ * When a new role is submitted for creation using the permission add modal.
+ *
+ * @param values
+ * @param dispatch
+ * @returns {Promise}
+ */
 export function submitForm(values, dispatch) {
   return new Promise((resolve, reject) => {
 
@@ -195,19 +232,37 @@ export function submitForm(values, dispatch) {
  * @returns {object} The new state
  */
 export default function(state = defaultState, action) {
+
   let permissionIndex;
   let permissions = state.permissions;
 
   switch (action.type) {
+    /*
+     * When data is initialized from client routing.
+     */
     case ActionTypes.DATA_FETCHED:
       return Object.assign({}, state, {
         permissions: action.permissions || false
       });
+    /*
+     * When default modal is opened.
+     */
     case ActionTypes.OPEN_MODAL:
     case ActionTypes.CLOSE_MODAL:
       return Object.assign({}, state, {
         showModal: action.showModal
       });
+    /*
+     *
+     */
+    case OPEN_PERMISSION_CHILD_MODAL:
+    case CLOSE_PERMISSION_CHILD_MODAL:
+      return Object.assign({}, state, {
+        showPermissionChildModal: action.showModal
+      });
+    /*
+     * When a permission row is expanded.
+     */
     case CHILDREN_DATA_FETCHED:
       permissionIndex = findIndex(state.permissions.payload, (permission) => permission.id === action.perm_id);
       if (permissionIndex !== -1) {
@@ -222,10 +277,19 @@ export default function(state = defaultState, action) {
         permissions: permissions,
         time: Date.now() //Always triggers a re-render.
       };
+    /*
+     * When the server data is cleared (change route on client)
+     */
     case ActionTypes.CLEAR_SERVER_DATA:
       return clearServerData('Permissions', state);
+    /*
+     * Fetch the data that was rendered server-side.
+     */
     case ActionTypes.INIT:
       return parseServerData('Permissions', state);
+    /*
+     * When nothing else applies.
+     */
     default:
       return state;
   }
