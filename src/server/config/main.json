@@ -2,7 +2,7 @@
   "modelPath": "./models",
   "auth": {
     "cookie": "sid",
-    "password": "xxxxxxxxxx",
+    "password": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     "isSecure": false,
     "ttl": 86400000
   },
