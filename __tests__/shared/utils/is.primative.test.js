@@ -1,6 +1,6 @@
 // __tests__/shared/utils/isPrimative-test.js
 "use strict";
-jest.dontMock('../../../src/shared/utils/isPrimative');
+jest.dontMock('../../../src/shared/utils/is.primative');
 const isPrimative = require('../../../src/shared/utils/is.primative').default;
 
 describe('isPrimative', () => {
