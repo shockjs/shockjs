@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { renderServer, cleanupServer, fetchCounts } from '../../../ducks/sections/admin/Dashboard';
+import { renderServer, cleanupServer, fetchCounts } from '../../../blocks/sections/admin/dashboard.block.js';
 import { Link } from 'react-router';
 
 class DashboardComponent extends Component

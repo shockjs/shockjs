@@ -9,7 +9,7 @@ import {
   removeRole,
   fetchChildren,
   openPermissionChildModal
-} from '../../../ducks/sections/admin/Permissions';
+} from '../../../blocks/sections/admin/permissions.block.js';
 import { ListView, Pagination, ListRows, Counter } from 'react-list-combo';
 import { ButtonToolbar, ButtonGroup, Button } from 'react-bootstrap';
 import PermissionRowComponent from './permission.row.component';

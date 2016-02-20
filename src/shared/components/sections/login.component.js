@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Input, ButtonInput, Col } from 'react-bootstrap';
-import { submitForm } from '../../ducks/sections/Login';
+import { submitForm } from '../../blocks/sections/login.block.js';
 import { reduxForm } from 'redux-form';
-import { fetchAuth } from '../../ducks/App';
-import { redirect } from '../../utils/IsoBridge';
+import { fetchAuth } from '../../blocks/app.block.js';
+import { redirect } from '../../utils/iso.bridge';
 
 class LoginComponent extends Component
 {

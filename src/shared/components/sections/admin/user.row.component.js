@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { getAuthType } from '../../../models/AuthType';
-import Base from '../../../../client/models/Base';
+import { getAuthType } from '../../../models/auth.type.model';
+import Base from '../../../../client/models/base.model';
 import AssignAuthComponent from './modals/assign.auth.component';
 const AuthType = getAuthType(Base);
 

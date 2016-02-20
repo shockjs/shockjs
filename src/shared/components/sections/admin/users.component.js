@@ -13,7 +13,7 @@ import {
   openPermissionModal,
   closePermissionModal
 
-} from '../../../ducks/sections/admin/Users';
+} from '../../../blocks/sections/admin/users.block.js';
 import { ListView, Pagination, ListRows, Counter } from 'react-list-combo';
 import UserRowComponent from './user.row.component.js';
 import { ButtonToolbar, ButtonGroup, Button } from 'react-bootstrap';

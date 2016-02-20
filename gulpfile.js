@@ -227,13 +227,13 @@ gulp.task('run:pm2', (cb) => {
   });
 
   pm2.connect(() => {
-    pm2.stop('dist/server/index.js', (err) => {
+    pm2.stop('dist/server/server.js', (err) => {
 
       if (err) {
         gutil.log("[compilation]", err.msg);
       }
 
-      pm2.start('dist/server/index.js', (err) => {
+      pm2.start('dist/server/server.js', (err) => {
 
         if (err) {
           gutil.log("[compilation]", err.msg);
@@ -295,7 +295,7 @@ gulp.task('watch:changes', () => {
 
 gulp.task('restart:pm2', () => {
   gutil.log('[compilation]', 'restarting application..');
-  pm2.restart('dist/server/index.js', () => {
+  pm2.restart('dist/server/server.js', () => {
     gutil.log('[compilation]', 'completed.');
   });
 });

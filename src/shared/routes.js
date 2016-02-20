@@ -12,8 +12,8 @@ import AdminComponent from './components/sections/admin.component';
 import DashboardComponent from './components/sections/admin/dashboard.component';
 import UsersComponent from './components/sections/admin/users.component';
 import PermissionsComponent from './components/sections/admin/permissions.component';
-import { fetchAuthApi } from './ducks/App';
-import { redirect, isServer } from './utils/IsoBridge';
+import { fetchAuthApi } from './blocks/app.block.js';
+import { redirect, isServer } from './utils/iso.bridge';
 
 export default {
   path: '/',
