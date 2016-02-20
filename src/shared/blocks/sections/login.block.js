@@ -5,7 +5,7 @@ import * as ActionTypes from '../../constants/action.types.constants.js';
 import Base from '../../../client/models/base.model';
 import { getAuth } from '../../models/auth.model';
 import forOwn from 'lodash/object/forOwn';
-import { fetchAuth } from './../app.block.js';
+import { fetchAuth } from './../app.block';
 import QueryBuilder from '../../classes/query.builder';
 
 let defaultState = {

@@ -5,7 +5,7 @@ import QueryBuilder from '../../../../classes/query.builder';
 import Base from '../../../../../client/models/base.model';
 import forOwn from 'lodash/object/forOwn';
 import { getAuthAssignment } from '../../../../models/auth.assignment.model';
-import { fetchUsers } from '../users.block.js';
+import { fetchUsers } from '../users.block';
 const AuthAssignment = getAuthAssignment(Base);
 
 const FETCH_AUTH_TYPES = 'sections/admin/modals/AssignAuth';

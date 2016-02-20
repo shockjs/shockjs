@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Modal, Input, ProgressBar } from 'react-bootstrap';
 import { reduxForm } from 'redux-form';
-import { submitForm } from '../../../../blocks/sections/admin/permissions.block.js';
+import { submitForm } from '../../../../blocks/sections/admin/permissions.block';
 class AddPermissionComponent extends Component
 {
   /**
