@@ -20,7 +20,7 @@ export default [
           });
           auth.login()
             .then((result) => {
-              request.auth.session.set(result);
+              request.cookieAuth.set(result);
               reply({ success: true });
             })
             .catch((err) => {
@@ -47,7 +47,7 @@ export default [
     method: ['POST', 'GET'],
     config: {
       handler: (request, reply) => {
-        request.auth.session.clear();
+        request.cookieAuth.clear();
         reply({ success: true });
       }
     }
