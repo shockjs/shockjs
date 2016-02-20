@@ -1,13 +1,14 @@
 "use strict";
 
 import mailer from 'nodemailer';
+import smtpTransport from 'nodemailer-smtp-transport';
 import { getConfig } from '../../config/config';
 const config = getConfig();
 import jade from 'jade';
 import fetch from 'isomorphic-fetch';
 
 const emailPath = __dirname + '/../../templates/emails';
-const smtpTransport = mailer.createTransport("SMTP", config.mail);
+const transport = mailer.createTransport(smtpTransport(config.mail));
 
 class EmailApi
 {
@@ -38,14 +39,13 @@ class EmailApi
                 html: html
               };
 
-              smtpTransport.sendMail(mail, function (error, response) {
+              transport.sendMail(mail, function (error, response) {
                 if (error) {
                   reply({'success': false});
                 } else {
-                  console.log("Message sent: " + response.message);
                   reply({'success': true});
                 }
-                smtpTransport.close();
+                transport.close();
               });
             } else {
               reply(data);
