@@ -10,10 +10,7 @@
 
 *An opinionated starter kit/framework built with some well known libraries including reactjs, hapijs, redux, graphql, babel, jade, knex, bookshelf and more... Shockjs attempts to make a full isomorphic application with minimal differences between server and client code.*
 
-### global npm packages.
-```bash
-npm install -g gulp slush
-```
+Documentation can be found at http://shockjs.github.io/.
 
 > The MIT License (MIT)
 
