@@ -154,9 +154,22 @@ export function removeRole(key) {
   };
 }
 
+/**
+ * Query for removing permission.
+ *
+ * @param key
+ * @returns {*}
+ */
+function removeChildApi(key) {
+  return new QueryBuilder(`/api/v1/auth-type-child/${key}`)
+    .remove();
+}
 
 export function removeChild(key) {
-  return {};
+  return dispatch => {
+    return removeChildApi(key)
+      .then(() => dispatch(fetchRoles()));
+  };
 }
 
 /**

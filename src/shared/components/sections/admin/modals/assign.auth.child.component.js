@@ -47,7 +47,7 @@ class AssignAuthChildComponent extends Component
             <Modal.Title>Assign Child Permission</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            { authTypes ?
+            { authTypes && authTypes.length > 0 ?
               <Input { ...errors(child) } type="select" label="Select Permission" { ...child }>
                 <option value="" />
                 { authTypes.map((authType) =>
@@ -55,6 +55,7 @@ class AssignAuthChildComponent extends Component
                 ) }
               </Input> : ''
             }
+            { authTypes && authTypes.length === 0 && <div>There are currently no operations to assign.</div> }
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={ closeModal }>Close</Button>
