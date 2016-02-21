@@ -1,6 +1,7 @@
 import { getServerModel } from "../config/config";
 import { getUser } from '../../shared/models/user.model';
 import merge from 'lodash/object/merge';
+import bcrypt from "bcrypt";
 
 /**
  * User Model
@@ -15,6 +16,24 @@ class User extends BaseUser
   {
     super(attributes);
     this._confirmPassword = '';
+    this.on('saving', function(model, attrs, options) {
+
+      //If inserting then we generate a salt and a hash from the salt.
+      if (options.method == 'insert') {
+        return new Promise((resolve, reject) => {
+          bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(model.attributes.password, salt, (err, hash) => {
+              model.attributes.salt = salt;
+              model.attributes.password = hash;
+              resolve(true);
+            });
+          });
+        });
+
+      } else {
+        return true;
+      }
+    })
   }
 
   get virtuals()

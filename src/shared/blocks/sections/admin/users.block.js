@@ -211,6 +211,7 @@ export function removePermission(id, userID) {
 export function submitForm(values, dispatch) {
   return new Promise((resolve, reject) => {
     const User = getUser(Base);
+    values.active = 1; //User is active when added through the interface.
     const userInstance = new User(values);
     userInstance.save()
       .then(() => {

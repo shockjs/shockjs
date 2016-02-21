@@ -72,28 +72,23 @@ gulp.task('user', (end) => {
         } else {
           const AuthManager = require('./dist/server/classes/auth.manager.class').default;
           const auth = new AuthManager(User.knex());
-          bcrypt.genSalt(10, (err, salt) => {
-            bcrypt.hash(answers.password, salt, (err, hash) => {
-              new User({
-                firstName: answers.firstName || 'Super',
-                lastName: answers.lastName || 'User',
-                username: answers.username,
-                email: answers.email,
-                password: hash,
-                salt: salt,
-                active: 1
+            new User({
+              firstName: answers.firstName || 'Super',
+              lastName: answers.lastName || 'User',
+              username: answers.username,
+              email: answers.email,
+              password: answers.password,
+              active: 1
+            })
+              .save()
+              .then((model) => {
+                return auth.assignRole('admin', model.attributes.id);
               })
-                .save()
-                .then((model) => {
-                  return auth.assignRole('admin', model.attributes.id);
-                })
-                .then(() => {
-                  User.knex().destroy();
-                  end();
-                  process.exit(1); //Need to destroy otherwise hang.
-                });
-            });
-          });
+              .then(() => {
+                User.knex().destroy();
+                end();
+                process.exit(1); //Need to destroy otherwise hang.
+              });
         }
       });
   }
