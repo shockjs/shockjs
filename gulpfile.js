@@ -41,7 +41,7 @@ const runSass = file => file.relative.match(/client\/scss\/.+\.scss$/) !== null;
  */
 gulp.task('user', (end) => {
 
-  const User = require('./dist/server/models/User').default;
+  const User = require('./dist/server/models/user.model').default;
 
   if (argv.create) {
     inquirer.prompt([
