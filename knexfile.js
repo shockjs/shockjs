@@ -1,4 +1,4 @@
-var config = require('./dist/server/config/index');
+var config = require('./dist/server/config/config');
 
 module.exports = {
 

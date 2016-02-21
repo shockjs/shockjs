@@ -70,7 +70,7 @@ gulp.task('user', (end) => {
           end();
           process.exit(1); //Need to destroy otherwise hang.
         } else {
-          const AuthManager = require('./dist/server/classes/AuthManager').default;
+          const AuthManager = require('./dist/server/classes/auth.manager.class').default;
           const auth = new AuthManager(User.knex());
           bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(answers.password, salt, (err, hash) => {

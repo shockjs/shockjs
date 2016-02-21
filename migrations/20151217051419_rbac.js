@@ -1,6 +1,6 @@
 "use strict";
 
-const AuthManager = require('../dist/server/classes/AuthManager').default;
+const AuthManager = require('../dist/server/classes/auth.manager.class').default;
 
 exports.up = (knex, Promise) => {
 
@@ -19,13 +19,15 @@ exports.up = (knex, Promise) => {
   const typeChild = type.then(() => {
     return knex.schema.createTable('tbl_authTypeChild', (table) => {
       table.increments();
-      table.integer('parent')
+      table.integer('parent', 10)
+        .unsigned()
         .references('id')
         .inTable('tbl_authType')
         .onDelete('cascade')
         .onUpdate('cascade')
         .notNullable();
-      table.integer('child')
+      table.integer('child', 10)
+        .unsigned()
         .references('id')
         .inTable('tbl_authType')
         .onDelete('cascade')
@@ -40,7 +42,8 @@ exports.up = (knex, Promise) => {
   const typeAssign = typeChild.then(() => {
     return knex.schema.createTable('tbl_authAssignment', (table) => {
       table.increments();
-      table.integer('authTypeID')
+      table.integer('authTypeID', 10)
+        .unsigned()
         .references('id')
         .inTable('tbl_authType')
         .notNullable()

@@ -4,9 +4,9 @@ import * as ActionTypes from '../../../../constants/action.types.constants.js';
 import QueryBuilder from '../../../../classes/query.builder';
 import Base from '../../../../../client/models/base.model';
 import forOwn from 'lodash/object/forOwn';
-import { getAuthAssignment } from '../../../../models/auth.assignment.model';
-import { fetchUsers } from '../users.block';
-const AuthAssignment = getAuthAssignment(Base);
+import { getAuthTypeChild } from '../../../../models/auth.type.child.model';
+import { fetchRoles } from '../permissions.block';
+const AuthTypeChild = getAuthTypeChild(Base);
 
 const FETCH_AUTH_TYPES = 'sections/admin/modals/AssignAuthChild/FETCH_AUTH_TYPES';
 const defaultState = {};
@@ -17,7 +17,7 @@ export function fetchPermissionTypes(id)
     return new QueryBuilder(`/api/v1/auth-type`)
       .addParam('filters', [{
         name: 'type',
-        value: 2
+        value: id
       }])
       .fetch()
       .then((data) => {
@@ -31,10 +31,10 @@ export function fetchPermissionTypes(id)
 
 export function submitForm(values, dispatch) {
   return new Promise((resolve, reject) => {
-    const authInstance = new AuthAssignment(values);
+    const authInstance = new AuthTypeChild(values);
     authInstance.save()
       .then(() => {
-        dispatch(fetchUsers(1));
+        dispatch(fetchRoles(1));
         resolve(true);
       })
       .catch((err) => {

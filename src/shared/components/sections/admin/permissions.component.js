@@ -7,6 +7,7 @@ import {
   openRoleModal,
   closeRoleModal,
   removeRole,
+  removeChild,
   fetchChildren,
   openPermissionChildModal,
   closePermissionChildModal
@@ -62,6 +63,12 @@ class PermissionsComponent extends Component
     return dispatch(removeRole(id));
   }
 
+  removeChild(id)
+  {
+    const { dispatch } = this.props;
+    return dispatch(removeChild(id));
+  }
+
   showChildren(id, toggle)
   {
     const { dispatch } = this.props;
@@ -106,7 +113,9 @@ class PermissionsComponent extends Component
             <span className="col-lg-5">Description</span>
           </div>
           <ListRows rowClassName="col-lg-12">
-            <PermissionRowComponent removeChild={ (id) => this.removeRole(id) }
+            <PermissionRowComponent
+                                    remove={ (id) => this.removeRole(id) }
+                                    removeChild={ (id) => this.removeChild(id) }
                                     showChildren={ (id, toggle) => this.showChildren(id, toggle) }
                                     openPermissionChildModal={ (id) => this.openPermissionChildModal(id) }
                                     closePermissionChildModal={ (id) => this.closePermissionChildModal(id) }

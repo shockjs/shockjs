@@ -6,6 +6,12 @@ import { fetchPermissionTypes, submitForm } from '../../../../blocks/sections/ad
 class AssignAuthChildComponent extends Component
 {
 
+  componentWillMount()
+  {
+    const { dispatch } = this.props;
+    dispatch(fetchPermissionTypes(2));
+  }
+
   fetchAuthTypes(event)
   {
     const { dispatch } = this.props;
@@ -15,8 +21,8 @@ class AssignAuthChildComponent extends Component
   submitForm(values, dispatch)
   {
     submitForm({
-      authTypeID: values.authTypeID,
-      userID: this.props.userID
+      child: values.child,
+      parent: this.props.permID
     }, dispatch);
   }
 
@@ -25,7 +31,7 @@ class AssignAuthChildComponent extends Component
    */
   render()
   {
-    const { showModal, closeModal, authTypes, handleSubmit, fields: { authTypeID } } =  this.props;
+    const { showModal, closeModal, authTypes, handleSubmit, fields: { child } } =  this.props;
 
     const errors = (element) => {
       return {
@@ -38,11 +44,11 @@ class AssignAuthChildComponent extends Component
       <Modal show={ showModal } onHide={ closeModal }>
         <form onSubmit={ handleSubmit((values, dispatch) => this.submitForm(values, dispatch)) }>
           <Modal.Header closeButton>
-            <Modal.Title>Assign Permission</Modal.Title>
+            <Modal.Title>Assign Child Permission</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             { authTypes ?
-              <Input { ...errors(authTypeID) } type="select" label="Select Permission" { ...authTypeID }>
+              <Input { ...errors(child) } type="select" label="Select Permission" { ...child }>
                 <option value="" />
                 { authTypes.map((authType) =>
                   <option key={ authType.id } value={ authType.id }>{ authType.label }</option>
@@ -69,7 +75,7 @@ AssignAuthChildComponent.defaultProps = { };
 export default reduxForm(
   {
     form: 'assign-auth-form',
-    fields: ['authTypeID']
+    fields: ['child']
   },
   state => state.AssignAuthChild
 )(AssignAuthChildComponent);

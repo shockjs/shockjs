@@ -1,6 +1,6 @@
 "use strict";
 
-import { fetch, parseServerData, clearServerData } from '../../../utils/iso.bridge';
+import { parseServerData, clearServerData } from '../../../utils/iso.bridge';
 import Base from '../../../../client/models/base.model';
 import QueryBuilder from '../../../classes/query.builder';
 import forOwn from 'lodash/object/forOwn';
@@ -154,6 +154,11 @@ export function removeRole(key) {
   };
 }
 
+
+export function removeChild(key) {
+  return {};
+}
+
 /**
  * Action: When child permission data is returned from the server.
  *
@@ -239,68 +244,68 @@ export default function(state = defaultState, action) {
   let permissions = state.permissions;
 
   switch (action.type) {
-    /*
-     * When data is initialized from client routing.
-     */
-    case ActionTypes.DATA_FETCHED:
-      return Object.assign({}, state, {
-        permissions: action.permissions || false
-      });
-    /*
-     * When default modal is opened.
-     */
-    case ActionTypes.OPEN_MODAL:
-    case ActionTypes.CLOSE_MODAL:
-      return Object.assign({}, state, {
-        showModal: action.showModal
-      });
-    /*
-     * When a row is selected to add a permission.
-     */
-    case OPEN_PERMISSION_CHILD_MODAL:
-    case CLOSE_PERMISSION_CHILD_MODAL:
-      permissionIndex = findIndex(state.permissions.payload, (user) => user.id === action.childID);
-      if (permissionIndex !== -1) {
-        permissions.payload[permissionIndex].isPermissionsChildModalShown = action.isPermissionsChildModalShown != undefined
-          ? action.isPermissionsChildModalShown
-          : state.isPermissionsChildModalShown;
+  /*
+   * When data is initialized from client routing.
+   */
+  case ActionTypes.DATA_FETCHED:
+    return Object.assign({}, state, {
+      permissions: action.permissions || false
+    });
+  /*
+   * When default modal is opened.
+   */
+  case ActionTypes.OPEN_MODAL:
+  case ActionTypes.CLOSE_MODAL:
+    return Object.assign({}, state, {
+      showModal: action.showModal
+    });
+  /*
+   * When a row is selected to add a permission.
+   */
+  case OPEN_PERMISSION_CHILD_MODAL:
+  case CLOSE_PERMISSION_CHILD_MODAL:
+    permissionIndex = findIndex(state.permissions.payload, (user) => user.id === action.childID);
+    if (permissionIndex !== -1) {
+      permissions.payload[permissionIndex].isPermissionsChildModalShown = action.isPermissionsChildModalShown != undefined
+        ? action.isPermissionsChildModalShown
+        : state.isPermissionsChildModalShown;
+    }
+    return {
+      permissions: permissions,
+      time: Date.now() //Always triggers a re-render.
+    };
+  /*
+   * When a permission row is expanded.
+   */
+  case CHILDREN_DATA_FETCHED:
+    permissionIndex = findIndex(state.permissions.payload, (permission) => permission.id === action.perm_id);
+    if (permissionIndex !== -1) {
+      if (action.childrenRows) {
+        permissions.payload[permissionIndex].childrenRows = action.childrenRows;
+        permissions.payload[permissionIndex].showChildren = true;
+      } else {
+        permissions.payload[permissionIndex].showChildren = action.showChildren;
       }
-      return {
-        permissions: permissions,
-        time: Date.now() //Always triggers a re-render.
-      };
-    /*
-     * When a permission row is expanded.
-     */
-    case CHILDREN_DATA_FETCHED:
-      permissionIndex = findIndex(state.permissions.payload, (permission) => permission.id === action.perm_id);
-      if (permissionIndex !== -1) {
-        if (action.childrenRows) {
-          permissions.payload[permissionIndex].childrenRows = action.childrenRows;
-          permissions.payload[permissionIndex].showChildren = true;
-        } else {
-          permissions.payload[permissionIndex].showChildren = action.showChildren;
-        }
-      }
-      return {
-        permissions: permissions,
-        time: Date.now() //Always triggers a re-render.
-      };
-    /*
-     * When the server data is cleared (change route on client)
-     */
-    case ActionTypes.CLEAR_SERVER_DATA:
-      return clearServerData('Permissions', state);
-    /*
-     * Fetch the data that was rendered server-side.
-     */
-    case ActionTypes.INIT:
-      return parseServerData('Permissions', state);
-    /*
-     * When nothing else applies.
-     */
-    default:
-      return state;
+    }
+    return {
+      permissions: permissions,
+      time: Date.now() //Always triggers a re-render.
+    };
+  /*
+   * When the server data is cleared (change route on client)
+   */
+  case ActionTypes.CLEAR_SERVER_DATA:
+    return clearServerData('Permissions', state);
+  /*
+   * Fetch the data that was rendered server-side.
+   */
+  case ActionTypes.INIT:
+    return parseServerData('Permissions', state);
+  /*
+   * When nothing else applies.
+   */
+  default:
+    return state;
   }
 }
 
