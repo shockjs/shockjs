@@ -173,6 +173,13 @@ export function removeUser(key) {
   };
 }
 
+/**
+ * Action: Fetches permission for user row.
+ *
+ * @param key
+ * @param toggle
+ * @returns {*}
+ */
 export function fetchPermissions(key, toggle) {
   if (toggle === undefined) {
     return dispatch => {
@@ -191,6 +198,13 @@ export function fetchPermissions(key, toggle) {
   }
 }
 
+/**
+ * Removes a permission from a user.
+ *
+ * @param id
+ * @param userID
+ * @returns {Function}
+ */
 export function removePermission(id, userID) {
   return dispatch => {
     return new QueryBuilder(`/api/v1/auth-assignment/${id}`)
@@ -228,6 +242,12 @@ export function submitForm(values, dispatch) {
   });
 }
 
+/**
+ * Opens the permission modal.
+ *
+ * @param id
+ * @returns {{type, isPermissionsModalShown: boolean, user_id: *}}
+ */
 export function openPermissionModal(id)
 {
   return {
@@ -237,6 +257,12 @@ export function openPermissionModal(id)
   }
 }
 
+/**
+ * Closes the permission modal.
+ *
+ * @param id
+ * @returns {{type, isPermissionsModalShown: boolean, user_id: *}}
+ */
 export function closePermissionModal(id)
 {
   return {

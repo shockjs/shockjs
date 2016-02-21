@@ -249,7 +249,8 @@ export default function(state = defaultState, action) {
    */
   case ActionTypes.DATA_FETCHED:
     return Object.assign({}, state, {
-      permissions: action.permissions || false
+      permissions: action.permissions || false,
+      showModal: false
     });
   /*
    * When default modal is opened.
