@@ -113,17 +113,19 @@ export function openRoleModal() {
   };
 }
 
-export function openPermissionChildModal() {
+export function openPermissionChildModal(id) {
   return {
     type: OPEN_PERMISSION_CHILD_MODAL,
-    showModal: true
+    isPermissionsChildModalShown: true,
+    childID: id
   };
 }
 
-export function closePermissionChildModal() {
+export function closePermissionChildModal(id) {
   return {
     type: CLOSE_PERMISSION_CHILD_MODAL,
-    showModal: true
+    isPermissionsChildModalShown: false,
+    childID: id
   };
 }
 
@@ -253,13 +255,20 @@ export default function(state = defaultState, action) {
         showModal: action.showModal
       });
     /*
-     *
+     * When a row is selected to add a permission.
      */
     case OPEN_PERMISSION_CHILD_MODAL:
     case CLOSE_PERMISSION_CHILD_MODAL:
-      return Object.assign({}, state, {
-        showPermissionChildModal: action.showModal
-      });
+      permissionIndex = findIndex(state.permissions.payload, (user) => user.id === action.childID);
+      if (permissionIndex !== -1) {
+        permissions.payload[permissionIndex].isPermissionsChildModalShown = action.isPermissionsChildModalShown != undefined
+          ? action.isPermissionsChildModalShown
+          : state.isPermissionsChildModalShown;
+      }
+      return {
+        permissions: permissions,
+        time: Date.now() //Always triggers a re-render.
+      };
     /*
      * When a permission row is expanded.
      */

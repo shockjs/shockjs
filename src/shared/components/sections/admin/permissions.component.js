@@ -8,7 +8,8 @@ import {
   closeRoleModal,
   removeRole,
   fetchChildren,
-  openPermissionChildModal
+  openPermissionChildModal,
+  closePermissionChildModal
 } from '../../../blocks/sections/admin/permissions.block';
 import { ListView, Pagination, ListRows, Counter } from 'react-list-combo';
 import { ButtonToolbar, ButtonGroup, Button } from 'react-bootstrap';
@@ -73,6 +74,12 @@ class PermissionsComponent extends Component
     return dispatch(openPermissionChildModal(id));
   }
 
+  closePermissionChildModal(id)
+  {
+    const { dispatch } = this.props;
+    return dispatch(closePermissionChildModal(id));
+  }
+
   render()
   {
 
@@ -100,7 +107,10 @@ class PermissionsComponent extends Component
           </div>
           <ListRows rowClassName="col-lg-12">
             <PermissionRowComponent removeChild={ (id) => this.removeRole(id) }
-                           showChildren={ (id, toggle) => this.showChildren(id, toggle) } />
+                                    showChildren={ (id, toggle) => this.showChildren(id, toggle) }
+                                    openPermissionChildModal={ (id) => this.openPermissionChildModal(id) }
+                                    closePermissionChildModal={ (id) => this.closePermissionChildModal(id) }
+            />
           </ListRows>
           <Counter label="users" wrapperClassName="toolbar pull-left" />
           <Pagination wrapperClassName="pull-right" />

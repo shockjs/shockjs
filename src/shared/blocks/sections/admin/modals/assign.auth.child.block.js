@@ -17,7 +17,7 @@ export function fetchPermissionTypes(id)
     return new QueryBuilder(`/api/v1/auth-type`)
       .addParam('filters', [{
         name: 'type',
-        value: id
+        value: 2
       }])
       .fetch()
       .then((data) => {

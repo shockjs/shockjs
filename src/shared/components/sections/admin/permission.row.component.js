@@ -39,7 +39,7 @@ class PermissionRowComponent extends Component
           <span className="col-lg-1 text-right row">
             <a className="fa fa-times fa-1x row" onClick={ () => this.props.remove(parentID) } />
             <a>
-              <i className="row fa fa-sitemap fa-1x" onClick={ () => this.props.openPermissionModal(parentID) } />
+              <i className="row fa fa-sitemap fa-1x" onClick={ () => this.props.openPermissionChildModal(parentID) } />
             </a>
           </span>
         </div>
@@ -68,7 +68,7 @@ class PermissionRowComponent extends Component
         </div> }
         <AssignAuthChildComponent permID={ parentID }
                     showModal={ isPermissionsChildModalShown }
-                    closeModal={ () => this.props.closePermissionModal(parentID) } />
+                    closeModal={ () => this.props.closePermissionChildModal(parentID) } />
       </div>
     );
   }

@@ -7,3 +7,4 @@ export { default as Dashboard } from './sections/admin/dashboard.block';
 export { default as Users } from './sections/admin/users.block';
 export { default as Permissions } from './sections/admin/permissions.block';
 export { default as AssignAuth } from './sections/admin/modals/assign.auth.block';
+export { default as AssignAuthChild } from './sections/admin/modals/assign.auth.child.block';

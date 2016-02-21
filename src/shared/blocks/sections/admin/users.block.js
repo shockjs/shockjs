@@ -1,6 +1,6 @@
 "use strict";
 
-import { fetch, parseServerData, clearServerData } from '../../../utils/iso.bridge';
+import { parseServerData, clearServerData } from '../../../utils/iso.bridge';
 import Base from '../../../../client/models/base.model';
 import { getUser } from '../../../models/user.model';
 import forOwn from 'lodash/object/forOwn';
@@ -181,7 +181,7 @@ export function fetchPermissions(key, toggle) {
         .addParam('relations', [{name: 'authType'}])
         .fetch()
         .then(json => dispatch(receivePermissionData(key, json)));
-    }
+    };
   } else {
     return {
       type: PERMISSION_DATA_FETCHED,
@@ -198,7 +198,7 @@ export function removePermission(id, userID) {
       .then(() => {
           dispatch(fetchPermissions(userID));
       });
-  }
+  };
 }
 
 /**
@@ -242,7 +242,7 @@ export function closePermissionModal(id)
     type: ActionTypes.CLOSE_PERMISSIONS_MODAL,
     isPermissionsModalShown: false,
     user_id: id
-  }
+  };
 }
 
 /**
@@ -257,47 +257,47 @@ export default function(state = defaultState, action) {
   let userIndex;
 
   switch (action.type) {
-    case ActionTypes.DATA_FETCHED:
-      return Object.assign({}, state, {
-        users: action.users || false,
-        showModal: false
-      });
-    case PERMISSION_DATA_FETCHED:
-      userIndex = findIndex(state.users.payload, (user) => user.id === action.user_id);
-      if (userIndex !== -1) {
-        if (action.permissions) {
-          users.payload[userIndex].permissions = action.permissions;
-          users.payload[userIndex].showPermissions = true;
-        } else {
-          users.payload[userIndex].showPermissions = action.showPermissions;
-        }
+  case ActionTypes.DATA_FETCHED:
+    return Object.assign({}, state, {
+      users: action.users || false,
+      showModal: false
+    });
+  case PERMISSION_DATA_FETCHED:
+    userIndex = findIndex(state.users.payload, (user) => user.id === action.user_id);
+    if (userIndex !== -1) {
+      if (action.permissions) {
+        users.payload[userIndex].permissions = action.permissions;
+        users.payload[userIndex].showPermissions = true;
+      } else {
+        users.payload[userIndex].showPermissions = action.showPermissions;
       }
-      return {
-        users: users,
-        time: Date.now() //Always triggers a re-render.
-      };
-    case ActionTypes.OPEN_PERMISSIONS_MODAL:
-    case ActionTypes.CLOSE_PERMISSIONS_MODAL:
-      userIndex = findIndex(state.users.payload, (user) => user.id === action.user_id);
-      if (userIndex !== -1) {
-        users.payload[userIndex].isPermissionsModalShown = action.isPermissionsModalShown != undefined
-          ? action.isPermissionsModalShown
-          : state.isPermissionsModalShown;
-      }
-      return {
-        users: users,
-        time: Date.now() //Always triggers a re-render.
-      };
-    case ActionTypes.OPEN_MODAL:
-    case ActionTypes.CLOSE_MODAL:
-      return Object.assign({}, state, {
-        showModal: action.showModal
-      });
-    case ActionTypes.CLEAR_SERVER_DATA:
-      return clearServerData('Users', state);
-    case ActionTypes.INIT:
-      return parseServerData('Users', state);
-    default:
-      return state;
+    }
+    return {
+      users: users,
+      time: Date.now() //Always triggers a re-render.
+    };
+  case ActionTypes.OPEN_PERMISSIONS_MODAL:
+  case ActionTypes.CLOSE_PERMISSIONS_MODAL:
+    userIndex = findIndex(state.users.payload, (user) => user.id === action.user_id);
+    if (userIndex !== -1) {
+      users.payload[userIndex].isPermissionsModalShown = action.isPermissionsModalShown != undefined
+        ? action.isPermissionsModalShown
+        : state.isPermissionsModalShown;
+    }
+    return {
+      users: users,
+      time: Date.now() //Always triggers a re-render.
+    };
+  case ActionTypes.OPEN_MODAL:
+  case ActionTypes.CLOSE_MODAL:
+    return Object.assign({}, state, {
+      showModal: action.showModal
+    });
+  case ActionTypes.CLEAR_SERVER_DATA:
+    return clearServerData('Users', state);
+  case ActionTypes.INIT:
+    return parseServerData('Users', state);
+  default:
+    return state;
   }
 }
