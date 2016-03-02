@@ -18,21 +18,18 @@ class AuthAssignmentApi extends RestApiClass
     endPoints.push({
       path: `/api/${this.version}/${this.endPoint}/test`,
       method: 'GET',
-      config: {
-        handler: (request, reply) => {
-          this.model.where('id', 2)
-            .fetch({
-              withRelated: ['authType']
-            })
-            .then(function(model) {
-              reply(model.toJSON());
-            })
-            .catch(function(err) {
-              reply(err);
-            });
-
-        }
-      }
+      config: this.beforeAction((request, reply) => {
+        this.model.where('id', 2)
+          .fetch({
+            withRelated: ['authType']
+          })
+          .then(function(model) {
+            reply(model.toJSON());
+          })
+          .catch(function(err) {
+            reply(err);
+          });
+      })
     });
 
 

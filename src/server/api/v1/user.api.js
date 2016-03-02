@@ -11,6 +11,12 @@ class UserApi extends RestApiClass
     super('users', User);
   }
 
+  accessRules()
+  {
+    return [
+    ];
+  }
+
   get endPoints()
   {
     let endPoints = super.endPoints;
