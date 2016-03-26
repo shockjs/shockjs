@@ -12,7 +12,7 @@ import AdminComponent from './components/sections/admin.component';
 import DashboardComponent from './components/sections/admin/dashboard.component';
 import UsersComponent from './components/sections/admin/users.component';
 import PermissionsComponent from './components/sections/admin/permissions.component';
-import { fetchAuthApi } from './blocks/app.block';
+import { fetchAuthApi } from './components/app.block';
 import { redirect, isServer } from './utils/iso.bridge';
 
 export default {

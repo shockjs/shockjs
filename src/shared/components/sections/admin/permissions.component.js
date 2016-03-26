@@ -11,7 +11,7 @@ import {
   fetchChildren,
   openPermissionChildModal,
   closePermissionChildModal
-} from '../../../blocks/sections/admin/permissions.block';
+} from '../../../components/sections/admin/permissions.block';
 import { ListView, Pagination, ListRows, Counter } from 'react-list-combo';
 import { ButtonToolbar, ButtonGroup, Button } from 'react-bootstrap';
 import PermissionRowComponent from './permission.row.component';

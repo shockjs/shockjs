@@ -1,12 +1,11 @@
 "use strict";
 
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
-import { Input, ButtonInput, Col, Alert } from 'react-bootstrap';
+import { Input } from 'react-bootstrap';
 import { isServer } from '../../utils/iso.bridge';
 import Recaptcha from 'react-recaptcha';
-import { setCaptchaKey, captchaLoaded, clearCaptchaKey, submitForm, clearSubmitted } from '../../blocks/sections/contact.block';
+import { setCaptchaKey, captchaLoaded, clearCaptchaKey, submitForm, clearSubmitted } from '../../components/sections/contact.block';
 import AlertDismissComponent from '../alerts/alert.dismiss.component';
 import ErrorComponent from '../form/error.component';
 

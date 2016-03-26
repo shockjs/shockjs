@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Input, ButtonInput, Col } from 'react-bootstrap';
-import { submitForm } from '../../blocks/sections/login.block';
+import { Input,  Col } from 'react-bootstrap';
+import { submitForm } from '../../components/sections/login.block';
 import { reduxForm } from 'redux-form';
-import { fetchAuth } from '../../blocks/app.block';
-import { redirect } from '../../utils/iso.bridge';
 
 class LoginComponent extends Component
 {
   render()
   {
-    const { fields: { username, password }, handleSubmit, error, submitting, invalid } = this.props;
+    const { fields: { username, password }, handleSubmit, error, submitting } = this.props;
 
     const errors = (element) => {
       return {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Modal, Input, ProgressBar } from 'react-bootstrap';
 import { reduxForm } from 'redux-form';
-import { fetchPermissionTypes, submitForm } from '../../../../blocks/sections/admin/modals/assign.auth.block';
+import { fetchPermissionTypes, submitForm } from '../../../../components/sections/admin/modals/assign.auth.block';
 
 class AssignAuthComponent extends Component
 {

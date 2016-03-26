@@ -11,7 +11,7 @@ import { isServer } from '../utils/iso.bridge';
 import DevTools from '../utils/dev.tools';
 
 //Load in our reducers.
-import * as reducers from '../blocks/index.block';
+import * as reducers from '../components/index.block';
 
 import { SUBMIT_FORM_SUCCESS, OPEN_PERMISSIONS_MODAL } from '../constants/action.types.constants.js';
 
