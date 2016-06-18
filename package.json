@@ -28,7 +28,7 @@
     "boom": "^3.0.0",
     "bootstrap": "^3.3.5",
     "bootstrap-react-password-strength": "0.0.1",
-    "checkit": "^0.6.0",
+    "checkit": "^0.7.0",
     "colors": "^1.1.2",
     "es6-promise": "^3.0.2",
     "eslint-plugin-react": "^3.13.1",
