@@ -24,7 +24,7 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^0.8.5",
-    "bookshelf": "^0.9.1",
+    "bookshelf": "^0.10.0",
     "boom": "^3.0.0",
     "bootstrap": "^3.3.5",
     "bootstrap-react-password-strength": "0.0.1",
