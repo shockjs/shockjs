@@ -37,7 +37,7 @@
     "hapi": "^13.0.0",
     "hapi-auth-cookie": "^6.0.0",
     "hapi-graphql": "^0.4.0",
-    "history": "1.13.1",
+    "history": "4.0.1",
     "inert": "^3.2.0",
     "install": "^0.3.0",
     "isomorphic-fetch": "^2.2.0",
