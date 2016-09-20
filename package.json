@@ -56,7 +56,7 @@
     "pm2-axon": "^2.0.9",
     "pm2-deploy": "^0.2.1",
     "q": "^1.4.1",
-    "react": "^0.14.6",
+    "react": "^15.3.2",
     "react-bootstrap": "^0.28.1",
     "react-dom": "^0.14.6",
     "react-list-combo": "^0.1.8",
