@@ -30,7 +30,7 @@
     "bootstrap-react-password-strength": "0.0.1",
     "checkit": "^0.6.0",
     "colors": "^1.1.2",
-    "es6-promise": "^3.0.2",
+    "es6-promise": "^4.0.1",
     "eslint-plugin-react": "^3.13.1",
     "font-awesome": "^4.5.0",
     "graphql": "^0.4.14",
