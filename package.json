@@ -25,7 +25,7 @@
   "dependencies": {
     "bcrypt": "^0.8.5",
     "bookshelf": "^0.9.1",
-    "boom": "^3.0.0",
+    "boom": "^4.2.0",
     "bootstrap": "^3.3.5",
     "bootstrap-react-password-strength": "0.0.1",
     "checkit": "^0.6.0",
