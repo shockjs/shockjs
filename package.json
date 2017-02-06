@@ -39,7 +39,7 @@
     "hapi-graphql": "^0.4.0",
     "history": "1.13.1",
     "inert": "^3.2.0",
-    "install": "^0.3.0",
+    "install": "^0.8.7",
     "isomorphic-fetch": "^2.2.0",
     "jade": "^1.11.0",
     "knex": "^0.9.0",
