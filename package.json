@@ -42,7 +42,7 @@
     "install": "^0.3.0",
     "isomorphic-fetch": "^2.2.0",
     "jade": "^1.11.0",
-    "knex": "^0.9.0",
+    "knex": "^0.12.8",
     "lodash": "^3.10.1",
     "moment": "^2.11.2",
     "mysql": "^2.9.0",
