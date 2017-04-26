@@ -57,7 +57,7 @@
     "pm2-deploy": "^0.2.1",
     "q": "^1.4.1",
     "react": "^0.14.6",
-    "react-bootstrap": "^0.28.1",
+    "react-bootstrap": "^0.31.0",
     "react-dom": "^0.14.6",
     "react-list-combo": "^0.1.8",
     "react-recaptcha": "https://github.com/shockjs/react-recaptcha/tarball/router-fixes",
