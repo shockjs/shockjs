@@ -33,7 +33,7 @@
     "es6-promise": "^3.0.2",
     "eslint-plugin-react": "^3.13.1",
     "font-awesome": "^4.5.0",
-    "graphql": "^0.4.14",
+    "graphql": "^0.10.1",
     "hapi": "^13.0.0",
     "hapi-auth-cookie": "^6.0.0",
     "hapi-graphql": "^0.4.0",
